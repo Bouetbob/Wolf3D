@@ -1,11 +1,16 @@
 /*
 ** EPITECH PROJECT, 2026
-** TEMPORARY_MAIN
+** wolf3D
 ** File description:
-** TEMPORARY_MAIN
+** main file
 */
 
-int main(int ac, char **av)
+#include "my.h"
+
+int main(int ac, char **av, char **env)
 {
+    if (ac != 2 || !my_file_exists(av[1]) ||
+        check_elm_in_tokened_list(env, "DISPLAY", "=") == -1)
+        return (84);
     return (0);
 }
