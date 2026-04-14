@@ -7,6 +7,7 @@
 
 #include "my.h"
 #include <unistd.h>
+#include <string.h>
 
 int check_elm(char *to_check, char *word, char *sep)
 {
@@ -14,7 +15,7 @@ int check_elm(char *to_check, char *word, char *sep)
 
     temp = my_str_to_word_array(to_check, sep);
     for (int i = 0; i < my_double_array_length(temp); i++)
-        if (my_strcmp(temp[0], word) != 0)
+        if (strcmp(temp[0], word) != 0)
             return (i);
     if (temp)
         free_array(temp);

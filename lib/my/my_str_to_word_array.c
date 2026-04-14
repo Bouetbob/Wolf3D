@@ -8,6 +8,8 @@
 #include "my.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 
 int get_word(char **arr, char *string, int pos, char *seps)
 {
@@ -26,7 +28,7 @@ int get_word(char **arr, char *string, int pos, char *seps)
     while (arr[arr_pos] != NULL)
         arr_pos++;
     buffer[buff_pos] = '\0';
-    arr[arr_pos] = my_strdup(buffer);
+    arr[arr_pos] = strdup(buffer);
     free(buffer);
     return (0);
 }
