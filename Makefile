@@ -5,14 +5,17 @@
 ## idk what it does
 ##
 
-SRC :=	main.c
+SRC :=	main.c \
+		color.c \
+	
 OBJ = $(SRC:%.c=%.o)
 
 LIB	=	./lib/my
 INCLUDE	=	./include
 
 CC	:=	epiclang
-CFLAGS	:=	-Wall -Wextra -I $(INCLUDE)
+CFLAGS	:=	-Wall -Wextra -I $(INCLUDE) -lm
+CSFMLFLAGS	:=	-lcsfml-graphics -lcsfml-window -lcsfml-system
 
 NAME = libmy.a
 EXEC_NAME	=	wolf3d
@@ -27,7 +30,7 @@ $(NAME)	:
 	@$(MAKE) -C $(LIB) comp
 
 $(EXEC_NAME)	:	$(OBJ)
-	@$(CC) $(OBJ) -o $(EXEC_NAME) $(CFLAGS) -L. -lmy
+	@$(CC) $(OBJ) -o $(EXEC_NAME) $(CFLAGS) -L. -lmy $(CSFMLFLAGS)
 
 clean	:
 	@$(MAKE) -C $(LIB) clean
