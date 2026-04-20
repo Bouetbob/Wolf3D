@@ -39,7 +39,7 @@ clean	:
 
 fclean	:
 	@$(MAKE) -C $(LIB) fclean
-	@rm -f $(NAME)
+	@rm -f $(EXEC_NAME)
 	@rm -f $(OBJ)
 
 re	: fclean all
