@@ -5,8 +5,12 @@
 ## idk what it does
 ##
 
-SRC :=	main.c \
-		color.c \
+SRC :=	src/main.c \
+		src/color.c \
+		src/init_game.c \
+		src/movement.c \
+		src/raycasting.c \
+		src/utils.c \
 	
 OBJ = $(SRC:%.c=%.o)
 
@@ -17,17 +21,20 @@ CC	:=	epiclang
 CFLAGS	:=	-Wall -Wextra -I $(INCLUDE) -lm
 CSFMLFLAGS	:=	-lcsfml-graphics -lcsfml-window -lcsfml-system
 
-NAME = libmy.a
+LIB_NAME = libmy.a
 EXEC_NAME	=	wolf3d
 
 TEMP  = src/*.o
 TEMP2 = *~
 
-all	:	$(NAME)	$(EXEC_NAME)
+all : build_lib $(EXEC_NAME)
 
-$(NAME)	:
+build_lib :
 	@$(MAKE) -C $(LIB)
 	@$(MAKE) -C $(LIB) comp
+
+$(EXEC_NAME) : $(OBJ)
+	@$(CC) $(OBJ) -o $(EXEC_NAME) $(CFLAGS) -L. -lmy $(CSFMLFLAGS)
 
 $(EXEC_NAME)	:	$(OBJ)
 	@$(CC) $(OBJ) -o $(EXEC_NAME) $(CFLAGS) -L. -lmy $(CSFMLFLAGS)
@@ -41,7 +48,8 @@ fclean	:
 	@$(MAKE) -C $(LIB) fclean
 	@rm -f $(EXEC_NAME)
 	@rm -f $(OBJ)
+	@rm -f $(LIB_NAME)
 
 re	: fclean all
 
-.PHONY	: $(EXEC_NAME)
+.PHONY	: all build_lib clean fclean re

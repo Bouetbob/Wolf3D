@@ -18,11 +18,7 @@
 #include <SFML/System/Vector2.h>
 #include <SFML/Window.h>
 #include <SFML/Window/Event.h>
-#include <math.h>
 #include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
 #ifndef MAP_H_

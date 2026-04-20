@@ -18,11 +18,7 @@
 #include <SFML/System/Vector2.h>
 #include <SFML/Window.h>
 #include <SFML/Window/Event.h>
-#include <math.h>
 #include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
 #ifndef WOLF3D_H_
@@ -34,14 +30,11 @@
     #define NUM_TEXTURES 12
     #define M_PI 3.14159265358979323846
     #define FLASHLIGHT_RADIUS (M_PI / 1)
-
     #define SCREEN_W 800
     #define SCREEN_H 600
-
     #define MAP_WIDTH 24
     #define MAP_HEIGHT 24
     #define UNUSED [[maybe_unused]]
-
     #define MOVESPEED 2
     #define ROTATESPEED 90
 
@@ -101,10 +94,46 @@ typedef struct game_s {
     timers_t *timer;
 } game_t;
 
+//color
+
 sfColor fade_color(sfColor *color, float distance);
 sfColor change_color(sfColor *color);
 sfColor get_wall_color(int tile);
 sfColor apply_flashlight(sfColor *color, float ray_angle, float player_rads,
     float distance);
+
+//init_game
+
+void setup_time(game_t *game);
+int init_all(game_t *game);
+void free_ressource(game_t *game, ray_t *ray,
+    sfVertexArray *vertexarr[NUM_TEXTURES]);
+void check_exit_conditions(game_t *game, ray_t *ray, char **env);
+
+//main
+
+sfRenderWindow *create_window(int width, int heigth, char *name);
+void analyse_events(sfRenderWindow *window, sfEvent event);
+void main_game_loop(game_t *game, ray_t *ray,
+    sfVertexArray *vertexarr[NUM_TEXTURES]);
+
+//movement
+
+void handle_movement(player_t *player, game_t *game);
+
+//raycasting
+
+void get_ray_distance(ray_t *ray, player_t *player);
+void render_raycast(game_t *game, ray_t *ray, sfVertexArray **vertexarr);
+int is_wall(float x, float y);
+
+//utils
+
+bool has_display(char **env);
+void exit_with_message(char *exit_message, int message_channel,
+    int exit_value);
+void dir_giver(player_t *player);
+void rad_giver(player_t *player);
+void update_player(player_t *player);
 
 #endif /* !WOLF3D_H_ */

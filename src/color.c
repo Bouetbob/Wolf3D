@@ -7,6 +7,7 @@
 
 #include "my.h"
 #include "wolf3d.h"
+#include <math.h>
 
 sfColor fade_color(sfColor *color, float distance)
 {
@@ -54,7 +55,7 @@ sfColor get_wall_color(int tile)
     }
 }
 
-float get_abs_diff(float diff)
+static float get_abs_diff(float diff)
 {
     float abs_diff;
 
