@@ -36,7 +36,7 @@ CFLAGS = -Wall -Werror -I$(INC_PATH)
 # Targets
 all: $(NAME)
 
-$(NAME):$(SRCS)
+$(NAME):$(SRC)
 	@$(CC) $(CFLAGS) -c $<
 
 comp: 	$(OBJS)

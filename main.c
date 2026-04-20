@@ -317,14 +317,14 @@ void analyse_events(sfRenderWindow *window, sfEvent event)
 //--------------------INIT FILE--------------------//
 void load_textures(sfTexture *textures[NUM_TEXTURES])
 {
-    textures[1] = sfTexture_createFromFile("textures/redbrick.png", NULL);
-    textures[2] = sfTexture_createFromFile("textures/wood.png", NULL);
-    textures[3] = sfTexture_createFromFile("textures/bluestone.png", NULL);
-    textures[4] = sfTexture_createFromFile("textures/eagle.png", NULL);
-    textures[5] = sfTexture_createFromFile("textures/greystone.png", NULL);
-    textures[6] = sfTexture_createFromFile("textures/colorstone.png", NULL);
-    textures[7] = sfTexture_createFromFile("textures/purplestone.png", NULL);
-    textures[8] = sfTexture_createFromFile("textures/mossy.png", NULL);
+    textures[1] = sfTexture_createFromFile("assets/redbrick.png", NULL);
+    textures[2] = sfTexture_createFromFile("assets/wood.png", NULL);
+    textures[3] = sfTexture_createFromFile("assets/bluestone.png", NULL);
+    textures[4] = sfTexture_createFromFile("assets/eagle.png", NULL);
+    textures[5] = sfTexture_createFromFile("assets/greystone.png", NULL);
+    textures[6] = sfTexture_createFromFile("assets/colorstone.png", NULL);
+    textures[7] = sfTexture_createFromFile("assets/purplestone.png", NULL);
+    textures[8] = sfTexture_createFromFile("assets/mossy.png", NULL);
 }
 
 void init_player(player_t *player)
