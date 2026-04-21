@@ -18,8 +18,9 @@ LIB	=	./lib/my
 INCLUDE	=	./include
 
 CC	:=	epiclang
-CFLAGS	:=	-Wall -Wextra -I $(INCLUDE) -lm
+CFLAGS	:=	-Wall -Wextra -I $(INCLUDE)
 CSFMLFLAGS	:=	-lcsfml-graphics -lcsfml-window -lcsfml-system
+LIBS_TO_LINK	:=	$(CSFMLFLAGS) -lm -L. -lmy
 
 LIB_NAME = libmy.a
 EXEC_NAME	=	wolf3d
@@ -34,10 +35,7 @@ build_lib :
 	@$(MAKE) -C $(LIB) comp
 
 $(EXEC_NAME) : $(OBJ)
-	@$(CC) $(OBJ) -o $(EXEC_NAME) $(CFLAGS) -L. -lmy $(CSFMLFLAGS)
-
-$(EXEC_NAME)	:	$(OBJ)
-	@$(CC) $(OBJ) -o $(EXEC_NAME) $(CFLAGS) -L. -lmy $(CSFMLFLAGS)
+	@$(CC) $(OBJ) -o $(EXEC_NAME) $(LIBS_TO_LINK)
 
 clean	:
 	@$(MAKE) -C $(LIB) clean

@@ -1,11 +1,11 @@
-    /*
+/*
 ** EPITECH PROJECT, 2026
 ** wolf3D
 ** File description:
 ** main file
 */
 
-//hours spent on this : around 20 (20/04 12:39)
+//hours spent on this : around 22 (20/04 12:39)
 
 #include "my.h"
 #include "wolf3d.h"
@@ -21,6 +21,7 @@
 #include <SFML/Window.h>
 #include <SFML/Window/Event.h>
 #include <SFML/Window/Keyboard.h>
+#include <SFML/Window/WindowBase.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +35,7 @@ sfRenderWindow *create_window(int width, int heigth, char *name)
     vid_mode.width = width;
     vid_mode.height = heigth;
     vid_mode.bitsPerPixel = 32;
-    window = sfRenderWindow_create(vid_mode, name, sfClose, NULL);
+    window = sfRenderWindow_create(vid_mode, name, sfClose | sfResize, NULL);
     sfRenderWindow_setFramerateLimit(window, 60);
     return (window);
 }
