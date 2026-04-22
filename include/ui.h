@@ -6,6 +6,7 @@
 */
 
 #include "my.h"
+#include "engine.h"
 #include <SFML/Graphics.h>
 #include <SFML/Graphics/Color.h>
 #include <SFML/Graphics/PrimitiveType.h>
@@ -28,14 +29,8 @@
 #ifndef UI_H_
     #define UI_H_
 
-typedef struct buttons_s {
-    sfRectangleShape *background;
-    sfText *text;
-    sfVector2f scale;
-    unsigned int char_size;
-    bool hovered;
-    void (*on_click)(void);
-} button_t;
+button_t *init_button(char *string, sfVector2f *position, sfVector2f *size);
+void draw_button(game_t *game, button_t *button);
 
 
 #endif /* !UI_H_ */

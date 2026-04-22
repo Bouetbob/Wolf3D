@@ -11,6 +11,9 @@ SRC :=	src/main.c \
 		src/movement.c \
 		src/raycasting.c \
 		src/utils.c \
+		src/buttons/draw_buttons.c \
+		src/buttons/init_buttons.c \
+		src/events.c
 	
 OBJ = $(SRC:%.c=%.o)
 

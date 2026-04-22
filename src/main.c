@@ -7,8 +7,10 @@
 
 //hours spent on this : around 22 (20/04 12:39)
 
+#include "engine.h"
 #include "my.h"
 #include "wolf3d.h"
+#include "event.h"
 #include <SFML/Graphics.h>
 #include <SFML/Graphics/Color.h>
 #include <SFML/Graphics/PrimitiveType.h>
@@ -25,6 +27,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
 
 sfRenderWindow *create_window(int width, int heigth, char *name)
@@ -40,12 +43,15 @@ sfRenderWindow *create_window(int width, int heigth, char *name)
     return (window);
 }
 
-void analyse_events(sfRenderWindow *window, sfEvent event)
+void rendering_function(game_t *game, ray_t *ray,
+    sfVertexArray *vertexarr[NUM_TEXTURES])
 {
-    if (event.type == sfEvtClosed)
-        sfRenderWindow_close(window);
-    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
-        sfRenderWindow_close(window);
+    sfRenderWindow_clear(game->window, sfBlack);
+    render_raycast(game, ray, vertexarr);
+    sfRenderWindow_drawRectangleShape(game->window, game->button->background,
+        NULL);
+    sfRenderWindow_drawText(game->window, game->button->text, NULL);
+    sfRenderWindow_display(game->window);
 }
 
 void main_game_loop(game_t *game, ray_t *ray,
@@ -58,11 +64,9 @@ void main_game_loop(game_t *game, ray_t *ray,
     while (sfRenderWindow_isOpen(game->window)) {
         setup_time(game);
         while (sfRenderWindow_pollEvent(game->window, &game->event))
-            analyse_events(game->window, game->event);
+            analyse_events(game->window, game->event, game);
         handle_movement(game->player, game);
-        sfRenderWindow_clear(game->window, sfBlack);
-        render_raycast(game, ray, vertexarr);
-        sfRenderWindow_display(game->window);
+        rendering_function(game, ray, vertexarr);
         printf("%f %f\n", game->player->pos.x, game->player->pos.y);
     }
     free_ressource(game, ray, vertexarr);

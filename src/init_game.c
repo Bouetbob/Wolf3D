@@ -5,29 +5,38 @@
 ** init_game
 */
 
+#include "wolf3d.h"
+#include <SFML/System/Vector2.h>
 #include <stdlib.h>
 #include <string.h>
-#include "wolf3d.h"
+#include "map.h"
 
 void setup_time(game_t *game)
 {
     game->timer->oldtime = game->timer->currenttime;
     game->timer->time = sfClock_getElapsedTime(game->key_clock);
     game->timer->currenttime = sfTime_asSeconds(game->timer->time);
-    game->timer->timeframe = (game->timer->currenttime
-        - game->timer->oldtime);
+    game->timer->timeframe = (game->timer->currenttime - game->timer->oldtime);
 }
 
 static void load_textures(sfTexture *textures[NUM_TEXTURES])
 {
-    textures[1] = sfTexture_createFromFile("assets/redbrick.png", NULL);
-    textures[2] = sfTexture_createFromFile("assets/wood.png", NULL);
-    textures[3] = sfTexture_createFromFile("assets/bluestone.png", NULL);
-    textures[4] = sfTexture_createFromFile("assets/eagle.png", NULL);
-    textures[5] = sfTexture_createFromFile("assets/greystone.png", NULL);
-    textures[6] = sfTexture_createFromFile("assets/colorstone.png", NULL);
-    textures[7] = sfTexture_createFromFile("assets/purplestone.png", NULL);
-    textures[8] = sfTexture_createFromFile("assets/mossy.png", NULL);
+    textures[1] =
+        sfTexture_createFromFile("assets/World_Textures/redbrick.png", NULL);
+    textures[2] =
+        sfTexture_createFromFile("assets/World_Textures/wood.png", NULL);
+    textures[3] =
+        sfTexture_createFromFile("assets/World_Textures/bluestone.png", NULL);
+    textures[4] =
+        sfTexture_createFromFile("assets/World_Textures/eagle.png", NULL);
+    textures[5] =
+        sfTexture_createFromFile("assets/World_Textures/greystone.png", NULL);
+    textures[6] =
+        sfTexture_createFromFile("assets/World_Textures/colorstone.png", NULL);
+    textures[7] = sfTexture_createFromFile(
+        "assets/World_Textures/purplestone.png", NULL);
+    textures[8] =
+        sfTexture_createFromFile("assets/World_Textures/mossy.png", NULL);
 }
 
 static void init_player(player_t *player)
@@ -54,6 +63,8 @@ int init_all(game_t *game)
     init_player(game->player);
     game->key_clock = sfClock_create();
     game->window = create_window(SCREEN_W, SCREEN_H, "wolf3d");
+    game->button = init_button("helloooo hi hi hi", &(sfVector2f) {100, 100},
+        &(sfVector2f) {150, 30});
     return (0);
 }
 
