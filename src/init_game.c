@@ -5,8 +5,10 @@
 ** init_game
 */
 
+#include "engine.h"
 #include "wolf3d.h"
 #include <SFML/System/Vector2.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include "map.h"
@@ -53,18 +55,35 @@ static void init_player(player_t *player)
     dir_giver(player);
 }
 
+static void init_buttons(game_t *game)
+{
+    game->buttons[0] = init_button("enter menu", &(sfVector2f) {700, 100},
+        &(sfVector2f) {110, 20}, false);
+    game->buttons[0]->on_click = (void *) change_menu_state;
+    game->buttons[1] = init_button("leave menu", &(sfVector2f) {100, 100},
+        &(sfVector2f) {110, 20}, true);
+    game->buttons[1]->on_click = (void *) change_menu_state;
+    game->buttons[2] = init_button("print info", &(sfVector2f) {100, 500},
+        &(sfVector2f) {110, 20}, false);
+    game->buttons[2]->on_click = (void *) print_game_info;
+    game->buttons[3] = init_button("print info", &(sfVector2f) {700, 500},
+        &(sfVector2f) {110, 20}, true);
+    game->buttons[3]->on_click = (void *) print_game_info;
+}
+
 int init_all(game_t *game)
 {
     game->timer = malloc(sizeof(timers_t));
-    if (!game->timer)
+    game->buttons = malloc(sizeof(button_t *) * NUM_BUTTONS);
+    if (!game->timer || !game->buttons)
         return (84);
     memset(game->textures, 0, sizeof(game->textures));
     load_textures(game->textures);
     init_player(game->player);
+    game->is_menu_open = true;
     game->key_clock = sfClock_create();
     game->window = create_window(SCREEN_W, SCREEN_H, "wolf3d");
-    game->button = init_button("helloooo hi hi hi", &(sfVector2f) {100, 100},
-        &(sfVector2f) {150, 30});
+    init_buttons(game);
     return (0);
 }
 

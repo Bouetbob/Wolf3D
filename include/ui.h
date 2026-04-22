@@ -29,8 +29,15 @@
 #ifndef UI_H_
     #define UI_H_
 
-button_t *init_button(char *string, sfVector2f *position, sfVector2f *size);
+    #define NUM_BUTTONS 4
+
+button_t *init_button(char *string, sfVector2f *position,
+    sfVector2f *size, bool is_menu);
 void draw_button(game_t *game, button_t *button);
+void change_menu_state(game_t *game);
+void button_event(game_t *game, button_t *button, sfEvent *event);
+void print_game_info(game_t *game);
+
 
 
 #endif /* !UI_H_ */

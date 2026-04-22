@@ -17,6 +17,7 @@
 #include <SFML/Graphics/Texture.h>
 #include <SFML/Graphics/Types.h>
 #include <SFML/System/Vector2.h>
+#include <stdbool.h>
 
 static sfRectangleShape *init_button_background(sfVector2f *pos,
     sfVector2f *size)
@@ -51,7 +52,8 @@ static sfText *init_button_text(char *text, int charsize,
     return textbox;
 }
 
-button_t *init_button(char *string, sfVector2f *position, sfVector2f *size)
+button_t *init_button(char *string, sfVector2f *position,
+    sfVector2f *size, bool is_menu)
 {
     button_t *button = malloc(sizeof(button_t));
 
@@ -61,12 +63,13 @@ button_t *init_button(char *string, sfVector2f *position, sfVector2f *size)
     if (!button->background)
         return (NULL);
     button->char_size = 10;
+    button->original_scale = (sfVector2f) {1, 1};
     button->hovered = false;
     button->scale = (sfVector2f) {1, 1};
     button->text = init_button_text(string, button->char_size, position, size);
     if (!button->text)
         return (NULL);
     button->on_click = (NULL);
-    button->is_menu_button = false;
+    button->is_menu_button = is_menu;
     return button;
 }

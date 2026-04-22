@@ -5,7 +5,7 @@
 ** main file
 */
 
-//hours spent on this : around 22 (20/04 12:39)
+//hours spent on this : around 25 (22/04 11:33)
 
 #include "engine.h"
 #include "my.h"
@@ -47,10 +47,13 @@ void rendering_function(game_t *game, ray_t *ray,
     sfVertexArray *vertexarr[NUM_TEXTURES])
 {
     sfRenderWindow_clear(game->window, sfBlack);
-    render_raycast(game, ray, vertexarr);
-    sfRenderWindow_drawRectangleShape(game->window, game->button->background,
-        NULL);
-    sfRenderWindow_drawText(game->window, game->button->text, NULL);
+    if (!game->is_menu_open) {
+        handle_movement(game->player, game);
+        render_raycast(game, ray, vertexarr);
+    }
+    for (int i = 0; i < NUM_BUTTONS; i++) {
+        draw_button(game, game->buttons[i]);
+    }
     sfRenderWindow_display(game->window);
 }
 
@@ -65,9 +68,8 @@ void main_game_loop(game_t *game, ray_t *ray,
         setup_time(game);
         while (sfRenderWindow_pollEvent(game->window, &game->event))
             analyse_events(game->window, game->event, game);
-        handle_movement(game->player, game);
+        game->mouse_pos = sfMouse_getPositionRenderWindow(game->window);
         rendering_function(game, ray, vertexarr);
-        printf("%f %f\n", game->player->pos.x, game->player->pos.y);
     }
     free_ressource(game, ray, vertexarr);
 }

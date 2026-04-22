@@ -13,7 +13,7 @@
 #include <SFML/Window/Keyboard.h>
 #include "map.h"
 
-void analyse_events(sfRenderWindow *window, sfEvent event, game_t *game)
+void analyse_events(sfRenderWindow *window, sfEvent event, UNUSED game_t *game)
 {
     if (event.type == sfEvtClosed)
         sfRenderWindow_close(window);
@@ -23,4 +23,9 @@ void analyse_events(sfRenderWindow *window, sfEvent event, game_t *game)
         map[5][5] = 1;
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyY)
         map[5][5] = 0;
+    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyG)
+        change_menu_state(game);
+    for (int i = 0; i < NUM_BUTTONS; i++) {
+        button_event(game, game->buttons[i], &event);
+    }
 }

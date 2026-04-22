@@ -13,8 +13,12 @@ SRC :=	src/main.c \
 		src/utils.c \
 		src/buttons/draw_buttons.c \
 		src/buttons/init_buttons.c \
-		src/events.c
+		src/events.c \
+		src/buttons/event_buttons.c \
+		src/ui/change_menu_state.c \
 	
+
+
 OBJ = $(SRC:%.c=%.o)
 
 LIB	=	./lib/my
@@ -23,7 +27,7 @@ INCLUDE	=	./include
 CC	:=	epiclang
 CFLAGS	:=	-Wall -Wextra -I $(INCLUDE)
 CSFMLFLAGS	:=	-lcsfml-graphics -lcsfml-window -lcsfml-system
-LIBS_TO_LINK	:=	$(CSFMLFLAGS) -lm -L. -lmy
+LIBS_TO_LINK	:=	$(CSFMLFLAGS) -lm -L. -lmy -g
 
 LIB_NAME = libmy.a
 EXEC_NAME	=	wolf3d

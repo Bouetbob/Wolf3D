@@ -43,9 +43,10 @@ typedef struct buttons_s {
     sfRectangleShape *background;
     sfText *text;
     sfVector2f scale;
+    sfVector2f original_scale;
     unsigned int char_size;
     bool hovered;
-    void (*on_click)(void);
+    void (*on_click)(void *);
     bool is_menu_button;
 } button_t;
 
@@ -100,10 +101,12 @@ typedef struct game_s {
     player_t *player;
     sfTexture *textures[NUM_TEXTURES];
     sfRenderWindow *window;
+    sfVector2i mouse_pos;
     sfEvent event;
     sfClock *key_clock;
     timers_t *timer;
-    button_t *button;
+    button_t **buttons;
+    bool is_menu_open;
     int map[MAP_HEIGHT][MAP_WIDTH];
 } game_t;
 
