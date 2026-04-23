@@ -75,12 +75,11 @@ static void step_ray(ray_t *ray, int *map_x, int *map_y, float *distance)
 
 static void finalize_distance(ray_t *ray, player_t *player, float distance)
 {
-    distance = distance * cos(player->rads - ray->current_angle);
     ray->distance = (distance <= 0.0) ? 0.1 : distance;
     if (ray->side == 0)
-        ray->wall_x = player->pos.y + ray->distance * ray->ray_direction.y;
+        ray->wall_x = player->pos.y + distance * ray->ray_direction.y;
     else
-        ray->wall_x = player->pos.x + ray->distance * ray->ray_direction.x;
+        ray->wall_x = player->pos.x + distance * ray->ray_direction.x;
     ray->wall_x -= floorf(ray->wall_x);
 }
 
@@ -165,8 +164,8 @@ static void draw_ray(game_t *game, ray_t *ray, sfVertexArray **vertexarr, int i)
         return;
     p.tex_size = sfTexture_getSize(tex);
     p.tex_x = ray->wall_x * (float)p.tex_size.x;
-    p.y_start = SCREEN_H / 2.0 - ((SCREEN_H / 2.0) / ray->distance) / 2.0;
-    p.y_end = SCREEN_H / 2.0 + ((SCREEN_H / 2.0) / ray->distance) / 2.0;
+    p.y_start = SCREEN_H / 2.0 - (ray->proj_plane / ray->distance) / 2.0;
+    p.y_end = SCREEN_H / 2.0 + (ray->proj_plane / ray->distance) / 2.0;
     set_ray_color(game, ray, &p.color, ray->current_angle);
     fill_quad(quad, i, &p);
     for (int j = 0; j < 6; j++)
@@ -175,13 +174,18 @@ static void draw_ray(game_t *game, ray_t *ray, sfVertexArray **vertexarr, int i)
 
 static void cast_rays(game_t *game, ray_t *ray, sfVertexArray **vertexarr)
 {
-    float ray_angle = game->player->rads - (game->player->FOV / 2.0);
-    float angle_step = game->player->FOV / NUM_RAYS;
+    float fov_scale = tan(game->player->FOV / 2.0);
+    float plane_x = -game->player->direction_vec.y * fov_scale;
+    float plane_y = game->player->direction_vec.x * fov_scale;
+    float cam_x = 0;
 
+    ray->proj_plane = (SCREEN_W / 2.0) / tan(game->player->FOV / 2.0);
     for (int i = 0; i < NUM_RAYS; i++) {
-        ray->current_angle = ray_angle;
-        ray->ray_direction.x = cos(ray_angle);
-        ray->ray_direction.y = sin(ray_angle);
+        cam_x = 2.0 * i / (float)NUM_RAYS - 1.0;
+        ray->current_angle = atan2(game->player->direction_vec.y + plane_y *
+            cam_x, game->player->direction_vec.x + plane_x * cam_x);
+        ray->ray_direction.x = game->player->direction_vec.x + plane_x * cam_x;
+        ray->ray_direction.y = game->player->direction_vec.y + plane_y * cam_x;
         ray->delta_dist.x = (ray->ray_direction.x == 0)
             ? 1e30 : fabs(1 / ray->ray_direction.x);
         ray->delta_dist.y = (ray->ray_direction.y == 0)
@@ -189,7 +193,6 @@ static void cast_rays(game_t *game, ray_t *ray, sfVertexArray **vertexarr)
         fill_ray_struct(game->player, ray);
         if (ray->hit_tile != 0)
             draw_ray(game, ray, vertexarr, i);
-        ray_angle += angle_step;
     }
 }
 

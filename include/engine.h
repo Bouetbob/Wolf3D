@@ -71,6 +71,7 @@ typedef struct ray_s {
     int hit_tile;
     float wall_x;
     float current_angle;
+    float proj_plane;
 } ray_t;
 
 typedef struct quad_params_s {
@@ -79,6 +80,7 @@ typedef struct quad_params_s {
     float tex_x;
     float y_start;
     float y_end;
+    float proj_plane;
 } quad_params_t;
 
 typedef struct player_s {
