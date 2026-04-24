@@ -5,6 +5,7 @@
 ** wolf3d's .h file
 */
 
+#include "engine.h"
 #include "my.h"
 #include <SFML/Graphics.h>
 #include <SFML/Graphics/Color.h>
@@ -53,9 +54,9 @@ void handle_movement(player_t *player, game_t *game);
 
 //raycasting
 
-void get_ray_distance(ray_t *ray, player_t *player);
+void get_ray_distance(ray_t *ray, player_t *player, game_t *game);
 void render_raycast(game_t *game, ray_t *ray, sfVertexArray **vertexarr);
-int is_wall(float x, float y);
+int is_wall(float x, float y, game_t *game);
 
 //utils
 

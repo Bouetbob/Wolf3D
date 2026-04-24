@@ -24,5 +24,4 @@
 #ifndef MAP_H_
     #define MAP_H_
 
-extern int map[MAP_HEIGHT][MAP_WIDTH];
 #endif /* !map_h_ */

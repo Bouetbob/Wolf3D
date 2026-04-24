@@ -20,22 +20,23 @@
     #include <SFML/System/Vector2.h>
     #include <SFML/Window.h>
     #include <SFML/Window/Event.h>
+    #include <SFML/Window/Types.h>
     #include <stdbool.h>
 
 
     #define FORMER_FOV (M_PI / 3)
     #define NUM_RAYS 800
     #define SHADOW_EFFECT_DIST 8
-    #define NUM_TEXTURES 12
+    #define NUM_TEXTURES 10
     #define M_PI 3.14159265358979323846
     #define FLASHLIGHT_RADIUS (M_PI / 1)
     #define SCREEN_W 800
     #define SCREEN_H 600
-    #define MAP_WIDTH 24
-    #define MAP_HEIGHT 24
     #define UNUSED [[maybe_unused]]
     #define MOVESPEED 2
     #define ROTATESPEED 90
+    #define AUTHORIZED_CHARS "0123456789"
+
 
 
 
@@ -59,6 +60,7 @@ typedef struct item_s {
 typedef struct stats_s {
     int health;
     bool flashlight;
+    int move_speed;
 } stats_t;
 
 typedef struct ray_s {
@@ -104,12 +106,16 @@ typedef struct game_s {
     sfTexture *textures[NUM_TEXTURES];
     sfRenderWindow *window;
     sfVector2i mouse_pos;
+    sfVector2i map_size;
     sfEvent event;
     sfClock *key_clock;
     timers_t *timer;
     button_t **buttons;
+    char **map;
     bool is_menu_open;
-    int map[MAP_HEIGHT][MAP_WIDTH];
 } game_t;
+
+int map_filler(game_t *game, char *filename);
+
 
 #endif /* !ENGINE_H_ */

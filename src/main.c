@@ -38,7 +38,7 @@ sfRenderWindow *create_window(int width, int heigth, char *name)
     vid_mode.width = width;
     vid_mode.height = heigth;
     vid_mode.bitsPerPixel = 32;
-    window = sfRenderWindow_create(vid_mode, name, sfClose | sfResize, NULL);
+    window = sfRenderWindow_create(vid_mode, name, sfClose, NULL);
     sfRenderWindow_setFramerateLimit(window, 60);
     return (window);
 }
@@ -80,6 +80,8 @@ int main(UNUSED int ac, UNUSED char **av, UNUSED char **env)
     ray_t *ray = malloc(sizeof(ray_t));
     sfVertexArray *vertexarr[NUM_TEXTURES];
 
+    if (ac != 2)
+        return (84);
     check_exit_conditions(game, ray, env);
     game->player = malloc(sizeof(player_t));
     if (!game->player)
@@ -88,7 +90,7 @@ int main(UNUSED int ac, UNUSED char **av, UNUSED char **env)
         vertexarr[i] = sfVertexArray_create();
         sfVertexArray_setPrimitiveType(vertexarr[i], sfTriangles);
     }
-    if (init_all(game) == 84)
+    if (init_all(game) == 84 || map_filler(game, av[1]) == 84)
         return (84);
     main_game_loop(game, ray, vertexarr);
     return 0;

@@ -20,9 +20,9 @@ void analyse_events(sfRenderWindow *window, sfEvent event, UNUSED game_t *game)
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
         sfRenderWindow_close(window);
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyT)
-        map[5][5] = 1;
+        game->map[2][2] = '1';
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyY)
-        map[5][5] = 0;
+        game->map[2][2] = '0';
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyG)
         change_menu_state(game);
     for (int i = 0; i < NUM_BUTTONS; i++) {

@@ -16,6 +16,8 @@ SRC :=	src/main.c \
 		src/events.c \
 		src/buttons/event_buttons.c \
 		src/ui/change_menu_state.c \
+		src/map_loading.c \
+		
 	
 
 
@@ -25,9 +27,9 @@ LIB	=	./lib/my
 INCLUDE	=	./include
 
 CC	:=	epiclang
-CFLAGS	:=	-Wall -Wextra -I $(INCLUDE)
+CFLAGS	:=	-Wall -Wextra -I $(INCLUDE) -g
 CSFMLFLAGS	:=	-lcsfml-graphics -lcsfml-window -lcsfml-system
-LIBS_TO_LINK	:=	$(CSFMLFLAGS) -lm -L. -lmy -g
+LIBS_TO_LINK	:=	$(CSFMLFLAGS) -lm -L. -lmy
 
 LIB_NAME = libmy.a
 EXEC_NAME	=	wolf3d

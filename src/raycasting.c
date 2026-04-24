@@ -5,58 +5,10 @@
 ** raycasting
 */
 
+#include "engine.h"
 #include "wolf3d.h"
 #include "map.h"
 #include <math.h>
-
-int map[MAP_HEIGHT][MAP_WIDTH] =
-{{4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 7, 7, 7, 7, 7, 7, 7, 7},
-    {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0,
-        7},
-    {4, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        7},
-    {4, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        7},
-    {4, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0,
-        7},
-    {4, 0, 4, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 0, 7, 7, 7, 7,
-        7},
-    {4, 0, 5, 0, 0, 0, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 7, 0, 0, 0, 7, 7, 7,
-        1},
-    {4, 0, 6, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 5, 7, 0, 0, 0, 0, 0, 0,
-        8},
-    {4, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7,
-        1},
-    {4, 0, 8, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 5, 7, 0, 0, 0, 0, 0, 0,
-        8},
-    {4, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 5, 7, 0, 0, 0, 7, 7, 7,
-        1},
-    {4, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 0, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7,
-        1},
-    {6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-        6},
-    {8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        4},
-    {6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-        6},
-    {4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 6, 0, 6, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3,
-        3},
-    {4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 6, 0, 6, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0,
-        2},
-    {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 2, 0, 0, 5, 0, 0, 2, 0, 0, 0,
-        2},
-    {4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 6, 0, 6, 2, 0, 0, 0, 0, 0, 2, 2, 0, 2,
-        2},
-    {4, 0, 6, 0, 6, 0, 0, 0, 0, 4, 6, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0,
-        2},
-    {4, 0, 0, 5, 0, 0, 0, 0, 0, 4, 6, 0, 6, 2, 0, 0, 0, 0, 0, 2, 2, 0, 2,
-        2},
-    {4, 0, 6, 0, 6, 0, 0, 0, 0, 4, 6, 0, 6, 2, 0, 0, 5, 0, 0, 2, 0, 0, 0,
-        2},
-    {4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 6, 0, 6, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0,
-        2},
-    {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3,
-        3}};
 
 static void step_ray(ray_t *ray, int *map_x, int *map_y, float *distance)
 {
@@ -83,7 +35,7 @@ static void finalize_distance(ray_t *ray, player_t *player, float distance)
     ray->wall_x -= floorf(ray->wall_x);
 }
 
-void get_ray_distance(ray_t *ray, player_t *player)
+void get_ray_distance(ray_t *ray, player_t *player, game_t *game)
 {
     int map_x = (int)player->pos.x;
     int map_y = (int)player->pos.y;
@@ -91,19 +43,20 @@ void get_ray_distance(ray_t *ray, player_t *player)
 
     ray->hit_tile = 0;
     while (map_x >= 0 && map_y >= 0
-        && map_x < MAP_WIDTH && map_y < MAP_HEIGHT) {
-        if (map[map_y][map_x] > 0) {
-            ray->hit_tile = map[map_y][map_x];
+        && map_x < game->map_size.x && map_y < game->map_size.y) {
+        if (game->map[map_y][map_x] > '0') {
+            ray->hit_tile = (int) game->map[map_y][map_x] - 48;
             break;
         }
         step_ray(ray, &map_x, &map_y, &distance);
     }
-    if (map_x < 0 || map_y < 0 || map_x >= MAP_WIDTH || map_y >= MAP_HEIGHT)
+    if (map_x < 0 || map_y < 0 || map_x >= game->map_size.x
+        || map_y >= game->map_size.y)
         ray->hit_tile = 0;
     finalize_distance(ray, player, distance);
 }
 
-static void fill_ray_struct(player_t *player, ray_t *ray)
+static void fill_ray_struct(player_t *player, ray_t *ray, game_t *game)
 {
     int x = player->pos.x;
     int y = player->pos.y;
@@ -122,7 +75,7 @@ static void fill_ray_struct(player_t *player, ray_t *ray)
         ray->step.y = 1;
         ray->side_dist.y = (y + 1.0 - player->pos.y) * ray->delta_dist.y;
     }
-    get_ray_distance(ray, player);
+    get_ray_distance(ray, player, game);
 }
 
 static void set_ray_color(game_t *game, ray_t *ray, sfColor *color,
@@ -190,20 +143,21 @@ static void cast_rays(game_t *game, ray_t *ray, sfVertexArray **vertexarr)
             ? 1e30 : fabs(1 / ray->ray_direction.x);
         ray->delta_dist.y = (ray->ray_direction.y == 0)
             ? 1e30 : fabs(1 / ray->ray_direction.y);
-        fill_ray_struct(game->player, ray);
+        fill_ray_struct(game->player, ray, game);
         if (ray->hit_tile != 0)
             draw_ray(game, ray, vertexarr, i);
     }
 }
 
-int is_wall(float x, float y)
+int is_wall(float x, float y, game_t *game)
 {
     int map_x = (int) x;
     int map_y = (int) y;
 
-    if (map_x < 0 || map_y < 0 || map_x >= MAP_WIDTH || map_y >= MAP_HEIGHT)
+    if (map_x < 0 || map_y < 0 || map_x >= game->map_size.x ||
+        map_y >= game->map_size.y)
         return 1;
-    return map[map_y][map_x] > 0;
+    return game->map[map_y][map_x] > '0';
 }
 
 void render_raycast(game_t *game, ray_t *ray, sfVertexArray **vertexarr)

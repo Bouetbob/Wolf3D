@@ -47,9 +47,10 @@ static void init_player(player_t *player)
     if (!player->stats)
         exit_with_message("can't malloc stats\n", 2, 84);
     player->stats->flashlight = false;
-    player->pos.x = 2;
+    player->pos.x = 1;
     player->pos.y = 1;
     player->angle = 0;
+    player->stats->move_speed = MOVESPEED;
     player->FOV = FORMER_FOV;
     rad_giver(player);
     dir_giver(player);
@@ -83,6 +84,8 @@ int init_all(game_t *game)
     game->is_menu_open = true;
     game->key_clock = sfClock_create();
     game->window = create_window(SCREEN_W, SCREEN_H, "wolf3d");
+    if (!game->window)
+        return (84);
     init_buttons(game);
     return (0);
 }
