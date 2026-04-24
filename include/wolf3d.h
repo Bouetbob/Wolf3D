@@ -45,8 +45,7 @@ void check_exit_conditions(game_t *game, ray_t *ray, char **env);
 //main
 
 sfRenderWindow *create_window(int width, int heigth, char *name);
-void main_game_loop(game_t *game, ray_t *ray,
-    sfVertexArray *vertexarr[NUM_TEXTURES]);
+void main_game_loop(game_t *game, ray_t *ray);
 
 //movement
 

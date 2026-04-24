@@ -57,12 +57,13 @@ void rendering_function(game_t *game, ray_t *ray,
     sfRenderWindow_display(game->window);
 }
 
-void main_game_loop(game_t *game, ray_t *ray,
-    sfVertexArray *vertexarr[NUM_TEXTURES])
+void main_game_loop(game_t *game, ray_t *ray)
 {
-    for (int t = 0; t < NUM_TEXTURES; t++) {
-        vertexarr[t] = sfVertexArray_create();
-        sfVertexArray_setPrimitiveType(vertexarr[t], sfTriangles);
+    sfVertexArray *vertexarr[NUM_TEXTURES];
+
+    for (int i = 0; i < NUM_TEXTURES; i++) {
+        vertexarr[i] = sfVertexArray_create();
+        sfVertexArray_setPrimitiveType(vertexarr[i], sfTriangles);
     }
     while (sfRenderWindow_isOpen(game->window)) {
         setup_time(game);
@@ -78,7 +79,6 @@ int main(UNUSED int ac, UNUSED char **av, UNUSED char **env)
 {
     game_t *game = malloc(sizeof(game_t));
     ray_t *ray = malloc(sizeof(ray_t));
-    sfVertexArray *vertexarr[NUM_TEXTURES];
 
     if (ac != 2)
         return (84);
@@ -86,12 +86,8 @@ int main(UNUSED int ac, UNUSED char **av, UNUSED char **env)
     game->player = malloc(sizeof(player_t));
     if (!game->player)
         exit_with_message("can't malloc game->player struct\n", 2, 84);
-    for (int i = 0; i < NUM_TEXTURES; i++) {
-        vertexarr[i] = sfVertexArray_create();
-        sfVertexArray_setPrimitiveType(vertexarr[i], sfTriangles);
-    }
     if (load_map_from_file(game, av[1]) == 84 || init_all(game) == 84)
         return (84);
-    main_game_loop(game, ray, vertexarr);
+    main_game_loop(game, ray);
     return 0;
 }
