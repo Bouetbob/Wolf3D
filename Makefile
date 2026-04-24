@@ -17,7 +17,8 @@ SRC :=	src/main.c \
 		src/buttons/event_buttons.c \
 		src/ui/change_menu_state.c \
 		src/map_loading.c \
-		
+		src/enemies/ai.c \
+		src/map_loading_utils.c \
 	
 
 

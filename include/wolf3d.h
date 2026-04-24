@@ -67,4 +67,11 @@ void dir_giver(player_t *player);
 void rad_giver(player_t *player);
 void update_player(player_t *player);
 
+//map
+
+int get_number_value(char *string);
+int check_size_validity(char *content, game_t *game);
+int check_map_validity(char *cont, game_t *game);
+bool check_input_validity(char *string, game_t *game);
+
 #endif /* !WOLF3D_H_ */
