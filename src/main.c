@@ -90,7 +90,7 @@ int main(UNUSED int ac, UNUSED char **av, UNUSED char **env)
         vertexarr[i] = sfVertexArray_create();
         sfVertexArray_setPrimitiveType(vertexarr[i], sfTriangles);
     }
-    if (init_all(game) == 84 || map_filler(game, av[1]) == 84)
+    if (load_map_from_file(game, av[1]) == 84 || init_all(game) == 84)
         return (84);
     main_game_loop(game, ray, vertexarr);
     return 0;

@@ -47,8 +47,6 @@ static void init_player(player_t *player)
     if (!player->stats)
         exit_with_message("can't malloc stats\n", 2, 84);
     player->stats->flashlight = false;
-    player->pos.x = 1;
-    player->pos.y = 1;
     player->angle = 0;
     player->stats->move_speed = MOVESPEED;
     player->FOV = FORMER_FOV;

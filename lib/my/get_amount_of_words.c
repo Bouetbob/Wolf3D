@@ -11,6 +11,8 @@ int is_char_in_string(char c, char *string)
 {
     int pos = 0;
 
+    if (string[pos] == '\0')
+        return false;
     while (string[pos] != '\0') {
         if (string[pos] == c)
             return (1);

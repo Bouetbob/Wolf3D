@@ -35,7 +35,7 @@
     #define UNUSED [[maybe_unused]]
     #define MOVESPEED 2
     #define ROTATESPEED 90
-    #define AUTHORIZED_CHARS "0123456789"
+    #define AUTHORIZED_CHARS "0123456789P"
 
 
 
@@ -115,7 +115,7 @@ typedef struct game_s {
     bool is_menu_open;
 } game_t;
 
-int map_filler(game_t *game, char *filename);
+int load_map_from_file(game_t *game, char *file);
 
 
 #endif /* !ENGINE_H_ */

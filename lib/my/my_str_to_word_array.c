@@ -41,7 +41,7 @@ int place_words_into_array(char **arr, char *string, char *seps)
         while (
             is_char_in_string(string[pos], seps) == 1 && string[pos] != '\0')
             pos++;
-        if (is_char_in_string(string[pos], seps) == 0) {
+        if (string[pos] != '\0' && is_char_in_string(string[pos], seps) == 0) {
             get_word(arr, string, pos, seps);
             pos = go_until_end(string, seps, pos);
         }
