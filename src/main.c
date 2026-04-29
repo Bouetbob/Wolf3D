@@ -43,12 +43,31 @@ sfRenderWindow *create_window(int width, int heigth, char *name)
     return (window);
 }
 
+void init_floor_ceiling(game_t *game)
+{
+    game->floor = sfRectangleShape_create();
+    sfRectangleShape_setSize(game->floor, (sfVector2f)
+        {sfRenderWindow_getSize(game->window).x,
+            sfRenderWindow_getSize(game->window).y / 2});
+    sfRectangleShape_setFillColor(game->floor, sfColor_fromRGB(169, 169, 169));
+    sfRectangleShape_setPosition(game->floor, (sfVector2f){0,
+            sfRenderWindow_getSize(game->window).y / 2});
+    game->ceiling = sfRectangleShape_create();
+    sfRectangleShape_setSize(game->ceiling, (sfVector2f){
+            sfRenderWindow_getSize(game->window).x,
+            sfRenderWindow_getSize(game->window).y / 2});
+    sfRectangleShape_setFillColor(game->ceiling, sfColor_fromRGB(90, 90, 90));
+    sfRectangleShape_setPosition(game->ceiling, (sfVector2f){0, 0});
+}
+
 void rendering_function(game_t *game, ray_t *ray,
     sfVertexArray *vertexarr[NUM_TEXTURES])
 {
     sfRenderWindow_clear(game->window, sfBlack);
     if (!game->is_menu_open) {
         handle_movement(game->player, game);
+        sfRenderWindow_drawRectangleShape(game->window, game->floor, NULL);
+        sfRenderWindow_drawRectangleShape(game->window, game->ceiling, NULL);
         render_raycast(game, ray, vertexarr);
     }
     for (int i = 0; i < NUM_BUTTONS; i++) {
@@ -65,6 +84,7 @@ void main_game_loop(game_t *game, ray_t *ray)
         vertexarr[i] = sfVertexArray_create();
         sfVertexArray_setPrimitiveType(vertexarr[i], sfTriangles);
     }
+    init_floor_ceiling(game);
     while (sfRenderWindow_isOpen(game->window)) {
         setup_time(game);
         while (sfRenderWindow_pollEvent(game->window, &game->event))

@@ -39,6 +39,8 @@ static void load_textures(sfTexture *textures[NUM_TEXTURES])
         "assets/World_Textures/purplestone.png", NULL);
     textures[8] =
         sfTexture_createFromFile("assets/World_Textures/mossy.png", NULL);
+    textures[9] =
+        sfTexture_createFromFile("assets/World_Textures/floor.png", NULL);
 }
 
 static void init_player(player_t *player)

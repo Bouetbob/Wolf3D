@@ -26,7 +26,7 @@
 
     #define FORMER_FOV (M_PI / 3)
     #define NUM_RAYS 800
-    #define SHADOW_EFFECT_DIST 8
+    #define SHADOW_EFFECT_DIST 20
     #define NUM_TEXTURES 10
     #define M_PI 3.14159265358979323846
     #define FLASHLIGHT_RADIUS (M_PI / 1)
@@ -102,6 +102,8 @@ typedef struct timers_s {
 } timers_t;
 
 typedef struct game_s {
+    sfRectangleShape *floor;
+    sfRectangleShape *ceiling;
     player_t *player;
     sfTexture *textures[NUM_TEXTURES];
     sfRenderWindow *window;
