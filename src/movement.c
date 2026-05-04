@@ -8,12 +8,25 @@
 #include "engine.h"
 #include "wolf3d.h"
 #include <SFML/System/Vector2.h>
+#include <SFML/Window/Keyboard.h>
+
+static void update_movespeed(player_t *player)
+{
+    if (sfKeyboard_isKeyPressed(sfKeyLShift))
+        player->stats->move_speed = MOVESPEED * 2;
+    if (sfKeyboard_isKeyPressed(sfKeyLControl))
+        player->stats->move_speed = MOVESPEED / 2;
+    if (!sfKeyboard_isKeyPressed(sfKeyLControl)
+        && !sfKeyboard_isKeyPressed(sfKeyLShift))
+        player->stats->move_speed = MOVESPEED;
+}
 
 static sfVector2f mouvement_up_down(sfVector2f *next, player_t *player,
     game_t *game)
 {
     sfVector2f vec = player->direction_vec;
 
+    update_movespeed(player);
     if (sfKeyboard_isKeyPressed(sfKeyUp) || sfKeyboard_isKeyPressed(sfKeyZ)) {
         next->x += vec.x * game->timer->timeframe * player->stats->move_speed;
         next->y += vec.y * game->timer->timeframe * player->stats->move_speed;

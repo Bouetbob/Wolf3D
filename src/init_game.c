@@ -6,12 +6,48 @@
 */
 
 #include "engine.h"
+#include "map.h"
 #include "wolf3d.h"
+#include <SFML/Config.h>
+#include <SFML/Graphics/Sprite.h>
+#include <SFML/Graphics/Texture.h>
+#include <SFML/Graphics/Types.h>
 #include <SFML/System/Vector2.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include "map.h"
+#include <sys/stat.h>
+#include <time.h>
+
+static void init_item(item_t *item_spot, char *file, sfVector2f *sprite_pos,
+    char *name)
+{
+    sfTexture *texture = sfTexture_createFromFile(file, NULL);
+
+    item_spot->name = strdup(name);
+    item_spot->position = *sprite_pos;
+    item_spot->sprite = sfSprite_create();
+    sfSprite_setPosition(item_spot->sprite, item_spot->position);
+    sfSprite_setTexture(item_spot->sprite, texture, sfFalse);
+}
+
+static void init_test_inventory(player_t *player)
+{
+    player->inventory = malloc(sizeof(item_t *) * 5);
+    player->inventory[4] = NULL;
+    player->inventory[0] = malloc(sizeof(item_t));
+    player->inventory[1] = malloc(sizeof(item_t));
+    player->inventory[2] = malloc(sizeof(item_t));
+    player->inventory[3] = malloc(sizeof(item_t));
+    init_item(player->inventory[0], "assets/Items/gum.jpeg",
+        &(sfVector2f) {300, 300}, "gum");
+    init_item(player->inventory[1], "assets/Items/gum.jpeg",
+        &(sfVector2f) {100, 300}, "gum");
+    init_item(player->inventory[2], "assets/Items/gum.jpeg",
+        &(sfVector2f) {300, 100}, "gum");
+    init_item(player->inventory[3], "assets/Items/gum.jpeg",
+        &(sfVector2f) {100, 100}, "gum");
+}
 
 void setup_time(game_t *game)
 {
@@ -52,22 +88,24 @@ static void init_player(player_t *player)
     player->angle = 0;
     player->stats->move_speed = MOVESPEED;
     player->FOV = FORMER_FOV;
+    init_test_inventory(player);
     rad_giver(player);
     dir_giver(player);
 }
 
 static void init_buttons(game_t *game)
 {
-    game->buttons[0] = init_button("enter menu", &(sfVector2f) {700, 100},
-        &(sfVector2f) {110, 20}, false);
+    game->buttons[0] = init_button("enter menu",
+        &(sfVector2f) {SCREEN_W - 100, 100}, &(sfVector2f) {110, 20}, false);
     game->buttons[0]->on_click = (void *) change_menu_state;
     game->buttons[1] = init_button("leave menu", &(sfVector2f) {100, 100},
         &(sfVector2f) {110, 20}, true);
     game->buttons[1]->on_click = (void *) change_menu_state;
-    game->buttons[2] = init_button("print info", &(sfVector2f) {100, 500},
-        &(sfVector2f) {110, 20}, false);
+    game->buttons[2] = init_button("print info",
+        &(sfVector2f) {100, SCREEN_H - 100}, &(sfVector2f) {110, 20}, false);
     game->buttons[2]->on_click = (void *) print_game_info;
-    game->buttons[3] = init_button("print info", &(sfVector2f) {700, 500},
+    game->buttons[3] = init_button("print info",
+        &(sfVector2f) {SCREEN_W - 100, SCREEN_H - 100},
         &(sfVector2f) {110, 20}, true);
     game->buttons[3]->on_click = (void *) print_game_info;
 }

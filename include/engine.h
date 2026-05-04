@@ -25,13 +25,13 @@
 
 
     #define FORMER_FOV (M_PI / 3)
-    #define NUM_RAYS 800
+    #define NUM_RAYS 1200
     #define SHADOW_EFFECT_DIST 20
     #define NUM_TEXTURES 10
     #define M_PI 3.14159265358979323846
     #define FLASHLIGHT_RADIUS (M_PI / 1)
-    #define SCREEN_W 800
-    #define SCREEN_H 600
+    #define SCREEN_W 1200
+    #define SCREEN_H 800
     #define UNUSED [[maybe_unused]]
     #define MOVESPEED 2
     #define ROTATESPEED 90
@@ -54,7 +54,7 @@ typedef struct buttons_s {
 typedef struct item_s {
     char *name;
     sfSprite *sprite;
-    sfVector2f *position;
+    sfVector2f position;
 } item_t;
 
 typedef struct stats_s {
@@ -90,6 +90,7 @@ typedef struct player_s {
     float angle;
     float rads;
     sfVector2f direction_vec;
+    item_t **inventory;
     stats_t *stats;
     float FOV;
 } player_t;
@@ -115,6 +116,7 @@ typedef struct game_s {
     button_t **buttons;
     char **map;
     bool is_menu_open;
+    bool is_inv_open;
 } game_t;
 
 int load_map_from_file(game_t *game, char *file);

@@ -6,12 +6,17 @@
 */
 
 #include "engine.h"
+#include "map.h"
 #include "my.h"
-#include "wolf3d.h"
 #include "ui.h"
+#include "wolf3d.h"
 #include <SFML/Window/Event.h>
 #include <SFML/Window/Keyboard.h>
-#include "map.h"
+
+static void change_inv_state(game_t *game)
+{
+    game->is_inv_open = !game->is_inv_open;
+}
 
 void analyse_events(sfRenderWindow *window, sfEvent event, UNUSED game_t *game)
 {
@@ -25,6 +30,8 @@ void analyse_events(sfRenderWindow *window, sfEvent event, UNUSED game_t *game)
         game->map[2][2] = '0';
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyG)
         change_menu_state(game);
+    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyI)
+        change_inv_state(game);
     for (int i = 0; i < NUM_BUTTONS; i++) {
         button_event(game, game->buttons[i], &event);
     }

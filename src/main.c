@@ -43,6 +43,16 @@ sfRenderWindow *create_window(int width, int heigth, char *name)
     return (window);
 }
 
+static void render_inventory(game_t *game)
+{
+    item_t **items = game->player->inventory;
+
+    sfRenderWindow_drawSprite(game->window, items[0]->sprite, NULL);
+    sfRenderWindow_drawSprite(game->window, items[1]->sprite, NULL);
+    sfRenderWindow_drawSprite(game->window, items[2]->sprite, NULL);
+    sfRenderWindow_drawSprite(game->window, items[3]->sprite, NULL);
+}
+
 void init_floor_ceiling(game_t *game)
 {
     game->floor = sfRectangleShape_create();
@@ -69,6 +79,9 @@ void rendering_function(game_t *game, ray_t *ray,
         sfRenderWindow_drawRectangleShape(game->window, game->floor, NULL);
         sfRenderWindow_drawRectangleShape(game->window, game->ceiling, NULL);
         render_raycast(game, ray, vertexarr);
+    }
+    if (game->is_inv_open) {
+        render_inventory(game);
     }
     for (int i = 0; i < NUM_BUTTONS; i++) {
         draw_button(game, game->buttons[i]);
@@ -103,6 +116,7 @@ int main(UNUSED int ac, UNUSED char **av, UNUSED char **env)
     if (ac != 2)
         return (84);
     check_exit_conditions(game, ray, env);
+    game->is_inv_open = false;
     game->player = malloc(sizeof(player_t));
     if (!game->player)
         exit_with_message("can't malloc game->player struct\n", 2, 84);
