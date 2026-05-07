@@ -21,5 +21,9 @@ int get_amount_of_words(char *string, char *seps);
 int go_until_end(char *string, char *seps, int pos);
 int check_word_in_list(char **to_check, char *word);
 int check_elm_in_tokened_list(char **to_check, char *word, char *sep);
+int my_show_word_array(char *const *tab);
+int find_char(char c, char *string);
+char *get_file_cont(char *file);
+
 
 #endif /* MY_H_ */

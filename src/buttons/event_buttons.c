@@ -11,6 +11,7 @@
 #include <SFML/System/Vector2.h>
 #include <SFML/Window/Event.h>
 #include <SFML/Window/Mouse.h>
+#include <stdio.h>
 
 void print_game_info(game_t *game)
 {
@@ -19,7 +20,6 @@ void print_game_info(game_t *game)
     printf("%f %f\n", game->player->pos.x, game->player->pos.y);
 }
 
-//executed twice for the first button somehow
 void button_event(game_t *game, button_t *button, sfEvent *event)
 {
     if (!game || !button || !event)

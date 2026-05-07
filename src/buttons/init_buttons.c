@@ -63,9 +63,7 @@ button_t *init_button(char *string, sfVector2f *position,
     if (!button->background)
         return (NULL);
     button->char_size = 10;
-    button->original_scale = (sfVector2f) {1, 1};
     button->hovered = false;
-    button->scale = (sfVector2f) {1, 1};
     button->text = init_button_text(string, button->char_size, position, size);
     if (!button->text)
         return (NULL);

@@ -7,7 +7,9 @@
 
 #include "my.h"
 #include <SFML/System/Vector2.h>
+#include <stdio.h>
 #include "wolf3d.h"
+#include <string.h>
 
 int check_size_validity(char *content, game_t *game)
 {
@@ -60,7 +62,7 @@ int check_map_validity(char *cont, game_t *game)
     char **temp = my_str_to_word_array(cont, "\n");
 
     game->map = NULL;
-    if (my_double_array_length(temp) != 2 + game->map_size.y) {
+    if (my_double_array_length(temp) != 3 + game->map_size.y) {
         printf("Invalid amount of lines.\n");
         return (84);
     }
@@ -97,6 +99,5 @@ bool check_input_validity(char *string, game_t *game)
     }
     game->player->pos.x = num1;
     game->player->pos.y = num2;
-    printf("%i %i\n", num1, num2);
     return (true);
 }

@@ -25,5 +25,8 @@
     #define MAP_H_
 
 int load_map_from_file(game_t *game, char *file);
+int save_map(game_t *game);
+
+
 
 #endif /* !map_h_ */

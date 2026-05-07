@@ -38,8 +38,9 @@ sfColor apply_flashlight(sfColor *color, float ray_angle, float player_rads,
 
 void setup_time(game_t *game);
 int init_all(game_t *game);
+int load_window(game_t *game);
 void free_ressource(game_t *game, ray_t *ray,
-    sfVertexArray *vertexarr[NUM_TEXTURES]);
+    sfVertexArray *vertexarr[NUM_TEXTURES_RAY]);
 void check_exit_conditions(game_t *game, ray_t *ray, char **env);
 
 //main

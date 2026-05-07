@@ -17,6 +17,10 @@ SRC	=	my_show_word_array.c \
 		check_word_in_list.c \
 		check_elm_in_tokened_list.c \
 		my_str_to_word_array.c \
+		find_char.c \
+		get_file_cont.c \
+		
+
 
 
 OBJS 	= 	$(SRC:%.c=%.o)

@@ -24,7 +24,7 @@ static void update_movespeed(player_t *player)
 static sfVector2f mouvement_up_down(sfVector2f *next, player_t *player,
     game_t *game)
 {
-    sfVector2f vec = player->direction_vec;
+    sfVector2f vec = player->dir_v;
 
     update_movespeed(player);
     if (sfKeyboard_isKeyPressed(sfKeyUp) || sfKeyboard_isKeyPressed(sfKeyZ)) {
@@ -42,7 +42,7 @@ static sfVector2f mouvement_up_down(sfVector2f *next, player_t *player,
 static sfVector2f mouvement_right_left(sfVector2f *next, player_t *player,
     game_t *game)
 {
-    sfVector2f vec = player->direction_vec;
+    sfVector2f vec = player->dir_v;
 
     if (sfKeyboard_isKeyPressed(sfKeyQ)) {
         next->x += vec.y * game->timer->timeframe * player->stats->move_speed;

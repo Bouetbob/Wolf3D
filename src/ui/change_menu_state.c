@@ -8,6 +8,12 @@
 #include "engine.h"
 #include "event.h"
 #include "ui.h"
+#include <SFML/Graphics/RenderWindow.h>
+
+void leave_game(game_t *game)
+{
+    sfRenderWindow_close(game->window);
+}
 
 void change_menu_state(game_t *game)
 {

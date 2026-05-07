@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include "map.h"
 
 sfRenderWindow *create_window(int width, int heigth, char *name)
 {
@@ -43,14 +44,28 @@ sfRenderWindow *create_window(int width, int heigth, char *name)
     return (window);
 }
 
+static void render_item(game_t *game, item_t **items,
+    sfVector2f *item_pos, int i)
+{
+    if (items[i]) {
+        item_pos->x += 100;
+        if (item_pos->x > (float) game->win_s.x / 2) {
+            item_pos->x = 100;
+            item_pos->y += 100;
+        }
+        sfRectangleShape_setPosition(items[i]->background, *item_pos);
+        draw_item(game, items[i]);
+    }
+}
+
 static void render_inventory(game_t *game)
 {
     item_t **items = game->player->inventory;
+    sfVector2f item_pos = {0, 100};
 
-    sfRenderWindow_drawSprite(game->window, items[0]->sprite, NULL);
-    sfRenderWindow_drawSprite(game->window, items[1]->sprite, NULL);
-    sfRenderWindow_drawSprite(game->window, items[2]->sprite, NULL);
-    sfRenderWindow_drawSprite(game->window, items[3]->sprite, NULL);
+    for (int i = 0; i < INVENTORY_SIZE; i++) {
+        render_item(game, items, &item_pos, i);
+    }
 }
 
 void init_floor_ceiling(game_t *game)
@@ -58,20 +73,20 @@ void init_floor_ceiling(game_t *game)
     game->floor = sfRectangleShape_create();
     sfRectangleShape_setSize(game->floor, (sfVector2f)
         {sfRenderWindow_getSize(game->window).x,
-            sfRenderWindow_getSize(game->window).y / 2});
+            (float) sfRenderWindow_getSize(game->window).y / 2});
     sfRectangleShape_setFillColor(game->floor, sfColor_fromRGB(169, 169, 169));
     sfRectangleShape_setPosition(game->floor, (sfVector2f){0,
-            sfRenderWindow_getSize(game->window).y / 2});
+            (float) sfRenderWindow_getSize(game->window).y / 2});
     game->ceiling = sfRectangleShape_create();
     sfRectangleShape_setSize(game->ceiling, (sfVector2f){
             sfRenderWindow_getSize(game->window).x,
-            sfRenderWindow_getSize(game->window).y / 2});
+            (float) sfRenderWindow_getSize(game->window).y / 2});
     sfRectangleShape_setFillColor(game->ceiling, sfColor_fromRGB(90, 90, 90));
     sfRectangleShape_setPosition(game->ceiling, (sfVector2f){0, 0});
 }
 
 void rendering_function(game_t *game, ray_t *ray,
-    sfVertexArray *vertexarr[NUM_TEXTURES])
+    sfVertexArray *vertexarr[NUM_TEXTURES_RAY])
 {
     sfRenderWindow_clear(game->window, sfBlack);
     if (!game->is_menu_open) {
@@ -91,9 +106,9 @@ void rendering_function(game_t *game, ray_t *ray,
 
 void main_game_loop(game_t *game, ray_t *ray)
 {
-    sfVertexArray *vertexarr[NUM_TEXTURES];
+    sfVertexArray *vertexarr[NUM_TEXTURES_RAY];
 
-    for (int i = 0; i < NUM_TEXTURES; i++) {
+    for (int i = 0; i < NUM_TEXTURES_RAY; i++) {
         vertexarr[i] = sfVertexArray_create();
         sfVertexArray_setPrimitiveType(vertexarr[i], sfTriangles);
     }
@@ -105,6 +120,7 @@ void main_game_loop(game_t *game, ray_t *ray)
         game->mouse_pos = sfMouse_getPositionRenderWindow(game->window);
         rendering_function(game, ray, vertexarr);
     }
+    save_map(game);
     free_ressource(game, ray, vertexarr);
 }
 
@@ -120,7 +136,9 @@ int main(UNUSED int ac, UNUSED char **av, UNUSED char **env)
     game->player = malloc(sizeof(player_t));
     if (!game->player)
         exit_with_message("can't malloc game->player struct\n", 2, 84);
-    if (load_map_from_file(game, av[1]) == 84 || init_all(game) == 84)
+    if (init_all(game) == 84 || load_map_from_file(game, av[1]) == 84)
+        return (84);
+    if (load_window(game) == 84)
         return (84);
     main_game_loop(game, ray);
     return 0;

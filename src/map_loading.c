@@ -14,6 +14,45 @@
 #include <time.h>
 #include "wolf3d.h"
 
+void load_items_into_inv(game_t *game, char **item_list)
+{
+    player_t *player = game->player;
+
+    for (int pos = 0; pos < my_double_array_length(item_list); pos++) {
+        if (!strcmp(item_list[pos], "BOMB"))
+            player->inventory[pos] = BOMB;
+        if (!strcmp(item_list[pos], "PIE"))
+            player->inventory[pos] = PIE;
+        if (!strcmp(item_list[pos], "GUM"))
+            player->inventory[pos] = GUM;
+        if (!strcmp(item_list[pos], "FLASH"))
+            player->inventory[pos] = FLASH;
+    }
+    free_array(item_list);
+}
+
+int load_items(game_t *game, char *file)
+{
+    char *content = get_file_cont(file);
+    char **file_content;
+    int item_pos;
+    char **items;
+
+    if (!content)
+        return (84);
+    file_content = my_str_to_word_array(content, "\n");
+    if (!file_content)
+        return (84);
+    item_pos = check_elm_in_tokened_list(file_content, "ITEMS", "=");
+    if (item_pos == -1)
+        return (84);
+    items = my_str_to_word_array(file_content[item_pos], "=,");
+    load_items_into_inv(game, items);
+    free_array(file_content);
+    free(content);
+    return (0);
+}
+
 int get_number_value(char *string)
 {
     int res = 0;
@@ -112,5 +151,9 @@ int load_map_from_file(game_t *game, char *file)
     if (check_player_in_map(game->map, game) == 84)
         return (84);
     game->map[(int)game->player->pos.y][(int)game->player->pos.x] = '0';
+    if (load_items(game, file) == 84) {
+        return (84);
+    }
+    game->file_name = strdup(file);
     return (0);
 }

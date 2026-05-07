@@ -19,6 +19,12 @@ SRC :=	src/main.c \
 		src/map_loading.c \
 		src/enemies/ai.c \
 		src/map_loading_utils.c \
+		src/items/draw_items.c \
+		src/items/init_items.c \
+		src/items/item_utils.c \
+		src/map_saving.c \
+
+
 	
 
 

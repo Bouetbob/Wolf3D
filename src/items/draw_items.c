@@ -16,29 +16,25 @@
 #include <time.h>
 #include "ui.h"
 
-static void update_button_scale(button_t *button)
+static void update_item_scale(item_t *item)
 {
     sfVector2f original_scale = {1, 1};
 
-    if (button->hovered) {
+    if (item->hovered) {
         original_scale.x *= 1.1;
         original_scale.y *= 1.1;
     }
-    sfRectangleShape_setScale(button->background, original_scale);
-    sfText_setScale(button->text, original_scale);
+    sfRectangleShape_setScale(item->background, original_scale);
 }
 
-void draw_button(game_t *game, button_t *button)
+void draw_item(game_t *game, item_t *item)
 {
     sfFloatRect rect;
 
-    rect = sfRectangleShape_getGlobalBounds(button->background);
-    button->hovered =
+    rect = sfRectangleShape_getGlobalBounds(item->background);
+    item->hovered =
         sfFloatRect_contains(&rect, game->mouse_pos.x, game->mouse_pos.y);
-    if (button->is_menu_button != game->is_menu_open)
-        return;
-    update_button_scale(button);
-    sfRenderWindow_drawRectangleShape(game->window, button->background,
+    update_item_scale(item);
+    sfRenderWindow_drawRectangleShape(game->window, item->background,
         NULL);
-    sfRenderWindow_drawText(game->window, button->text, NULL);
 }

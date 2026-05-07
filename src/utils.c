@@ -35,7 +35,7 @@ void exit_with_message(char *exit_message, int message_channel, int exit_value)
 
 void dir_giver(player_t *player)
 {
-    player->direction_vec =
+    player->dir_v =
         (sfVector2f) {cos(player->rads), sin(player->rads)};
 }
 
