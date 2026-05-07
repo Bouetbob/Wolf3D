@@ -95,23 +95,17 @@ static void set_ray_color(game_t *game, ray_t *ray, sfColor *color,
 
 static void fill_quad(sfVertex quad[6], int i, quad_params_t *p)
 {
-    quad[0] = (sfVertex) {.position = {i, p->y_start},
-        .color = p->color,
+    quad[0] = (sfVertex) {.position = {i, p->y_start}, .color = p->color,
         .texCoords = {p->tex_x, 0}};
-    quad[1] = (sfVertex) {.position = {i + 1, p->y_start},
-        .color = p->color,
+    quad[1] = (sfVertex) {.position = {i + 1, p->y_start}, .color = p->color,
         .texCoords = {p->tex_x + 1, 0}};
-    quad[2] = (sfVertex) {.position = {i + 1, p->y_end},
-        .color = p->color,
+    quad[2] = (sfVertex) {.position = {i + 1, p->y_end}, .color = p->color,
         .texCoords = {p->tex_x + 1, p->tex_size.y}};
-    quad[3] = (sfVertex) {.position = {i, p->y_start},
-        .color = p->color,
+    quad[3] = (sfVertex) {.position = {i, p->y_start}, .color = p->color,
         .texCoords = {p->tex_x, 0}};
-    quad[4] = (sfVertex) {.position = {i + 1, p->y_end},
-        .color = p->color,
+    quad[4] = (sfVertex) {.position = {i + 1, p->y_end}, .color = p->color,
         .texCoords = {p->tex_x + 1, p->tex_size.y}};
-    quad[5] = (sfVertex) {.position = {i, p->y_end},
-        .color = p->color,
+    quad[5] = (sfVertex) {.position = {i, p->y_end}, .color = p->color,
         .texCoords = {p->tex_x, p->tex_size.y}};
 }
 
