@@ -62,7 +62,7 @@ int check_map_validity(char *cont, game_t *game)
     char **temp = my_str_to_word_array(cont, "\n");
 
     game->map = NULL;
-    if (my_double_array_length(temp) != 3 + game->map_size.y) {
+    if (my_double_array_length(temp) < 2 + game->map_size.y) {
         printf("Invalid amount of lines.\n");
         return (84);
     }

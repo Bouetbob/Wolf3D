@@ -44,10 +44,10 @@ int load_items(game_t *game, char *file)
     if (!file_content)
         return (84);
     item_pos = check_elm_in_tokened_list(file_content, "ITEMS", "=");
-    if (item_pos == -1)
-        return (84);
-    items = my_str_to_word_array(file_content[item_pos], "=,");
-    load_items_into_inv(game, items);
+    if (item_pos != -1) {
+        items = my_str_to_word_array(file_content[item_pos], "=,");
+        load_items_into_inv(game, items);
+    }
     free_array(file_content);
     free(content);
     return (0);
