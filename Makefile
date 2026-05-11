@@ -29,6 +29,12 @@ SRC :=	src/main.c \
 		src/items/draw_items.c \
 		src/items/init_items.c \
 		src/items/item_utils.c \
+		src/map_saving.c \
+		src/items/bomb.c \
+
+
+	
+
 
 OBJ = $(SRC:%.c=%.o)
 

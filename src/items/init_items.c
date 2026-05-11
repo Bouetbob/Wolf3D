@@ -36,7 +36,8 @@ static sfRectangleShape *init_item_background(sfTexture *texture)
     return rect;
 }
 
-item_t *init_item(sfTexture *texture, int uses, char *name)
+item_t *init_item(sfTexture *texture, int uses, char *name,
+    void (function) (void *))
 {
     item_t *item = malloc(sizeof(item_t));
 
@@ -47,7 +48,7 @@ item_t *init_item(sfTexture *texture, int uses, char *name)
     if (!item->background)
         return (NULL);
     item->hovered = false;
-    item->on_use = (NULL);
+    item->on_use = (void *) function;
     item->uses = uses;
     return item;
 }

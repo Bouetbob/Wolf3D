@@ -114,7 +114,7 @@ static void draw_ray(game_t *game, ray_t *ray, sfVertexArray **vertexarr, int i)
 {
     quad_params_t p;
     sfVertex quad[6];
-    sfTexture *tex = game->textures->ray_textures[ray->hit_tile];
+    sfTexture *tex = game->tex->ray_tex[ray->hit_tile];
 
     if (tex == NULL)
         return;
@@ -168,10 +168,10 @@ void render_raycast(game_t *game, ray_t *ray, sfVertexArray **vertexarr)
         sfVertexArray_resize(vertexarr[i], 0);
     cast_rays(game, ray, vertexarr);
     for (int i = 1; i < NUM_TEXTURES_RAY; i++) {
-        if (game->textures->ray_textures[i] == NULL)
+        if (game->tex->ray_tex[i] == NULL)
             continue;
         states = (sfRenderStates) {sfBlendAlpha, sfTransform_Identity,
-            game->textures->ray_textures[i], NULL};
+            game->tex->ray_tex[i], NULL};
         sfRenderWindow_drawVertexArray(game->window, vertexarr[i], &states);
     }
     render_enemies(game);

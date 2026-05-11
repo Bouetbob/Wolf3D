@@ -69,10 +69,10 @@ static int init_textures(game_t *game)
     size_t r_s = sizeof(sfTexture *) * NUM_TEXTURES_RAY;
     size_t i_s = sizeof(sfTexture *) * NUM_TEXTURES_ITEMS;
 
-    memset(game->textures->ray_textures, 0, r_s);
-    memset(game->textures->item_textures, 0, i_s);
-    load_ray_textures(game->textures->ray_textures);
-    if (load_item_textures(game->textures->item_textures) == 84)
+    memset(game->tex->ray_tex, 0, r_s);
+    memset(game->tex->item_tex, 0, i_s);
+    load_ray_textures(game->tex->ray_tex);
+    if (load_item_textures(game->tex->item_tex) == 84)
         return (84);
     game->enemy_texture = sfTexture_createFromFile(
         "assets/World_Textures/enemy_magnum.png", NULL);
@@ -122,9 +122,9 @@ static void init_buttons(game_t *game)
 static int alloc_essentials(game_t *game)
 {
     game->timer = malloc(sizeof(timers_t));
-    game->textures = malloc(sizeof(textures_t));
+    game->tex = malloc(sizeof(textures_t));
     game->buttons = malloc(sizeof(button_t *) * NUM_BUTTONS);
-    if (!game->timer || !game->buttons || !game->textures)
+    if (!game->timer || !game->buttons || !game->tex)
         return (84);
     game->timer->oldtime = 0.0f;
     game->timer->currenttime = 0.0f;
@@ -144,6 +144,13 @@ int init_all(game_t *game)
     game->win_s.y = SCREEN_H;
     if (alloc_essentials(game) == 84 || init_textures(game) == 84)
         return (84);
+    memset(game->tex->ray_tex, 0,
+        sizeof(game->tex->ray_tex));
+    memset(game->tex->item_tex, 0,
+        sizeof(game->tex->item_tex));
+    load_ray_textures(game->tex->ray_tex);
+    if (load_item_textures(game->tex->item_tex) == 84)
+        return (84);
     init_player(game);
     game->is_menu_open = true;
     game->key_clock = sfClock_create();
@@ -151,4 +158,39 @@ int init_all(game_t *game)
         game->z_buffer[i] = 1e30f;
     init_buttons(game);
     return (0);
+}
+
+void free_ressource(game_t *game, ray_t *ray,
+    sfVertexArray *vertexarr[NUM_TEXTURES_RAY])
+{
+    for (int i = 0; i < NUM_TEXTURES_RAY; i++)
+        if (vertexarr[i])
+            sfVertexArray_destroy(vertexarr[i]);
+    for (int i = 1; i < NUM_TEXTURES_RAY; i++)
+        if (game->tex->ray_tex[i])
+            sfTexture_destroy(game->tex->ray_tex[i]);
+    for (int i = 0; i < NUM_TEXTURES_ITEMS; i++)
+        sfTexture_destroy(game->tex->item_tex[i]);
+    if (game->key_clock)
+        sfClock_destroy(game->key_clock);
+    if (game->window)
+        sfRenderWindow_destroy(game->window);
+    if (game->player->stats)
+        free(game->player->stats);
+    if (game->player)
+        free(game->player);
+    if (game)
+        free(game);
+    if (ray)
+        free(ray);
+}
+
+void check_exit_conditions(game_t *game, ray_t *ray, char **env)
+{
+    if (!has_display(env))
+        exit_with_message("no display found\n", 2, 84);
+    if (!game)
+        exit_with_message("can't malloc game struct\n", 2, 84);
+    if (!ray)
+        exit_with_message("can't malloc ray struct\n", 2, 84);
 }
