@@ -26,8 +26,9 @@ static void add_new_item(game_t *game)
 
     if (pos == -1)
         return;
-    if (to_add == 0)
+    if (to_add == 0) {
         inv[pos] = BOMB;
+    }
     if (to_add == 1)
         inv[pos] = PIE;
     if (to_add == 2)
@@ -92,10 +93,6 @@ void analyse_events(sfRenderWindow *window, sfEvent event, game_t *game)
         sfRenderWindow_close(window);
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
         change_menu_state(game);
-    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyT)
-        game->map[2][2] = '1';
-    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyY)
-        game->map[2][2] = '0';
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyI)
         change_inv_state(game);
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyJ)
@@ -107,4 +104,6 @@ void analyse_events(sfRenderWindow *window, sfEvent event, game_t *game)
         change_window_size(game, game->win_s.x - 200, game->win_s.y - 100);
     if (event.type == sfEvtKeyReleased && event.key.code == sfKeyP)
         add_new_item(game);
+    if (event.type == sfEvtKeyReleased && event.key.code == sfKeyB)
+        bomb(game);
 }

@@ -7,6 +7,7 @@
 
 #include "engine.h"
 #include "my.h"
+#include "event.h"
 #include <SFML/System/Vector2.h>
 #include <stdio.h>
 #include <string.h>
@@ -19,8 +20,9 @@ void load_items_into_inv(game_t *game, char **item_list)
     player_t *player = game->player;
 
     for (int pos = 0; pos < my_double_array_length(item_list); pos++) {
-        if (!strcmp(item_list[pos], "BOMB"))
+        if (!strcmp(item_list[pos], "BOMB")) {
             player->inventory[pos] = BOMB;
+        }
         if (!strcmp(item_list[pos], "PIE"))
             player->inventory[pos] = PIE;
         if (!strcmp(item_list[pos], "GUM"))

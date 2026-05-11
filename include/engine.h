@@ -34,7 +34,7 @@
     #define UNUSED [[maybe_unused]]
     #define MOVESPEED 2
     #define ROTATESPEED 90
-    #define AUTHORIZED_CHARS "0123456789PB"
+    #define AUTHORIZED_CHARS "0123456789PBMT"
     #define INVENTORY_SIZE 25
     #define NUM_TEXTURES_ITEMS 4
 
@@ -105,8 +105,8 @@ typedef struct timers_s {
 } timers_t;
 
 typedef struct textures_s {
-    sfTexture *ray_textures[NUM_TEXTURES_RAY];
-    sfTexture *item_textures[NUM_TEXTURES_ITEMS];
+    sfTexture *ray_tex[NUM_TEXTURES_RAY];
+    sfTexture *item_tex[NUM_TEXTURES_ITEMS];
 } textures_t;
 
 typedef struct game_s {
@@ -114,7 +114,7 @@ typedef struct game_s {
     sfRectangleShape *ceiling;
     player_t *player;
     sfSprite *bomb_sprite;
-    textures_t *textures;
+    textures_t *tex;
     sfRenderWindow *window;
     sfVector2i win_s;
     sfVector2i mouse_pos;

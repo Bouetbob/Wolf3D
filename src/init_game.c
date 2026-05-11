@@ -123,16 +123,16 @@ int init_all(game_t *game)
     game->win_s.x = SCREEN_W;
     game->win_s.y = SCREEN_H;
     game->timer = malloc(sizeof(timers_t));
-    game->textures = malloc(sizeof(textures_t));
+    game->tex = malloc(sizeof(textures_t));
     game->buttons = malloc(sizeof(button_t *) * NUM_BUTTONS);
-    if (!game->timer || !game->buttons || !game->textures)
+    if (!game->timer || !game->buttons || !game->tex)
         return (84);
-    memset(game->textures->ray_textures, 0,
-        sizeof(game->textures->ray_textures));
-    memset(game->textures->item_textures, 0,
-        sizeof(game->textures->item_textures));
-    load_ray_textures(game->textures->ray_textures);
-    if (load_item_textures(game->textures->item_textures) == 84)
+    memset(game->tex->ray_tex, 0,
+        sizeof(game->tex->ray_tex));
+    memset(game->tex->item_tex, 0,
+        sizeof(game->tex->item_tex));
+    load_ray_textures(game->tex->ray_tex);
+    if (load_item_textures(game->tex->item_tex) == 84)
         return (84);
     init_player(game);
     game->is_menu_open = true;
@@ -148,10 +148,10 @@ void free_ressource(game_t *game, ray_t *ray,
         if (vertexarr[i])
             sfVertexArray_destroy(vertexarr[i]);
     for (int i = 1; i < NUM_TEXTURES_RAY; i++)
-        if (game->textures->ray_textures[i])
-            sfTexture_destroy(game->textures->ray_textures[i]);
+        if (game->tex->ray_tex[i])
+            sfTexture_destroy(game->tex->ray_tex[i]);
     for (int i = 0; i < NUM_TEXTURES_ITEMS; i++)
-        sfTexture_destroy(game->textures->item_textures[i]);
+        sfTexture_destroy(game->tex->item_tex[i]);
     if (game->key_clock)
         sfClock_destroy(game->key_clock);
     if (game->window)

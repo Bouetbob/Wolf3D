@@ -14,5 +14,7 @@
 void analyse_events(sfRenderWindow *window, sfEvent event, game_t *game);
 
 
+void bomb(game_t *game);
+
 
 #endif /* !EVENT_H_ */
