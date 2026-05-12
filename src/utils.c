@@ -5,6 +5,7 @@
 ** utils
 */
 
+#include "wolf3d.h"
 #include <SFML/Graphics/RenderWindow.h>
 #include <SFML/Graphics/Types.h>
 #include <SFML/Window/VideoMode.h>
@@ -13,7 +14,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "wolf3d.h"
 
 bool has_display(char **env)
 {
@@ -35,8 +35,7 @@ void exit_with_message(char *exit_message, int message_channel, int exit_value)
 
 void dir_giver(player_t *player)
 {
-    player->dir_v =
-        (sfVector2f) {cos(player->rads), sin(player->rads)};
+    player->dir_v = (sfVector2f) {cos(player->rads), sin(player->rads)};
 }
 
 void rad_giver(player_t *player)
