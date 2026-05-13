@@ -5,6 +5,7 @@
 ** raycasting
 */
 
+#include "enemy.h"
 #include "engine.h"
 #include "map.h"
 #include "wolf3d.h"
@@ -60,8 +61,8 @@ void get_ray_distance(ray_t *ray, player_t *player, game_t *game)
 
 static void fill_ray_struct(player_t *player, ray_t *ray, game_t *game)
 {
-    int x = player->pos.x;
-    int y = player->pos.y;
+    int x = (int)player->pos.x;
+    int y = (int)player->pos.y;
 
     if (ray->ray_direction.x < 0) {
         ray->step.x = -1;
@@ -109,8 +110,7 @@ static void fill_quad(sfVertex quad[6], int i, quad_params_t *p)
         .texCoords = {p->tex_x, p->tex_size.y}};
 }
 
-static void draw_ray(game_t *game, ray_t *ray, sfVertexArray **vertexarr,
-    int i)
+static void draw_ray(game_t *game, ray_t *ray, sfVertexArray **vertexarr, int i)
 {
     quad_params_t p;
     sfVertex quad[6];
@@ -128,39 +128,36 @@ static void draw_ray(game_t *game, ray_t *ray, sfVertexArray **vertexarr,
         sfVertexArray_append(vertexarr[ray->hit_tile], quad[j]);
 }
 
-static void cast_rays(game_t *game, ray_t *ray, sfVertexArray **vertexarr)
+static void cast_single_ray(game_t *game, ray_t *ray, sfVertexArray **va, int i)
 {
-    float fov_scale = tan(game->player->FOV / 2.0);
-    float plane_x = -game->player->dir_v.y * fov_scale;
-    float plane_y = game->player->dir_v.x * fov_scale;
-    float cam_x = 0;
+    float cam_x = 2.0 * i / (float) game->win_s.x - 1.0;
+    float fov = tan(game->player->FOV / 2.0);
+    float px = -game->player->dir_v.y * fov;
+    float py = game->player->dir_v.x * fov;
 
-    ray->proj_plane = (game->win_s.x / 2.0) / tan(game->player->FOV / 2.0);
-    for (int i = 0; i < game->win_s.x; i++) {
-        cam_x = 2.0 * i / (float) game->win_s.x - 1.0;
-        ray->current_angle = atan2(game->player->dir_v.y + plane_y * cam_x,
-            game->player->dir_v.x + plane_x * cam_x);
-        ray->ray_direction.x = game->player->dir_v.x + plane_x * cam_x;
-        ray->ray_direction.y = game->player->dir_v.y + plane_y * cam_x;
-        ray->delta_dist.x = (ray->ray_direction.x == 0)
-            ? 1e30 : fabs(1 / ray->ray_direction.x);
-        ray->delta_dist.y = (ray->ray_direction.y == 0)
-            ? 1e30 : fabs(1 / ray->ray_direction.y);
-        fill_ray_struct(game->player, ray, game);
-        if (ray->hit_tile != 0)
-            draw_ray(game, ray, vertexarr, i);
-    }
+    ray->current_angle = atan2(game->player->dir_v.y + py * cam_x,
+        game->player->dir_v.x + px * cam_x);
+    ray->ray_direction.x = game->player->dir_v.x + px * cam_x;
+    ray->ray_direction.y = game->player->dir_v.y + py * cam_x;
+    ray->delta_dist.x = (ray->ray_direction.x == 0) ? 1e30 :
+        fabs(1 / ray->ray_direction.x);
+    ray->delta_dist.y = (ray->ray_direction.y == 0) ? 1e30 :
+        fabs(1 / ray->ray_direction.y);
+    fill_ray_struct(game->player, ray, game);
+    game->z_buffer[i] = ray->distance;
+    if (ray->hit_tile != 0)
+        draw_ray(game, ray, va, i);
 }
 
-int is_wall(float x, float y, game_t *game)
+static void cast_rays(game_t *game, ray_t *ray, sfVertexArray **vertexarr)
 {
-    int map_x = (int) x;
-    int map_y = (int) y;
+    int i = 0;
 
-    if (map_x < 0 || map_y < 0 || map_x >= game->map_size.x
-        || map_y >= game->map_size.y)
-        return 1;
-    return game->map[map_y][map_x] > '0' && game->map[map_y][map_x] <= '9';
+    for (i = 0; i < game->win_s.x; i++)
+        game->z_buffer[i] = 1e30f;
+    ray->proj_plane = (game->win_s.x / 2.0) / tan(game->player->FOV / 2.0);
+    for (i = 0; i < game->win_s.x; i++)
+        cast_single_ray(game, ray, vertexarr, i);
 }
 
 void render_raycast(game_t *game, ray_t *ray, sfVertexArray **vertexarr)
@@ -177,4 +174,5 @@ void render_raycast(game_t *game, ray_t *ray, sfVertexArray **vertexarr)
             game->tex->ray_tex[i], NULL};
         sfRenderWindow_drawVertexArray(game->window, vertexarr[i], &states);
     }
+    render_enemies(game);
 }

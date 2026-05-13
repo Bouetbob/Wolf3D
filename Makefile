@@ -9,16 +9,23 @@ SRC :=	src/main.c \
 		src/color.c \
 		src/init_game.c \
 		src/movement.c \
-		src/raycasting.c \
 		src/utils.c \
+		src/events.c \
+		src/cleanup.c \
+		src/raycasting/raycasting.c \
+		src/raycasting/raycasting_helper.c \
 		src/buttons/draw_buttons.c \
 		src/buttons/init_buttons.c \
-		src/events.c \
 		src/buttons/event_buttons.c \
+		src/map/map_loading.c \
+		src/map/map_saving.c \
+		src/map/map_loading_utils.c \
 		src/ui/change_menu_state.c \
-		src/map_loading.c \
 		src/enemies/ai.c \
-		src/map_loading_utils.c \
+		src/enemies/init_enemy.c \
+		src/enemies/weapons/magnum.c \
+		src/enemies/weapons/thompson.c \
+		src/enemies/render_enemies.c \
 		src/items/draw_items.c \
 		src/items/init_items.c \
 		src/items/item_utils.c \

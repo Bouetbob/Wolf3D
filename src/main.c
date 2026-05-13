@@ -7,10 +7,12 @@
 
 //hours spent on this : around 25 (22/04 11:33)
 
+#include "enemy.h"
 #include "engine.h"
+#include "event.h"
+#include "map.h"
 #include "my.h"
 #include "wolf3d.h"
-#include "event.h"
 #include <SFML/Graphics.h>
 #include <SFML/Graphics/Color.h>
 #include <SFML/Graphics/PrimitiveType.h>
@@ -25,11 +27,9 @@
 #include <SFML/Window/Keyboard.h>
 #include <SFML/Window/WindowBase.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-#include "map.h"
 
 sfRenderWindow *create_window(int width, int heigth, char *name)
 {
@@ -44,8 +44,8 @@ sfRenderWindow *create_window(int width, int heigth, char *name)
     return (window);
 }
 
-static void render_item(game_t *game, item_t **items,
-    sfVector2f *item_pos, int i)
+static void render_item(game_t *game, item_t **items, sfVector2f *item_pos,
+    int i)
 {
     if (items[i]) {
         item_pos->x += 100;
@@ -71,18 +71,18 @@ static void render_inventory(game_t *game)
 void init_floor_ceiling(game_t *game)
 {
     game->floor = sfRectangleShape_create();
-    sfRectangleShape_setSize(game->floor, (sfVector2f)
-        {sfRenderWindow_getSize(game->window).x,
+    sfRectangleShape_setSize(game->floor,
+        (sfVector2f) {sfRenderWindow_getSize(game->window).x,
             (float) sfRenderWindow_getSize(game->window).y / 2});
     sfRectangleShape_setFillColor(game->floor, sfColor_fromRGB(169, 169, 169));
-    sfRectangleShape_setPosition(game->floor, (sfVector2f){0,
-            (float) sfRenderWindow_getSize(game->window).y / 2});
+    sfRectangleShape_setPosition(game->floor,
+        (sfVector2f) {0, (float) sfRenderWindow_getSize(game->window).y / 2});
     game->ceiling = sfRectangleShape_create();
-    sfRectangleShape_setSize(game->ceiling, (sfVector2f){
-            sfRenderWindow_getSize(game->window).x,
+    sfRectangleShape_setSize(game->ceiling,
+        (sfVector2f) {sfRenderWindow_getSize(game->window).x,
             (float) sfRenderWindow_getSize(game->window).y / 2});
     sfRectangleShape_setFillColor(game->ceiling, sfColor_fromRGB(90, 90, 90));
-    sfRectangleShape_setPosition(game->ceiling, (sfVector2f){0, 0});
+    sfRectangleShape_setPosition(game->ceiling, (sfVector2f) {0, 0});
 }
 
 void rendering_function(game_t *game, ray_t *ray,
@@ -91,6 +91,7 @@ void rendering_function(game_t *game, ray_t *ray,
     sfRenderWindow_clear(game->window, sfBlack);
     if (!game->is_menu_open) {
         handle_movement(game->player, game);
+        update_enemies(game);
         sfRenderWindow_drawRectangleShape(game->window, game->floor, NULL);
         sfRenderWindow_drawRectangleShape(game->window, game->ceiling, NULL);
         render_raycast(game, ray, vertexarr);

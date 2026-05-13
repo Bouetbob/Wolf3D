@@ -56,7 +56,7 @@ static void change_window_size(game_t *game, int x, int y)
 {
     sfVector2f new_pos;
 
-    if (x <= 0 || y <= 0 || x >= 4000 || y >= 4000)
+    if (x <= 0 || y <= 0 || x > SCREEN_W || y >= 4000)
         return;
     update_button_pos(game, x, y);
     sfRenderWindow_close(game->window);
@@ -79,8 +79,8 @@ static void handle_ui_events(game_t *game, sfEvent event)
         button_event(game, game->buttons[i], &event);
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         item_event(game, game->player->inventory[i], &event);
-        if (game->player->inventory[i] &&
-            game->player->inventory[i]->uses == 0) {
+        if (game->player->inventory[i]
+            && game->player->inventory[i]->uses == 0) {
             free(game->player->inventory[i]);
             game->player->inventory[i] = NULL;
         }

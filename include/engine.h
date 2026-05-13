@@ -37,7 +37,7 @@
     #define AUTHORIZED_CHARS "0123456789PBMT"
     #define INVENTORY_SIZE 25
     #define NUM_TEXTURES_ITEMS 4
-
+    #define MAX_ENEMIES 64
 
 
 
@@ -127,6 +127,10 @@ typedef struct game_s {
     char *file_name;
     bool is_menu_open;
     bool is_inv_open;
+    struct enemy_s **enemies;
+    int enemy_count;
+    float z_buffer[SCREEN_W];
+    sfTexture *enemy_texture;
 } game_t;
 
 void init_floor_ceiling(game_t *game);
