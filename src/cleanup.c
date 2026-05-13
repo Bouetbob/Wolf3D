@@ -29,10 +29,10 @@ void clean_game(sfVertexArray *vertexarr[NUM_TEXTURES_RAY], game_t *game)
         if (vertexarr[i])
             sfVertexArray_destroy(vertexarr[i]);
     for (int i = 1; i < NUM_TEXTURES_RAY; i++)
-        if (game->textures->ray_textures[i])
-            sfTexture_destroy(game->textures->ray_textures[i]);
+        if (game->tex->ray_tex[i])
+            sfTexture_destroy(game->tex->ray_tex[i]);
     for (int i = 0; i < NUM_TEXTURES_ITEMS; i++)
-        sfTexture_destroy(game->textures->item_textures[i]);
+        sfTexture_destroy(game->tex->item_tex[i]);
 }
 
 void free_ressource(game_t *game, ray_t *ray,
