@@ -33,8 +33,8 @@ enemy_t *init_enemy(int type, sfVector2f *position)
 
     if (!enemy)
         return (NULL);
-    enemy->position.x = position->x + 0.5;
-    enemy->position.y = position->y + 0.5;
+    enemy->position.x = position->x;
+    enemy->position.y = position->y;
     enemy->alive = true;
     enemy->fire_timer = 0.0f;
     enemy->los = (sfVector2f){0.0f, 0.0f};

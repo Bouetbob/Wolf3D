@@ -21,6 +21,7 @@ SRC :=	src/main.c \
 		src/map/map_saving.c \
 		src/map/map_loading_utils.c \
 		src/ui/change_menu_state.c \
+		src/ui/render_ui.c \
 		src/enemies/ai.c \
 		src/enemies/init_enemy.c \
 		src/enemies/weapons/magnum.c \

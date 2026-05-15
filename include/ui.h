@@ -43,11 +43,16 @@ void leave_game(game_t *game);
 
 item_t *init_item(sfTexture *texture, int uses, char *name,
     void(function)(void *));
+sfRectangleShape *init_background(sfTexture *texture);
 void draw_item(game_t *game, item_t *item);
 int amount_of_items(player_t *player);
 void item_event(game_t *game, item_t *item, sfEvent *event);
 int get_inv_free_spot(game_t *game);
 
 void bomb(game_t *game);
+
+void draw_ui(game_t *game);
+void update_ui_scale(game_t *game, sfVector2f *scale);
+void init_ui_bar(player_t *player, game_t *game);
 
 #endif /* !UI_H_ */

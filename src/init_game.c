@@ -85,7 +85,9 @@ static void init_player(game_t *game)
 {
     player_t *p = game->player;
 
+    init_ui_bar(p, game);
     p->stats = malloc(sizeof(stats_t));
+    p->stats->health = 500;
     if (!p->stats)
         exit_with_message("can't malloc stats\n", 2, 84);
     p->stats->flashlight = false;

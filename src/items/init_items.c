@@ -21,7 +21,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-static sfRectangleShape *init_item_background(sfTexture *texture)
+sfRectangleShape *init_background(sfTexture *texture)
 {
     sfRectangleShape *rect = sfRectangleShape_create();
     sfVector2f size = {64, 64};
@@ -44,7 +44,7 @@ item_t *init_item(sfTexture *texture, int uses, char *name,
     if (!item)
         return NULL;
     item->name = strdup(name);
-    item->background = init_item_background(texture);
+    item->background = init_background(texture);
     if (!item->background)
         return (NULL);
     item->hovered = false;

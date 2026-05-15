@@ -90,6 +90,7 @@ typedef struct quad_params_s {
 typedef struct player_s {
     sfVector2f pos;
     float angle;
+    sfRectangleShape *ui_bar;
     float rads;
     sfVector2f dir_v;
     item_t **inventory;
