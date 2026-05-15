@@ -85,7 +85,9 @@ static void init_player(game_t *game)
 {
     player_t *p = game->player;
 
+    init_ui_bar(p, game);
     p->stats = malloc(sizeof(stats_t));
+    p->stats->health = 500;
     if (!p->stats)
         exit_with_message("can't malloc stats\n", 2, 84);
     p->stats->flashlight = false;
@@ -158,39 +160,4 @@ int init_all(game_t *game)
         game->z_buffer[i] = 1e30f;
     init_buttons(game);
     return (0);
-}
-
-void free_ressource(game_t *game, ray_t *ray,
-    sfVertexArray *vertexarr[NUM_TEXTURES_RAY])
-{
-    for (int i = 0; i < NUM_TEXTURES_RAY; i++)
-        if (vertexarr[i])
-            sfVertexArray_destroy(vertexarr[i]);
-    for (int i = 1; i < NUM_TEXTURES_RAY; i++)
-        if (game->tex->ray_tex[i])
-            sfTexture_destroy(game->tex->ray_tex[i]);
-    for (int i = 0; i < NUM_TEXTURES_ITEMS; i++)
-        sfTexture_destroy(game->tex->item_tex[i]);
-    if (game->key_clock)
-        sfClock_destroy(game->key_clock);
-    if (game->window)
-        sfRenderWindow_destroy(game->window);
-    if (game->player->stats)
-        free(game->player->stats);
-    if (game->player)
-        free(game->player);
-    if (game)
-        free(game);
-    if (ray)
-        free(ray);
-}
-
-void check_exit_conditions(game_t *game, ray_t *ray, char **env)
-{
-    if (!has_display(env))
-        exit_with_message("no display found\n", 2, 84);
-    if (!game)
-        exit_with_message("can't malloc game struct\n", 2, 84);
-    if (!ray)
-        exit_with_message("can't malloc ray struct\n", 2, 84);
 }

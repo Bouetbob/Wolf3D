@@ -17,6 +17,7 @@
 #include <SFML/System/Vector2.h>
 #include <SFML/Window/Event.h>
 #include <SFML/Window/Keyboard.h>
+#include <stdio.h>
 
 static void add_new_item(game_t *game)
 {
@@ -26,9 +27,8 @@ static void add_new_item(game_t *game)
 
     if (pos == -1)
         return;
-    if (to_add == 0) {
+    if (to_add == 0)
         inv[pos] = BOMB;
-    }
     if (to_add == 1)
         inv[pos] = PIE;
     if (to_add == 2)
@@ -43,6 +43,7 @@ static void update_button_pos(game_t *game, int new_x, int new_y)
     sfVector2f new_pos = {game->win_s.x, game->win_s.y};
     sfVector2f size_factor = {new_x / current_size.x, new_y / current_size.y};
 
+    update_ui_scale(game, &size_factor);
     for (int i = 0; i < NUM_BUTTONS; i++) {
         new_pos = sfRectangleShape_getPosition(game->buttons[i]->background);
         new_pos.x *= size_factor.x;
@@ -94,7 +95,7 @@ void analyse_events(sfRenderWindow *window, sfEvent event, game_t *game)
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
         change_menu_state(game);
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyI)
-        change_inv_state(game);
+        printf("%i\n", game->player->stats->health);
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyJ)
         save_map(game);
     handle_ui_events(game, event);

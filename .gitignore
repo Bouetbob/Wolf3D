@@ -59,4 +59,4 @@ wolf3d
 compile_commands.json
 .cache
 callgrind*
-test_maps/*
+test_maps/

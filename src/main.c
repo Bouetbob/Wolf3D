@@ -95,6 +95,7 @@ void rendering_function(game_t *game, ray_t *ray,
         sfRenderWindow_drawRectangleShape(game->window, game->floor, NULL);
         sfRenderWindow_drawRectangleShape(game->window, game->ceiling, NULL);
         render_raycast(game, ray, vertexarr);
+        //draw_ui(game);
     }
     if (game->is_inv_open) {
         render_inventory(game);
