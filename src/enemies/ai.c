@@ -134,15 +134,14 @@ void update_enemies(game_t *game)
 
     for (i = 0; i < game->enemy_count; i++) {
         npc = game->enemies[i];
-        if (!npc || !npc->alive || npc->health <= 0) {
+        if (!npc || !npc->alive || npc->health <= 0)
             continue;
-        }
         if (!is_player_in_range(game->player, npc)) {
+            npc->fire_timer = 1.0f;
             continue;
         }
         npc->fire_timer -= game->timer->timeframe;
-        if (npc->fire_timer <= 0.0f) {
+        if (npc->fire_timer <= 0.0f)
             apply_enemy_attack(game, npc);
-        }
     }
 }

@@ -72,19 +72,12 @@ static void render_inventory(game_t *game)
 
 void init_floor_ceiling(game_t *game)
 {
-    game->floor = sfRectangleShape_create();
-    sfRectangleShape_setSize(game->floor,
-        (sfVector2f) {sfRenderWindow_getSize(game->window).x,
-            (float) sfRenderWindow_getSize(game->window).y / 2});
-    sfRectangleShape_setFillColor(game->floor, sfColor_fromRGB(169, 169, 169));
-    sfRectangleShape_setPosition(game->floor,
-        (sfVector2f) {0, (float) sfRenderWindow_getSize(game->window).y / 2});
-    game->ceiling = sfRectangleShape_create();
-    sfRectangleShape_setSize(game->ceiling,
-        (sfVector2f) {sfRenderWindow_getSize(game->window).x,
-            (float) sfRenderWindow_getSize(game->window).y / 2});
-    sfRectangleShape_setFillColor(game->ceiling, sfColor_fromRGB(90, 90, 90));
-    sfRectangleShape_setPosition(game->ceiling, (sfVector2f) {0, 0});
+    game->floor_image = sfImage_create(SCREEN_W, SCREEN_H);
+    game->floor_render_tex = sfTexture_create(SCREEN_W, SCREEN_H);
+    game->floor_sprite = sfSprite_create();
+    sfSprite_setTexture(game->floor_sprite, game->floor_render_tex, sfTrue);
+    game->floor_tex_img = sfTexture_copyToImage(game->tex->ray_tex[TEX_FLOOR]);
+    game->ceil_tex_img = sfTexture_copyToImage(game->tex->ray_tex[TEX_CEIL]);
 }
 
 static void render_weapon(game_t *game)

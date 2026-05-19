@@ -54,12 +54,27 @@ void clean_player(player_t *player)
     }
     free(player->inventory);
     free(player);
+static void clean_floor_and_ceilling(game_t *game)
+{
+    if (game->floor_image)
+        sfImage_destroy(game->floor_image);
+    if (game->floor_render_tex)
+        sfTexture_destroy(game->floor_render_tex);
+    if (game->floor_sprite)
+        sfSprite_destroy(game->floor_sprite);
+    if (game->floor_tex_img)
+        sfImage_destroy(game->floor_tex_img);
+    if (game->ceil_tex_img)
+        sfImage_destroy(game->ceil_tex_img);
+    if (game->ray_data)
+        free(game->ray_data);
 }
 
 void free_ressource(game_t *game, ray_t *ray,
     sfVertexArray *vertexarr[NUM_TEXTURES_RAY])
 {
     clean_game(vertexarr, game);
+    clean_floor_and_ceilling(game);
     if (game->key_clock)
         sfClock_destroy(game->key_clock);
     if (game->window)
