@@ -31,7 +31,7 @@ int load_window(game_t *game)
     return (0);
 }
 
-static int load_item_textures(sfTexture *textures[NUM_TEXTURES_ITEMS])
+int load_item_textures(sfTexture *textures[NUM_TEXTURES_ITEMS])
 {
     textures[0] = sfTexture_createFromFile("assets/Items/bomb.jpeg", NULL);
     textures[1] = sfTexture_createFromFile("assets/Items/applepie.jpeg", NULL);
@@ -126,7 +126,8 @@ static int alloc_essentials(game_t *game)
     game->timer = malloc(sizeof(timers_t));
     game->tex = malloc(sizeof(textures_t));
     game->buttons = malloc(sizeof(button_t *) * NUM_BUTTONS);
-    if (!game->timer || !game->buttons || !game->tex)
+    game->ray_data = malloc(sizeof(ray_data_t));
+    if (!game->timer || !game->buttons || !game->tex || !game->ray_data)
         return (84);
     game->timer->oldtime = 0.0f;
     game->timer->currenttime = 0.0f;

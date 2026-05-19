@@ -38,6 +38,8 @@
     #define INVENTORY_SIZE 25
     #define NUM_TEXTURES_ITEMS 4
     #define MAX_ENEMIES 64
+    #define TEX_FLOOR 2
+    #define TEX_CEIL 2
 
 
 
@@ -78,6 +80,14 @@ typedef struct ray_s {
     float proj_plane;
 } ray_t;
 
+typedef struct ray_data_s {
+    float rdx0;
+    float rdy0;
+    float rdx1;
+    float rdy1;
+    float half_proj;
+} ray_data_t;
+
 typedef struct quad_params_s {
     sfColor color;
     sfVector2u tex_size;
@@ -111,8 +121,11 @@ typedef struct textures_s {
 } textures_t;
 
 typedef struct game_s {
-    sfRectangleShape *floor;
-    sfRectangleShape *ceiling;
+    sfImage *floor_image;
+    sfTexture *floor_render_tex;
+    sfSprite *floor_sprite;
+    sfImage *floor_tex_img;
+    sfImage *ceil_tex_img;
     player_t *player;
     sfSprite *bomb_sprite;
     textures_t *tex;
@@ -132,8 +145,10 @@ typedef struct game_s {
     int enemy_count;
     float z_buffer[SCREEN_W];
     sfTexture *enemy_texture;
+    ray_data_t *ray_data;
 } game_t;
 
 void init_floor_ceiling(game_t *game);
+void render_floor_ceiling(game_t *game);
 
 #endif /* !ENGINE_H_ */
