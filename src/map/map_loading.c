@@ -64,7 +64,8 @@ void load_items_into_inv(game_t *game, char **item_list)
 {
     player_t *p = game->player;
 
-    for (int i = 0; i < my_double_array_length(item_list); i++) {
+    for (int i = 0; i < my_double_array_length(item_list) &&
+        i < INVENTORY_SIZE; i++) {
         if (!strcmp(item_list[i], "BOMB"))
             p->inventory[i] = BOMB;
         if (!strcmp(item_list[i], "PIE"))

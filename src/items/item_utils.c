@@ -53,10 +53,10 @@ void item_event(game_t *game, item_t *item, sfEvent *event)
         return;
     if (event->type == sfEvtMouseButtonReleased
         && event->mouseButton.button == sfMouseLeft) {
-        if (game->is_inv_open && item->hovered) {
+        if (game->scene_number == 2 && item->hovered) {
             item->uses -= 1;
         }
-        if (game->is_inv_open && item->hovered && item->on_use != NULL) {
+        if (game->scene_number == 2 && item->hovered && item->on_use != NULL) {
             item->on_use(game);
         }
     }

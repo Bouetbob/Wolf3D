@@ -8,6 +8,9 @@
 #include "enemy.h"
 #include "engine.h"
 #include "event.h"
+#include <SFML/Graphics/RectangleShape.h>
+#include <SFML/Graphics/Sprite.h>
+#include <SFML/Graphics/Text.h>
 #include <SFML/Graphics/Types.h>
 
 static void free_enemies(game_t *game)
@@ -35,6 +38,24 @@ void clean_game(sfVertexArray *vertexarr[NUM_TEXTURES_RAY], game_t *game)
         sfTexture_destroy(game->tex->item_tex[i]);
 }
 
+void clean_player(player_t *player)
+{
+    free(player->stats);
+    sfRectangleShape_destroy(player->ui_bar);
+    for (int i = 0; player->ui_texts[i]; i++) {
+        sfText_destroy(player->ui_texts[i]);
+    }
+    for (int i = 0; i < INVENTORY_SIZE; i++) {
+        if (player->inventory[i]) {
+            sfRectangleShape_destroy(player->inventory[i]->background);
+            free(player->inventory[i]->name);
+            free(player->inventory[i]);
+        }
+    }
+    free(player->inventory);
+    free(player);
+}
+
 void free_ressource(game_t *game, ray_t *ray,
     sfVertexArray *vertexarr[NUM_TEXTURES_RAY])
 {
@@ -43,10 +64,7 @@ void free_ressource(game_t *game, ray_t *ray,
         sfClock_destroy(game->key_clock);
     if (game->window)
         sfRenderWindow_destroy(game->window);
-    if (game->player->stats)
-        free(game->player->stats);
-    if (game->player)
-        free(game->player);
+    clean_player(game->player);
     free_enemies(game);
     if (game->enemy_texture)
         sfTexture_destroy(game->enemy_texture);

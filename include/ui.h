@@ -26,7 +26,7 @@
     #define UI_H_
 
     #define BOMB init_item(game->tex->item_tex[0], 1, "BOMB", (void *) bomb)
-    #define PIE init_item(game->tex->item_tex[1], 1, "PIE", NULL)
+    #define PIE init_item(game->tex->item_tex[1], 1, "PIE", (void *) pie)
     #define GUM init_item(game->tex->item_tex[2], 1, "GUM", NULL)
     #define FLASH init_item(game->tex->item_tex[3], 1, "FLASH", NULL)
 
@@ -49,10 +49,22 @@ int amount_of_items(player_t *player);
 void item_event(game_t *game, item_t *item, sfEvent *event);
 int get_inv_free_spot(game_t *game);
 
-void bomb(game_t *game);
-
 void draw_ui(game_t *game);
-void update_ui_scale(game_t *game, sfVector2f *scale);
+void update_ui_scale(game_t *game);
 void init_ui_bar(player_t *player, game_t *game);
+
+
+void change_window_size(game_t *game, int x, int y);
+
+void update_text(sfText *item, char *new_string);
+sfText *init_text_item(char *string, sfVector2f *position, int size);
+void get_string_from_num(int number, sfText *item);
+
+void init_weapons(game_t *game);
+
+
+void bomb(game_t *game);
+void pie(game_t *game);
+
 
 #endif /* !UI_H_ */

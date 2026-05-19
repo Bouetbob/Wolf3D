@@ -15,7 +15,7 @@
 
 void print_game_info(game_t *game)
 {
-    printf("%i\n", game->is_menu_open);
+    printf("%i\n", game->scene_number);
     printf("%i %i\n", game->mouse_pos.x, game->mouse_pos.y);
     printf("%f %f\n", game->player->pos.x, game->player->pos.y);
 }
@@ -26,7 +26,7 @@ void button_event(game_t *game, button_t *button, sfEvent *event)
         return;
     if (event->type == sfEvtMouseButtonReleased
         && event->mouseButton.button == sfMouseLeft) {
-        if (game->is_menu_open == button->is_menu_button && button->hovered) {
+        if (game->scene_number == button->is_menu_button && button->hovered) {
             button->on_click(game);
         }
     }
