@@ -40,6 +40,9 @@
     #define MAX_ENEMIES 64
     #define TEX_FLOOR 2
     #define TEX_CEIL 2
+    #define MINI_TILE 5
+    #define MINI_PADDING 1
+    #define MINI_TILE_BASE 10
 
 
 
@@ -146,9 +149,12 @@ typedef struct game_s {
     float z_buffer[SCREEN_W];
     sfTexture *enemy_texture;
     ray_data_t *ray_data;
+    sfRenderTexture *minimap_tex;
+    sfSprite *minimap_sprite;
 } game_t;
 
 void init_floor_ceiling(game_t *game);
 void render_floor_ceiling(game_t *game);
-
+void init_minimap(game_t *game);
+void render_minimap(game_t *game);
 #endif /* !ENGINE_H_ */
