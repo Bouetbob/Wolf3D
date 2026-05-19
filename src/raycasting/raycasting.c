@@ -166,6 +166,7 @@ void render_raycast(game_t *game, ray_t *ray, sfVertexArray **vertexarr)
 
     for (int i = 1; i < NUM_TEXTURES_RAY; i++)
         sfVertexArray_resize(vertexarr[i], 0);
+    render_floor_ceiling(game);
     cast_rays(game, ray, vertexarr);
     for (int i = 1; i < NUM_TEXTURES_RAY; i++) {
         if (game->tex->ray_tex[i] == NULL)

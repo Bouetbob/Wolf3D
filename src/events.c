@@ -65,8 +65,6 @@ static void change_window_size(game_t *game, int x, int y)
     game->win_s.x = x;
     game->win_s.y = y;
     new_pos = (sfVector2f) {game->win_s.x, game->win_s.y};
-    sfRectangleShape_setSize(game->ceiling, new_pos);
-    sfRectangleShape_setSize(game->floor, new_pos);
 }
 
 static void change_inv_state(game_t *game)
