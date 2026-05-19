@@ -104,8 +104,6 @@ static void render_game(game_t *game, ray_t *ray,
 {
     handle_movement(game->player, game);
     update_enemies(game);
-    sfRenderWindow_drawRectangleShape(game->window, game->floor, NULL);
-    sfRenderWindow_drawRectangleShape(game->window, game->ceiling, NULL);
     render_raycast(game, ray, vertexarr);
     draw_ui(game);
     render_weapon(game);

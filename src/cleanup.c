@@ -54,6 +54,8 @@ void clean_player(player_t *player)
     }
     free(player->inventory);
     free(player);
+}
+
 static void clean_floor_and_ceilling(game_t *game)
 {
     if (game->floor_image)
