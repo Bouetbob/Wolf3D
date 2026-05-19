@@ -72,6 +72,8 @@ static void render_inventory(game_t *game)
 
 void init_floor_ceiling(game_t *game)
 {
+    init_minimap(game);
+    render_minimap(game);
     game->floor_image = sfImage_create(SCREEN_W, SCREEN_H);
     game->floor_render_tex = sfTexture_create(SCREEN_W, SCREEN_H);
     game->floor_sprite = sfSprite_create();
@@ -106,6 +108,7 @@ static void render_game(game_t *game, ray_t *ray,
     update_enemies(game);
     render_raycast(game, ray, vertexarr);
     draw_ui(game);
+    render_minimap(game);
     render_weapon(game);
 }
 

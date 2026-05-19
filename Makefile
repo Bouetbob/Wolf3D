@@ -12,6 +12,7 @@ SRC :=	src/main.c \
 		src/utils.c \
 		src/events.c \
 		src/cleanup.c \
+		src/minimap.c \
 		src/raycasting/raycasting.c \
 		src/raycasting/raycasting_helper.c \
 		src/buttons/draw_buttons.c \

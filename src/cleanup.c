@@ -38,6 +38,14 @@ void clean_game(sfVertexArray *vertexarr[NUM_TEXTURES_RAY], game_t *game)
         sfTexture_destroy(game->tex->item_tex[i]);
 }
 
+static void clean_mini_map(game_t *game)
+{
+    if (game->minimap_tex)
+        sfRenderTexture_destroy(game->minimap_tex);
+    if (game->minimap_sprite)
+        sfSprite_destroy(game->minimap_sprite);
+}
+
 void clean_player(player_t *player)
 {
     free(player->stats);
@@ -77,6 +85,7 @@ void free_ressource(game_t *game, ray_t *ray,
 {
     clean_game(vertexarr, game);
     clean_floor_and_ceilling(game);
+    clean_mini_map(game);
     if (game->key_clock)
         sfClock_destroy(game->key_clock);
     if (game->window)
