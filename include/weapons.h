@@ -13,4 +13,7 @@
 enemy_weapon_t *init_magnum(void);
 enemy_weapon_t *init_thompson(void);
 
+weapon_t *init_single_weapon(int ammo, int damage, float rate, char *s_path);
+
+
 #endif /* !WEAPONS_H_ */
