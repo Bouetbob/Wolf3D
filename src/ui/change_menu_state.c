@@ -17,5 +17,8 @@ void leave_game(game_t *game)
 
 void change_menu_state(game_t *game)
 {
-    game->is_menu_open = !game->is_menu_open;
+    if (game->scene_number != 1)
+        game->scene_number = 1;
+    else
+        game->scene_number = 0;
 }

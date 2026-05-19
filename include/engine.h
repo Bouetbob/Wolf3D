@@ -11,6 +11,7 @@
     #include <SFML/Graphics.h>
     #include <SFML/Graphics/Color.h>
     #include <SFML/Graphics/PrimitiveType.h>
+    #include <SFML/Graphics/Rect.h>
     #include <SFML/Graphics/RectangleShape.h>
     #include <SFML/Graphics/RenderWindow.h>
     #include <SFML/Graphics/Types.h>
@@ -52,7 +53,7 @@ typedef struct buttons_s {
     unsigned int char_size;
     bool hovered;
     void (*on_click)(void *);
-    bool is_menu_button;
+    int is_menu_button;
 } button_t;
 
 typedef struct item_s {
@@ -100,15 +101,31 @@ typedef struct quad_params_s {
     float proj_plane;
 } quad_params_t;
 
+typedef struct weapon_s {
+    sfSprite *sprite;
+    int damage;
+    float rate;
+    int ammo;
+    int max_ammo;
+    sfIntRect rect;
+    float frame_time;
+    int frame;
+    float time_until_switch;
+} weapon_t;
+
 typedef struct player_s {
     sfVector2f pos;
     float angle;
     sfRectangleShape *ui_bar;
     float rads;
+    sfText **ui_texts;
     sfVector2f dir_v;
     item_t **inventory;
     stats_t *stats;
+    weapon_t **weapons;
+    int curr_weapon;
     float FOV;
+    int score;
 } player_t;
 
 typedef struct timers_s {
@@ -142,8 +159,7 @@ typedef struct game_s {
     button_t **buttons;
     char **map;
     char *file_name;
-    bool is_menu_open;
-    bool is_inv_open;
+    int scene_number;
     struct enemy_s **enemies;
     int enemy_count;
     float z_buffer[SCREEN_W];

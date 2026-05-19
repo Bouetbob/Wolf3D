@@ -35,7 +35,7 @@ void draw_button(game_t *game, button_t *button)
     rect = sfRectangleShape_getGlobalBounds(button->background);
     button->hovered =
         sfFloatRect_contains(&rect, game->mouse_pos.x, game->mouse_pos.y);
-    if (button->is_menu_button != game->is_menu_open)
+    if (button->is_menu_button != game->scene_number)
         return;
     update_button_scale(button);
     sfRenderWindow_drawRectangleShape(game->window, button->background,

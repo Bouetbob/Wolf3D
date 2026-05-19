@@ -23,6 +23,7 @@ SRC :=	src/main.c \
 		src/map/map_loading_utils.c \
 		src/ui/change_menu_state.c \
 		src/ui/render_ui.c \
+		src/ui/setup_text.c \
 		src/enemies/ai.c \
 		src/enemies/init_enemy.c \
 		src/enemies/weapons/magnum.c \
@@ -32,6 +33,9 @@ SRC :=	src/main.c \
 		src/items/init_items.c \
 		src/items/item_utils.c \
 		src/items/bomb.c \
+		src/items/pie.c \
+		src/player/init_weapon.c \
+
 
 
 	

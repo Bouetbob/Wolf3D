@@ -38,7 +38,7 @@ static void compute_sprite_pos(game_t *game, render_data_t *d, float tx,
     d->sprite_h = abs((int) (game->win_s.y / ty));
     d->sprite_w = d->sprite_h;
     screen_x = (int) ((game->win_s.x / 2.0f) * (1.0f + tx / ty));
-    d->start_y = game->win_s.y / 2 - d->sprite_h / 2;
+    d->start_y = game->win_s.y / 2 - d->sprite_h / 2 + d->sprite_h / 4;
     d->start_x = screen_x - d->sprite_w / 2;
     d->end_x = screen_x + d->sprite_w / 2;
 }
@@ -83,17 +83,54 @@ static void render_one_enemy(game_t *game, enemy_t *enemy, sfTexture *tex,
     render_loop(game, enemy, tex, &d);
 }
 
+static float get_enemy_dist(enemy_t *enemy, game_t *game)
+{
+    float dx = enemy->position.x - game->player->pos.x;
+    float dy = enemy->position.y - game->player->pos.y;
+
+    return dx * dx + dy * dy;
+}
+
+static void swap_enemies(enemy_t **sorted, int j)
+{
+    enemy_t *tmp = sorted[j];
+
+    sorted[j] = sorted[j + 1];
+    sorted[j + 1] = tmp;
+}
+
+static void bubble_pass(enemy_t **sorted, int limit, game_t *game)
+{
+    for (int j = 0; j < limit; j++) {
+        if (get_enemy_dist(sorted[j], game)
+            < get_enemy_dist(sorted[j + 1], game))
+            swap_enemies(sorted, j);
+    }
+}
+
+static void sort_enemies(enemy_t **sorted, int count, game_t *game)
+{
+    for (int i = 0; i < count - 1; i++)
+        bubble_pass(sorted, count - i - 1, game);
+}
+
 void render_enemies(game_t *game)
 {
     sfTexture *tex = game->enemy_texture;
+    enemy_t *sorted[MAX_ENEMIES];
+    int count = 0;
     int frame_w;
 
     if (!tex)
         return;
     frame_w = sfTexture_getSize(tex).x / 2;
     for (int e = 0; e < game->enemy_count; e++) {
-        if (!game->enemies[e] || !game->enemies[e]->alive)
-            continue;
-        render_one_enemy(game, game->enemies[e], tex, frame_w);
+        if (game->enemies[e] && game->enemies[e]->alive) {
+            sorted[count] = game->enemies[e];
+            count++;
+        }
     }
+    sort_enemies(sorted, count, game);
+    for (int e = 0; e < count; e++)
+        render_one_enemy(game, sorted[e], tex, frame_w);
 }
