@@ -36,11 +36,15 @@ void init_ui_bar(player_t *player, game_t *game)
 static void update_gun_scale(game_t *game)
 {
     weapon_t **weapons = game->player->weapons;
+    float scale_x = (float)game->win_s.x / SCREEN_W;
+    float scale_y = (float)game->win_s.y / SCREEN_H;
 
     for (int i = 0; weapons[i]; i++) {
         sfSprite_setPosition(weapons[i]->sprite,
-            (sfVector2f) {(float) game->win_s.x / 2 - 156,
-                game->win_s.y - 250});
+            (sfVector2f) {(float) game->win_s.x / 2 - 156.0f * scale_x,
+                game->win_s.y - 256.0f * scale_y});
+        sfSprite_setScale(weapons[i]->sprite,
+            (sfVector2f){2.0f * scale_x, 2.0f * scale_y});
     }
 }
 

@@ -70,16 +70,19 @@ static void render_inventory(game_t *game)
     }
 }
 
-void init_floor_ceiling(game_t *game)
+void init_background_and_minimap(game_t *game)
 {
     init_minimap(game);
     render_minimap(game);
-    game->floor_image = sfImage_create(SCREEN_W, SCREEN_H);
-    game->floor_render_tex = sfTexture_create(SCREEN_W, SCREEN_H);
-    game->floor_sprite = sfSprite_create();
-    sfSprite_setTexture(game->floor_sprite, game->floor_render_tex, sfTrue);
-    game->floor_tex_img = sfTexture_copyToImage(game->tex->ray_tex[TEX_FLOOR]);
-    game->ceil_tex_img = sfTexture_copyToImage(game->tex->ray_tex[TEX_CEIL]);
+    game->background->floor_image = sfImage_create(SCREEN_W, SCREEN_H);
+    game->background->floor_render_tex = sfTexture_create(SCREEN_W, SCREEN_H);
+    game->background->floor_sprite = sfSprite_create();
+    sfSprite_setTexture(game->background->floor_sprite,
+        game->background->floor_render_tex, sfTrue);
+    game->background->floor_tex_img =
+        sfTexture_copyToImage(game->tex->ray_tex[TEX_FLOOR]);
+    game->background->ceil_tex_img =
+        sfTexture_copyToImage(game->tex->ray_tex[TEX_CEIL]);
 }
 
 static void render_weapon(game_t *game)
@@ -136,7 +139,7 @@ void main_game_loop(game_t *game, ray_t *ray)
         vertexarr[i] = sfVertexArray_create();
         sfVertexArray_setPrimitiveType(vertexarr[i], sfTriangles);
     }
-    init_floor_ceiling(game);
+    init_background_and_minimap(game);
     while (sfRenderWindow_isOpen(game->window)) {
         setup_time(game);
         while (sfRenderWindow_pollEvent(game->window, &game->event))

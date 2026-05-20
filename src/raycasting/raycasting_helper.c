@@ -47,21 +47,21 @@ static void get_ray_dirs(game_t *game, ray_data_t *rd)
 static void render_pixel(game_t *game, sfVector2i *coord,
     float *floor_pos, float intensity)
 {
-    sfVector2u ftex_s = sfImage_getSize(game->floor_tex_img);
-    sfVector2u ctex_s = sfImage_getSize(game->ceil_tex_img);
-    sfColor fc = sfImage_getPixel(game->floor_tex_img,
+    sfVector2u ftex_s = sfImage_getSize(game->background->floor_tex_img);
+    sfVector2u ctex_s = sfImage_getSize(game->background->ceil_tex_img);
+    sfColor fc = sfImage_getPixel(game->background->floor_tex_img,
         (int)((floor_pos[0] - floorf(floor_pos[0])) * ftex_s.x) &
         (ftex_s.x - 1), (int)((floor_pos[1] - floorf(floor_pos[1]))
             * ftex_s.y) & (ftex_s.y - 1));
-    sfColor cc = sfImage_getPixel(game->ceil_tex_img,
+    sfColor cc = sfImage_getPixel(game->background->ceil_tex_img,
         (int)((floor_pos[0] - floorf(floor_pos[0])) * ctex_s.x) &
         (ctex_s.x - 1), (int)((floor_pos[1] - floorf(floor_pos[1]))
             * ctex_s.y) & (ctex_s.y - 1));
 
     apply_intensity(&fc, intensity);
     apply_intensity(&cc, intensity);
-    sfImage_setPixel(game->floor_image, coord->x, coord->y, fc);
-    sfImage_setPixel(game->floor_image, coord->x,
+    sfImage_setPixel(game->background->floor_image, coord->x, coord->y, fc);
+    sfImage_setPixel(game->background->floor_image, coord->x,
         game->win_s.y - coord->y - 1, cc);
 }
 
@@ -87,11 +87,13 @@ static void render_row(game_t *game, int y, ray_data_t *rd)
 
 void render_floor_ceiling(game_t *game)
 {
-    if (!game->floor_tex_img || !game->ceil_tex_img)
+    if (!game->background->floor_tex_img || !game->background->ceil_tex_img)
         return;
     get_ray_dirs(game, game->ray_data);
     for (int y = game->win_s.y / 2 + 1; y < game->win_s.y; y++)
         render_row(game, y, game->ray_data);
-    sfTexture_updateFromImage(game->floor_render_tex, game->floor_image, 0, 0);
-    sfRenderWindow_drawSprite(game->window, game->floor_sprite, NULL);
+    sfTexture_updateFromImage(game->background->floor_render_tex,
+        game->background->floor_image, 0, 0);
+    sfRenderWindow_drawSprite(game->window,
+        game->background->floor_sprite, NULL);
 }

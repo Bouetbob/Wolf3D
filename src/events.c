@@ -71,8 +71,7 @@ void change_window_size(game_t *game, int x, int y)
     game->win_s.x = x;
     game->win_s.y = y;
     new_pos = (sfVector2f) {game->win_s.x, game->win_s.y};
-    sfRenderTexture_destroy(game->minimap_tex);
-    sfSprite_destroy(game->minimap_sprite);
+    clean_mini_map(game);
     init_minimap(game);
     update_ui_scale(game);
     new_pos = (sfVector2f) {game->win_s.x, (float) game->win_s.y / 2};
