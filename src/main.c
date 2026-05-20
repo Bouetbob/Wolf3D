@@ -73,7 +73,6 @@ static void render_inventory(game_t *game)
 void init_background_and_minimap(game_t *game)
 {
     init_minimap(game);
-    render_minimap(game);
     game->background->floor_image = sfImage_create(SCREEN_W, SCREEN_H);
     game->background->floor_render_tex = sfTexture_create(SCREEN_W, SCREEN_H);
     game->background->floor_sprite = sfSprite_create();
@@ -111,7 +110,8 @@ static void render_game(game_t *game, ray_t *ray,
     update_enemies(game);
     render_raycast(game, ray, vertexarr);
     draw_ui(game);
-    render_minimap(game);
+    if (game->minimap->need_map_render)
+        render_minimap(game);
     render_weapon(game);
 }
 

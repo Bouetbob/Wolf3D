@@ -153,6 +153,7 @@ typedef struct minimap_s {
     sfSprite *minimap_sprite;
     sfCircleShape *player_dot;
     sfRectangleShape *tile;
+    bool need_map_render;
 } minimap_t;
 
 

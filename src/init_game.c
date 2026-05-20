@@ -153,6 +153,7 @@ static int alloc_essentials(game_t *game)
     if (!game->timer || !game->buttons || !game->tex || !game->ray_data ||
         !game->minimap || !game->background)
         return (84);
+    game->minimap->need_map_render = false;
     game->timer->oldtime = 0.0f;
     game->timer->currenttime = 0.0f;
     game->timer->timeframe = 0.0f;

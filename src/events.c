@@ -124,6 +124,8 @@ void analyse_events(sfRenderWindow *window, sfEvent event, game_t *game)
         sfRenderWindow_close(window);
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
         change_menu_state(game);
+    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyM)
+        game->minimap->need_map_render = !game->minimap->need_map_render;
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeySpace)
         shoot_gun(game);
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyJ)
