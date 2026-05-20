@@ -156,6 +156,15 @@ typedef struct minimap_s {
     bool need_map_render;
 } minimap_t;
 
+typedef struct floor_context_s {
+    sfUint8 *out;
+    const sfUint8 *ftex;
+    const sfUint8 *ctex;
+    sfVector2u ftex_s;
+    sfVector2u ctex_s;
+    int win_w;
+    int win_h;
+} floor_context_t;
 
 typedef struct game_s {
     background_t *background;
@@ -186,4 +195,5 @@ void render_floor_ceiling(game_t *game);
 void init_minimap(game_t *game);
 void render_minimap(game_t *game);
 void clean_mini_map(game_t *game);
+void resize_floor_ceiling(game_t *game);
 #endif /* !ENGINE_H_ */
