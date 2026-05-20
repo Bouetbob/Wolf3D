@@ -52,7 +52,7 @@ static void init_dot_tile(game_t *game, int tile_size)
 
 void init_minimap(game_t *game)
 {
-    int tile_size = MINI_TILE_BASE; // fixed base size for the texture
+    int tile_size = MINI_TILE_BASE;
     int width = game->map_size.x * tile_size;
     int height = game->map_size.y * tile_size;
 
