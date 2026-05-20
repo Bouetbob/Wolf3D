@@ -148,7 +148,10 @@ static int alloc_essentials(game_t *game)
     game->tex = malloc(sizeof(textures_t));
     game->buttons = malloc(sizeof(button_t *) * NUM_BUTTONS);
     game->ray_data = malloc(sizeof(ray_data_t));
-    if (!game->timer || !game->buttons || !game->tex || !game->ray_data)
+    game->minimap = malloc(sizeof(minimap_t));
+    game->background = malloc(sizeof(background_t));
+    if (!game->timer || !game->buttons || !game->tex || !game->ray_data ||
+        !game->minimap || !game->background)
         return (84);
     game->timer->oldtime = 0.0f;
     game->timer->currenttime = 0.0f;
@@ -168,6 +171,8 @@ int init_all(game_t *game)
     game->win_s.y = SCREEN_H;
     if (alloc_essentials(game) == 84 || init_textures(game) == 84)
         return (84);
+    memset(game->minimap, 0, sizeof(minimap_t));
+    memset(game->background, 0, sizeof(background_t));
     memset(game->tex->ray_tex, 0, sizeof(game->tex->ray_tex));
     memset(game->tex->item_tex, 0, sizeof(game->tex->item_tex));
     load_ray_textures(game->tex->ray_tex);

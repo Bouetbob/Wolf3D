@@ -140,13 +140,26 @@ typedef struct textures_s {
     sfTexture *item_tex[NUM_TEXTURES_ITEMS];
 } textures_t;
 
-typedef struct game_s {
+typedef struct background_s {
     sfImage *floor_image;
     sfTexture *floor_render_tex;
     sfSprite *floor_sprite;
     sfImage *floor_tex_img;
     sfImage *ceil_tex_img;
+} background_t;
+
+typedef struct minimap_s {
+    sfRenderTexture *minimap_tex;
+    sfSprite *minimap_sprite;
+    sfCircleShape *player_dot;
+    sfRectangleShape *tile;
+} minimap_t;
+
+
+typedef struct game_s {
+    background_t *background;
     player_t *player;
+    minimap_t *minimap;
     sfSprite *bomb_sprite;
     textures_t *tex;
     sfRenderWindow *window;
@@ -165,12 +178,11 @@ typedef struct game_s {
     float z_buffer[SCREEN_W];
     sfTexture *enemy_texture;
     ray_data_t *ray_data;
-    sfRenderTexture *minimap_tex;
-    sfSprite *minimap_sprite;
 } game_t;
 
-void init_floor_ceiling(game_t *game);
+void init_background_and_minimap(game_t *game);
 void render_floor_ceiling(game_t *game);
 void init_minimap(game_t *game);
 void render_minimap(game_t *game);
+void clean_mini_map(game_t *game);
 #endif /* !ENGINE_H_ */

@@ -38,14 +38,6 @@ void clean_game(sfVertexArray *vertexarr[NUM_TEXTURES_RAY], game_t *game)
         sfTexture_destroy(game->tex->item_tex[i]);
 }
 
-static void clean_mini_map(game_t *game)
-{
-    if (game->minimap_tex)
-        sfRenderTexture_destroy(game->minimap_tex);
-    if (game->minimap_sprite)
-        sfSprite_destroy(game->minimap_sprite);
-}
-
 void clean_player(player_t *player)
 {
     free(player->stats);
@@ -66,16 +58,16 @@ void clean_player(player_t *player)
 
 static void clean_floor_and_ceilling(game_t *game)
 {
-    if (game->floor_image)
-        sfImage_destroy(game->floor_image);
-    if (game->floor_render_tex)
-        sfTexture_destroy(game->floor_render_tex);
-    if (game->floor_sprite)
-        sfSprite_destroy(game->floor_sprite);
-    if (game->floor_tex_img)
-        sfImage_destroy(game->floor_tex_img);
-    if (game->ceil_tex_img)
-        sfImage_destroy(game->ceil_tex_img);
+    if (game->background->floor_image)
+        sfImage_destroy(game->background->floor_image);
+    if (game->background->floor_render_tex)
+        sfTexture_destroy(game->background->floor_render_tex);
+    if (game->background->floor_sprite)
+        sfSprite_destroy(game->background->floor_sprite);
+    if (game->background->floor_tex_img)
+        sfImage_destroy(game->background->floor_tex_img);
+    if (game->background->ceil_tex_img)
+        sfImage_destroy(game->background->ceil_tex_img);
     if (game->ray_data)
         free(game->ray_data);
 }
