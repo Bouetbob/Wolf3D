@@ -52,12 +52,12 @@ static void init_dot_tile(game_t *game, int tile_size)
 
 void init_minimap(game_t *game)
 {
-    int tile_size = get_tile_size(game);
-    int weigth = game->map_size.x * tile_size;
+    int tile_size = MINI_TILE_BASE; // fixed base size for the texture
+    int width = game->map_size.x * tile_size;
     int height = game->map_size.y * tile_size;
 
     game->minimap->minimap_tex =
-        sfRenderTexture_create(weigth, height, sfFalse);
+        sfRenderTexture_create(width, height, sfFalse);
     game->minimap->minimap_sprite = sfSprite_create();
     sfSprite_setTexture(game->minimap->minimap_sprite,
         sfRenderTexture_getTexture(game->minimap->minimap_tex), sfTrue);
@@ -80,7 +80,11 @@ void clean_mini_map(game_t *game)
 
 void render_minimap(game_t *game)
 {
-    int tile_size = get_tile_size(game);
+    int tile_size = MINI_TILE_BASE;
+    float target_w = game->win_s.x * 0.4f;
+    float target_h = game->win_s.y * 0.4f;
+    float scale = fminf(target_w / (game->map_size.x * tile_size),
+        target_h / (game->map_size.y * tile_size));
 
     sfRenderTexture_clear(game->minimap->minimap_tex,
         (sfColor){30, 30, 30, 180});
@@ -89,6 +93,8 @@ void render_minimap(game_t *game)
             draw_tile(game, x, y, tile_size);
     draw_player_dot(game, tile_size);
     sfRenderTexture_display(game->minimap->minimap_tex);
+    sfSprite_setScale(game->minimap->minimap_sprite,
+        (sfVector2f){scale, scale});
     sfRenderWindow_drawSprite(game->window,
         game->minimap->minimap_sprite, NULL);
 }

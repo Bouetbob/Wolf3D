@@ -78,6 +78,8 @@ void free_ressource(game_t *game, ray_t *ray,
     clean_game(vertexarr, game);
     clean_floor_and_ceilling(game);
     clean_mini_map(game);
+    if (game->minimap)
+        free(game->minimap);
     if (game->key_clock)
         sfClock_destroy(game->key_clock);
     if (game->window)
