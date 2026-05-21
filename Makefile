@@ -35,10 +35,7 @@ SRC :=	src/main.c \
 		src/items/bomb.c \
 		src/items/pie.c \
 		src/player/init_weapon.c \
-
-
-
-	
+		src/cleanup_helper.c \
 
 
 OBJ = $(SRC:%.c=%.o)

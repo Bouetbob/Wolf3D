@@ -186,4 +186,7 @@ void render_floor_ceiling(game_t *game);
 void init_minimap(game_t *game);
 void render_minimap(game_t *game);
 void clean_mini_map(game_t *game);
+void free_buttons(game_t *game);
+void free_weapons(player_t *player);
+
 #endif /* !ENGINE_H_ */

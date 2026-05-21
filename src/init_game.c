@@ -74,9 +74,6 @@ static int init_textures(game_t *game)
 
     memset(game->tex->ray_tex, 0, r_s);
     memset(game->tex->item_tex, 0, i_s);
-    load_ray_textures(game->tex->ray_tex);
-    if (load_item_textures(game->tex->item_tex) == 84)
-        return (84);
     game->enemy_texture = sfTexture_createFromFile(
         "assets/World_Textures/enemy_magnum.png", NULL);
     if (!game->enemy_texture)
