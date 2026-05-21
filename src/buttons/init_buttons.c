@@ -53,7 +53,7 @@ static sfText *init_button_text(char *text, int charsize,
 }
 
 button_t *init_button(char *string, sfVector2f *position,
-    sfVector2f *size, bool is_menu)
+    sfVector2f *size, int is_menu)
 {
     button_t *button = malloc(sizeof(button_t));
 

@@ -9,7 +9,6 @@
 #include "engine.h"
 #include "event.h"
 #include "map.h"
-#include "weapons.h"
 #include "wolf3d.h"
 #include <SFML/Graphics.h>
 #include <SFML/Graphics/Types.h>
@@ -124,22 +123,10 @@ static void init_player(game_t *game)
 
 static void init_buttons(game_t *game)
 {
-    sfVector2f sz = {110, 20};
-    sfVector2f p1 = {game->win_s.x - 100, 100};
-    sfVector2f p2 = {(float) game->win_s.x / 2, game->win_s.y - 300};
-    sfVector2f p3 = {game->win_s.x - 100, game->win_s.y - 100};
-    sfVector2f p4 = {(float) game->win_s.x / 2, game->win_s.y - 150};
-
-    game->buttons[0] = init_button("enter menu", &p1, &sz, false);
-    game->buttons[0]->on_click = (void *) change_menu_state;
-    game->buttons[1] = init_button("leave menu", &p2, &sz, true);
-    game->buttons[1]->on_click = (void *) change_menu_state;
-    game->buttons[2] = init_button("print info", &p3, &sz, false);
-    game->buttons[2]->on_click = (void *) print_game_info;
-    game->buttons[3] = init_button("print info", &p3, &sz, true);
-    game->buttons[3]->on_click = (void *) print_game_info;
-    game->buttons[4] = init_button("leave game", &p4, &sz, true);
-    game->buttons[4]->on_click = (void *) leave_game;
+    init_game_buttons(game);
+    init_menu_buttons(game);
+    init_inv_buttons(game);
+    init_settings_buttons(game);
 }
 
 static int alloc_essentials(game_t *game)
@@ -182,7 +169,7 @@ int init_all(game_t *game)
     init_player(game);
     game->scene_number = 0;
     game->key_clock = sfClock_create();
-    for (int i = 0; i < SCREEN_W; i++)
+    for (int i = 0; i < 3000; i++)
         game->z_buffer[i] = 1e30f;
     init_buttons(game);
     return (0);

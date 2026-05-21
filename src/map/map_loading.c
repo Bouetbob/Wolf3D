@@ -26,7 +26,7 @@ static void handle_tile_entities(game_t *game, char tile, int x, int y)
     }
 }
 
-void init_map_entities(game_t *game)
+static void init_map_entities(game_t *game)
 {
     if (!game->map)
         return;
@@ -90,6 +90,9 @@ int load_items(game_t *game, char *file)
     if (!file_cont)
         return (84);
     pos = check_elm_in_tokened_list(file_cont, "ITEMS", "=");
+    for (int i = 0; i < INVENTORY_SIZE; i++) {
+        game->player->inventory[i] = NULL;
+    }
     if (pos != -1)
         load_items_into_inv(game, my_str_to_word_array(file_cont[pos], "=,"));
     free_array(file_cont);
@@ -111,63 +114,70 @@ int get_number_value(char *string)
     return (res);
 }
 
-static bool check_input_validity(char *string, game_t *game)
+bool check_input_validity(char *string, game_t *game)
 {
-    char **coords = my_str_to_word_array(string, " \t\n");
-    sfVector2f pos;
+    char **temp = my_str_to_word_array(string, "\t= ");
+    int num1 = 0;
+    int num2 = 0;
 
-    if (my_double_array_length(coords) != 2) {
-        free_array(coords);
-        return false;
+    if (my_double_array_length(temp) != 4) {
+        free_array(temp);
+        return (false);
     }
-    pos.x = (float)atof(coords[0]);
-    pos.y = (float)atof(coords[1]);
-    free_array(coords);
-    if (pos.x < 0 || pos.y < 0 ||
-        pos.x >= game->map_size.x || pos.y >= game->map_size.y)
-        return false;
-    if (is_wall(pos.x, pos.y, game))
-        return false;
-    game->player->pos = pos;
-    return true;
+    num1 = atoi(temp[1]);
+    num2 = atoi(temp[3]);
+    free_array(temp);
+    if (num1 <= 0 || num1 >= game->map_size.x || num2 <= 0
+        || num2 >= game->map_size.y || game->map[num2][num1] != '0') {
+        printf("\nInvalid position.\n");
+        return (false);
+    }
+    game->player->pos.x = num1;
+    game->player->pos.y = num2;
+    return (true);
 }
 
 static int get_user_player_pos_input(game_t *game)
 {
-    bool valid = false;
+    bool valid_pos = false;
     char *temp = NULL;
     size_t size = 0;
 
-    while (!valid) {
+    while (!valid_pos) {
         printf("Map size: x=%i\ty=%i\n", game->map_size.x, game->map_size.y);
+        printf("Format: x=?\ty=?\nReplace ? by a value of your");
+        printf(" choice.\nInput \"exit\" if you want to exit.\n");
         getline(&temp, &size, stdin);
         if (strcmp(temp, "exit\n") == 0)
             exit(0);
-        valid = check_input_validity(temp, game);
-        if (!valid)
-            printf("Retry.\n\n");
+        valid_pos = check_input_validity(temp, game);
+        if (valid_pos)
+            break;
+        printf("Invalid format or values.\nRetry.\n\n");
     }
+    printf("Valid values entered.\nPlease proceed to the game.\n");
     return (0);
 }
 
 static int check_player_in_map(char **map, game_t *game)
 {
-    int count = 0;
+    int player_count = 0;
 
     for (int i = 0; i < my_double_array_length(map); i++) {
         if (is_char_in_string('P', map[i])) {
             game->player->pos.y = i;
-            count++;
+            player_count++;
         }
     }
-    if (count == 0)
+    if (player_count == 0) {
+        printf("Missing player.\n");
         return (get_user_player_pos_input(game));
-    if (count > 1)
-        return (84);
-    for (int i = 0; map[(int)game->player->pos.y][i]; i++) {
-        if (map[(int)game->player->pos.y][i] == 'P')
-            game->player->pos.x = i;
     }
+    if (player_count > 1) {
+        printf("Too many player starting points.\n");
+        return (84);
+    }
+    game->player->pos.x = find_char('P', map[(int) game->player->pos.y]);
     return (0);
 }
 

@@ -58,6 +58,7 @@ void init_weapons(game_t *game)
 {
     player_t *p = game->player;
 
+    p->curr_weapon = 0;
     p->score = 0;
     p->weapons[0] =
         init_single_weapon(30, 10, 0.15, "./assets/UI/gun.png");

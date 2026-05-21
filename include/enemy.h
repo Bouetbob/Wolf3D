@@ -11,7 +11,6 @@
     #include <SFML/Graphics/Types.h>
     #include <SFML/System/Vector2.h>
     #include <stdbool.h>
-    #include "engine.h"
 
     #define MAX_ENEMIES 64
 
@@ -46,9 +45,9 @@ typedef struct render_data_s {
 } render_data_t;
 
 enemy_t *init_enemy(int type, sfVector2f *position);
-void update_enemies(game_t *game);
-bool has_line_of_sight(enemy_t *enemy, player_t *player, game_t *game);
-void shoot_player(player_t *player, enemy_t *enemy, game_t *game);
-void render_enemies(game_t *game);
+sfVector2f get_direction(sfVector2f *start, sfVector2f *end);
+float angle_calculator(sfVector2f *start, sfVector2f *end);
+
+
 
 #endif /* !ENEMY_H_ */

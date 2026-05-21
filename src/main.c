@@ -5,10 +5,6 @@
 ** main file
 */
 
-//hours spent on this : around 25 (22/04 11:33)
-
-#include <stdio.h>
-#include "enemy.h"
 #include "engine.h"
 #include "event.h"
 #include "map.h"
@@ -17,9 +13,12 @@
 #include "wolf3d.h"
 #include <SFML/Graphics.h>
 #include <SFML/Graphics/Color.h>
+#include <SFML/Graphics/Image.h>
 #include <SFML/Graphics/PrimitiveType.h>
 #include <SFML/Graphics/RectangleShape.h>
 #include <SFML/Graphics/RenderWindow.h>
+#include <SFML/Graphics/Sprite.h>
+#include <SFML/Graphics/Texture.h>
 #include <SFML/Graphics/Types.h>
 #include <SFML/Graphics/VertexArray.h>
 #include <SFML/System.h>
@@ -29,6 +28,7 @@
 #include <SFML/Window/Keyboard.h>
 #include <SFML/Window/WindowBase.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
@@ -40,41 +40,46 @@ sfRenderWindow *create_window(int width, int heigth, char *name)
 
     vid_mode.width = width;
     vid_mode.height = heigth;
-    vid_mode.bitsPerPixel = 32;
+    vid_mode.bitsPerPixel = 16;
     window = sfRenderWindow_create(vid_mode, name, sfClose, NULL);
     sfRenderWindow_setFramerateLimit(window, 60);
     return (window);
 }
 
-static void render_item(game_t *game, item_t **items, sfVector2f *item_pos,
-    int i)
+static void render_item(game_t *game, item_t *item, sfVector2f *item_pos,
+    sfVector2f *scale)
 {
-    if (items[i]) {
-        item_pos->x += 100;
-        if (item_pos->x > (float) game->win_s.x / 2) {
-            item_pos->x = 100;
-            item_pos->y += 100;
-        }
-        sfRectangleShape_setPosition(items[i]->background, *item_pos);
-        draw_item(game, items[i]);
+    item_pos->x += 100 * scale->x;
+    if (item_pos->x > (float) game->win_s.x / 2) {
+        item_pos->x = 100 * scale->x;
+        item_pos->y += 100 * scale->x;
     }
+    sfRectangleShape_setScale(item->background, *scale);
+    sfSprite_setScale(item->sprite, *scale);
+    sfRectangleShape_setPosition(item->background, *item_pos);
+    draw_item(game, item);
 }
 
 static void render_inventory(game_t *game)
 {
     item_t **items = game->player->inventory;
     sfVector2f item_pos = {0, 100};
+    sfVector2f scale = {game->win_s.x / (float) SCREEN_W,
+        game->win_s.y / (float) SCREEN_H};
 
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-        render_item(game, items, &item_pos, i);
+        if (items[i])
+            render_item(game, items[i], &item_pos, &scale);
     }
 }
 
 void init_background_and_minimap(game_t *game)
 {
     init_minimap(game);
-    game->background->floor_image = sfImage_create(SCREEN_W, SCREEN_H);
-    game->background->floor_render_tex = sfTexture_create(SCREEN_W, SCREEN_H);
+    game->background->floor_image =
+        sfImage_create(game->win_s.x, game->win_s.y);
+    game->background->floor_render_tex =
+        sfTexture_create(game->win_s.x, game->win_s.y);
     game->background->floor_sprite = sfSprite_create();
     sfSprite_setTexture(game->background->floor_sprite,
         game->background->floor_render_tex, sfTrue);
@@ -82,6 +87,15 @@ void init_background_and_minimap(game_t *game)
         sfTexture_copyToImage(game->tex->ray_tex[TEX_FLOOR]);
     game->background->ceil_tex_img =
         sfTexture_copyToImage(game->tex->ray_tex[TEX_CEIL]);
+}
+
+void temp_destroy_bg(game_t *game)
+{
+    sfImage_destroy(game->background->floor_image);
+    sfTexture_destroy(game->background->floor_render_tex);
+    sfSprite_destroy(game->background->floor_sprite);
+    sfImage_destroy(game->background->floor_tex_img);
+    sfImage_destroy(game->background->ceil_tex_img);
 }
 
 static void render_weapon(game_t *game)
@@ -99,8 +113,7 @@ static void render_weapon(game_t *game)
     }
     weapon->rect.left = 128 * weapon->frame;
     sfSprite_setTextureRect(weapon->sprite, weapon->rect);
-    sfRenderWindow_drawSprite(game->window,
-        weapon->sprite, NULL);
+    sfRenderWindow_drawSprite(game->window, weapon->sprite, NULL);
 }
 
 static void render_game(game_t *game, ray_t *ray,
@@ -115,7 +128,7 @@ static void render_game(game_t *game, ray_t *ray,
     render_weapon(game);
 }
 
-void rendering_function(game_t *game, ray_t *ray,
+static void rendering_function(game_t *game, ray_t *ray,
     sfVertexArray *vertexarr[NUM_TEXTURES_RAY])
 {
     sfRenderWindow_clear(game->window, sfBlack);

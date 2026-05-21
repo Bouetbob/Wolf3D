@@ -8,6 +8,7 @@
 #include "engine.h"
 #include "math.h"
 #include "stdlib.h"
+#include <stdbool.h>
 
 int is_wall(float x, float y, game_t *game)
 {

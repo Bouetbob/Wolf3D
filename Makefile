@@ -12,9 +12,11 @@ SRC :=	src/main.c \
 		src/utils.c \
 		src/events.c \
 		src/cleanup.c \
+		src/rotation_handler.c \
 		src/minimap.c \
 		src/raycasting/raycasting.c \
 		src/raycasting/raycasting_helper.c \
+		src/buttons_initiation/init_buttons.c \
 		src/buttons/draw_buttons.c \
 		src/buttons/init_buttons.c \
 		src/buttons/event_buttons.c \
@@ -22,6 +24,7 @@ SRC :=	src/main.c \
 		src/map/map_saving.c \
 		src/map/map_loading_utils.c \
 		src/ui/change_menu_state.c \
+		src/ui/change_window_size.c \
 		src/ui/render_ui.c \
 		src/ui/setup_text.c \
 		src/enemies/ai.c \
@@ -35,6 +38,7 @@ SRC :=	src/main.c \
 		src/items/bomb.c \
 		src/items/pie.c \
 		src/player/init_weapon.c \
+		src/player/use_weapon.c \
 
 
 

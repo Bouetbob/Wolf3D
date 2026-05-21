@@ -74,7 +74,7 @@ static void restore_enemy_tiles(game_t *game)
 
     for (int i = 0; i < game->enemy_count; i++) {
         e = game->enemies[i];
-        if (!e || !e->alive)
+        if (!e)
             continue;
         x = (int) (e->position.x);
         y = (int) (e->position.y);
@@ -92,12 +92,14 @@ static void clear_enemy_tiles(game_t *game)
 
     for (int i = 0; i < game->enemy_count; i++) {
         e = game->enemies[i];
-        if (!e || !e->alive)
+        if (!e) {
             continue;
+        }
         x = (int) (e->position.x);
         y = (int) (e->position.y);
-        if (x >= 0 && y >= 0 && x < game->map_size.x && y < game->map_size.y)
+        if (!e->alive) {
             game->map[y][x] = '0';
+        }
     }
 }
 
@@ -108,13 +110,11 @@ int save_map(game_t *game)
     if (!fd)
         return (84);
     remove_player_spawn(game);
-    clear_enemy_tiles(game);
     restore_enemy_tiles(game);
+    clear_enemy_tiles(game);
     write_map_stats(game, fd);
     write_map(game, fd);
     write_items(game, fd);
-    remove_player_spawn(game);
-    clear_enemy_tiles(game);
     fclose(fd);
     printf("Map saved to %s\n", game->file_name);
     return (0);
