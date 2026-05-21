@@ -73,6 +73,7 @@ void change_window_size(game_t *game, int x, int y)
     new_pos = (sfVector2f) {game->win_s.x, game->win_s.y};
     clean_mini_map(game);
     init_minimap(game);
+    resize_floor_ceiling(game);
     update_ui_scale(game);
     new_pos = (sfVector2f) {game->win_s.x, (float) game->win_s.y / 2};
 }

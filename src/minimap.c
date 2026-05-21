@@ -9,16 +9,6 @@
 #include "wolf3d.h"
 #include "math.h"
 
-static int get_tile_size(game_t *game)
-{
-    float scale = fminf((float)game->win_s.x / SCREEN_W,
-        (float)game->win_s.y / SCREEN_H);
-
-    if (scale <= 1)
-        scale = 1;
-    return (int)(MINI_TILE_BASE * scale);
-}
-
 static void draw_tile(game_t *game, int x, int y, int tile_size)
 {
     sfColor color = (game->map[y][x] == '0' || game->map[y][x] == 'P' ||
