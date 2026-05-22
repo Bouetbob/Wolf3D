@@ -116,6 +116,7 @@ typedef struct weapon_s {
     float rate;
     int ammo;
     sfSound *shoot;
+    sfSoundBuffer *buff;
     int max_ammo;
     sfIntRect rect;
     float frame_time;

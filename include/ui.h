@@ -32,13 +32,11 @@
 
     #define NUM_BUTTONS 12
 
-button_t *init_button(char *string, sfVector2f *position, sfVector2f *size,
-    int is_menu);
 typedef struct button_params_s {
     char *string;
     sfVector2f *position;
     sfVector2f *size;
-    bool is_menu;
+    int is_menu;
 } button_params_t;
 
 button_t *init_button(button_params_t *params, game_t *game);

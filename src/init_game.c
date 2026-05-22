@@ -96,15 +96,6 @@ void init_ui_texts(game_t *game)
     p->ui_texts[4] = NULL;
 }
 
-static void set_button_callbacks(game_t *game)
-{
-    game->buttons[0]->on_click = (void *) change_menu_state;
-    game->buttons[1]->on_click = (void *) change_menu_state;
-    game->buttons[2]->on_click = (void *) print_game_info;
-    game->buttons[3]->on_click = (void *) print_game_info;
-    game->buttons[4]->on_click = (void *) leave_game;
-}
-
 static void init_buttons(game_t *game)
 {
     init_game_buttons(game);

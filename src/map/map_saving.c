@@ -25,8 +25,8 @@ void write_items(game_t *game, FILE *fd)
             asprintf(&item_list, "%s,", game->player->inventory[i]->name);
             fwrite(item_list, 1, strlen(item_list), fd);
         }
-        free(item_list);
     }
+    free(item_list);
     fwrite("\n", 1, 1, fd);
 }
 

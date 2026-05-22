@@ -27,6 +27,7 @@ static void setup_weapon_stats(weapon_t *weapon, int ammo, int damage,
 
     weapon->shoot = sfSound_create();
     if (weapon->shoot && buffer) {
+        weapon->buff = buffer;
         sfSound_setBuffer(weapon->shoot, buffer);
         sfSound_setVolume(weapon->shoot, 80);
     }

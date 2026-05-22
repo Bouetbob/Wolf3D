@@ -41,10 +41,6 @@ SRC :=	src/main.c \
 		src/items/flash.c \
 		src/player/init_weapon.c \
 		src/player/use_weapon.c \
-
-
-
-	
 		src/cleanup_helper.c \
 		src/init_player.c \
 

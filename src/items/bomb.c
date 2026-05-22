@@ -7,7 +7,6 @@
 
 #include "engine.h"
 #include <SFML/System/Vector2.h>
-#include <stdio.h>
 
 static void remove_wall(game_t *game, int x, int y)
 {

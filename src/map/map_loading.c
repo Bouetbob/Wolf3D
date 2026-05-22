@@ -42,7 +42,7 @@ static int map_filler(game_t *game, char *filename)
     struct stat s;
     char *temp = NULL;
 
-    if (!fd || stat(filename, &s) == -1)
+    if (!fd || stat(filename, &s) == -1 || s.st_size < 10)
         return (84);
     temp = malloc(sizeof(char) * s.st_size + 1);
     if (!temp)

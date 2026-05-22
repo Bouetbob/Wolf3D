@@ -7,6 +7,9 @@
 
 #include "engine.h"
 #include "wolf3d.h"
+#include <SFML/Audio/Sound.h>
+#include <SFML/Audio/SoundBuffer.h>
+#include <SFML/Audio/Types.h>
 
 static void free_buttons_content(game_t *game, int i)
 {
@@ -51,6 +54,9 @@ void free_weapons(player_t *player)
     for (int i = 0; player->weapons[i]; i++) {
         if (player->weapons[i]->sprite)
             free_weapon_sprite(player->weapons[i]);
+        if (player->weapons[i]->shoot) {
+            sfSoundBuffer_destroy(player->weapons[i]->buff);
+        }
         free(player->weapons[i]);
     }
     free(player->weapons);
