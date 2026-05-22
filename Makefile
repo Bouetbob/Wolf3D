@@ -45,6 +45,8 @@ SRC :=	src/main.c \
 
 
 	
+		src/cleanup_helper.c \
+		src/init_player.c \
 
 
 OBJ = $(SRC:%.c=%.o)

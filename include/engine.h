@@ -197,6 +197,7 @@ typedef struct game_s {
     float z_buffer[3000];
     sfTexture *enemy_texture;
     ray_data_t *ray_data;
+    sfFont *font;
 } game_t;
 
 void init_background_and_minimap(game_t *game);
@@ -211,5 +212,10 @@ bool has_line_of_sight(enemy_t *enemy, player_t *player, game_t *game);
 void shoot_player(player_t *player, enemy_t *enemy, game_t *game);
 void render_enemies(game_t *game);
 
+void free_buttons(game_t *game);
+void free_weapons(player_t *player);
+void clean_player(player_t *player);
+void init_ui_texts(game_t *game);
+void init_player(game_t *game);
 
 #endif /* !ENGINE_H_ */

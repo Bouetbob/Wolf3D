@@ -34,6 +34,14 @@
 
 button_t *init_button(char *string, sfVector2f *position, sfVector2f *size,
     int is_menu);
+typedef struct button_params_s {
+    char *string;
+    sfVector2f *position;
+    sfVector2f *size;
+    bool is_menu;
+} button_params_t;
+
+button_t *init_button(button_params_t *params, game_t *game);
 void draw_button(game_t *game, button_t *button);
 void button_event(game_t *game, button_t *button, sfEvent *event);
 
@@ -64,7 +72,6 @@ void draw_ui(game_t *game);
 void update_ui_scale(game_t *game);
 void init_ui_bar(player_t *player, game_t *game);
 
-
 void change_window_size(game_t *game, int x, int y);
 void window_fullscreen(game_t *game);
 void max_window_size(game_t *game);
@@ -75,17 +82,16 @@ void change_settings_state(game_t *game);
 
 
 void update_text(sfText *item, char *new_string);
-sfText *init_text_item(char *string, sfVector2f *position, int size);
+sfText *init_text_item(char *string, sfVector2f *position,
+    int size, game_t *game);
 void get_string_from_num(int number, sfText *item);
 
 void init_weapons(game_t *game);
-
 
 void bomb(game_t *game);
 void pie(game_t *game);
 void gum(game_t *game);
 void flash(game_t *game);
-
 
 
 

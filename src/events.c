@@ -26,7 +26,7 @@
 
 void change_window_size(game_t *game, int x, int y)
 {
-    if (x <= 0 || y <= 0 || x > 2000 || y >= 4000)
+    if (x <= 0 || y <= 0 || x >= 2000 || y >= 4000)
         return;
     temp_destroy_bg(game);
     update_button_and_text_pos(game, x, y);

@@ -11,6 +11,7 @@
 #include "map.h"
 #include "wolf3d.h"
 #include <SFML/Graphics.h>
+#include <SFML/Graphics/Font.h>
 #include <SFML/Graphics/Types.h>
 #include <SFML/System/Vector2.h>
 #include <stdbool.h>
@@ -73,9 +74,6 @@ static int init_textures(game_t *game)
 
     memset(game->tex->ray_tex, 0, r_s);
     memset(game->tex->item_tex, 0, i_s);
-    load_ray_textures(game->tex->ray_tex);
-    if (load_item_textures(game->tex->item_tex) == 84)
-        return (84);
     game->enemy_texture = sfTexture_createFromFile(
         "assets/World_Textures/enemy_magnum.png", NULL);
     if (!game->enemy_texture)
@@ -83,42 +81,28 @@ static int init_textures(game_t *game)
     return (0);
 }
 
-static void init_ui_texts(game_t *game)
+void init_ui_texts(game_t *game)
 {
     player_t *p = game->player;
+    sfVector2f hp_pos = {670, game->win_s.y - 80};
+    sfVector2f sc_pos = {170, game->win_s.y - 80};
+    sfVector2f num_pos = {400, game->win_s.y - 110};
+    sfVector2f am_pos = {800, game->win_s.y - 80};
 
-    p->ui_texts[0] =
-        init_text_item("health", &(sfVector2f) {670, game->win_s.y - 80}, 40);
-    p->ui_texts[1] =
-        init_text_item("score", &(sfVector2f) {170, game->win_s.y - 80}, 40);
-    p->ui_texts[2] =
-        init_text_item("1", &(sfVector2f) {400, game->win_s.y - 110}, 80);
-    p->ui_texts[3] =
-        init_text_item("ammo", &(sfVector2f) {800, game->win_s.y - 80}, 40);
+    p->ui_texts[0] = init_text_item("health", &hp_pos, 40, game);
+    p->ui_texts[1] = init_text_item("score", &sc_pos, 40, game);
+    p->ui_texts[2] = init_text_item("1", &num_pos, 80, game);
+    p->ui_texts[3] = init_text_item("ammo", &am_pos, 40, game);
     p->ui_texts[4] = NULL;
 }
 
-static void init_player(game_t *game)
+static void set_button_callbacks(game_t *game)
 {
-    player_t *p = game->player;
-
-    init_ui_bar(p, game);
-    p->stats = malloc(sizeof(stats_t));
-    p->ui_texts = malloc(sizeof(sfText **) * 5);
-    p->weapons = malloc(sizeof(weapon_t *) * 3);
-    if (!p->stats || !p->ui_texts || !p->weapons)
-        exit_with_message("couldn't malloc essentials\n", 2, 84);
-    init_ui_texts(game);
-    init_weapons(game);
-    p->stats->health = 500;
-    p->stats->flashlight = false;
-    p->angle = 0;
-    p->stats->move_speed = MOVESPEED;
-    p->FOV = FORMER_FOV;
-    p->inventory = malloc(sizeof(item_t *) * INVENTORY_SIZE);
-    for (int i = 0; i < INVENTORY_SIZE; i++)
-        p->inventory[i] = NULL;
-    update_player(p);
+    game->buttons[0]->on_click = (void *) change_menu_state;
+    game->buttons[1]->on_click = (void *) change_menu_state;
+    game->buttons[2]->on_click = (void *) print_game_info;
+    game->buttons[3]->on_click = (void *) print_game_info;
+    game->buttons[4]->on_click = (void *) leave_game;
 }
 
 static void init_buttons(game_t *game)
@@ -164,6 +148,7 @@ int init_all(game_t *game)
     memset(game->tex->ray_tex, 0, sizeof(game->tex->ray_tex));
     memset(game->tex->item_tex, 0, sizeof(game->tex->item_tex));
     load_ray_textures(game->tex->ray_tex);
+    game->font = sfFont_createFromFile("assets/Fonts/Bear_Days.otf");
     if (load_item_textures(game->tex->item_tex) == 84)
         return (84);
     init_player(game);
