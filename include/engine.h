@@ -199,6 +199,7 @@ typedef struct game_s {
     sfTexture *enemy_texture;
     ray_data_t *ray_data;
     sfFont *font;
+    sfSprite *menu_bg;
 } game_t;
 
 void init_background_and_minimap(game_t *game);

@@ -91,6 +91,7 @@ void pie(game_t *game);
 void gum(game_t *game);
 void flash(game_t *game);
 
-
+void init_menu_bg(game_t *game);
+void draw_menu_bg(game_t *game);
 
 #endif /* !UI_H_ */

@@ -148,5 +148,6 @@ int init_all(game_t *game)
     for (int i = 0; i < 3000; i++)
         game->z_buffer[i] = 1e30f;
     init_buttons(game);
+    init_menu_bg(game);
     return (0);
 }

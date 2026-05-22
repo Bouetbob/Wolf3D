@@ -43,7 +43,7 @@ SRC :=	src/main.c \
 		src/player/use_weapon.c \
 		src/cleanup_helper.c \
 		src/init_player.c \
-
+		src/ui/change_background.c \
 
 OBJ = $(SRC:%.c=%.o)
 

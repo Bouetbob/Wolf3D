@@ -135,6 +135,7 @@ static void rendering_function(game_t *game, ray_t *ray,
     if (!game->scene_number) {
         render_game(game, ray, vertexarr);
     }
+    draw_menu_bg(game);
     if (game->scene_number == 2) {
         render_inventory(game);
     }

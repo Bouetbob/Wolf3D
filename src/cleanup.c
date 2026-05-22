@@ -72,7 +72,7 @@ static void free_resource_helper(game_t *game)
     free_buttons(game);
 }
 
-void cleanup_game(game_t *game)
+static void cleanup_game_utils(game_t *game)
 {
     if (game->minimap)
         free(game->minimap);
@@ -84,6 +84,19 @@ void cleanup_game(game_t *game)
         free(game->timer);
     if (game->file_name)
         free(game->file_name);
+}
+
+void cleanup_game(game_t *game)
+{
+    const sfTexture *tex;
+
+    if (game->menu_bg) {
+        tex = sfSprite_getTexture(game->menu_bg);
+        sfSprite_destroy(game->menu_bg);
+        if (tex)
+            sfTexture_destroy((sfTexture *)tex);
+    }
+    cleanup_game_utils(game);
     if (game->enemy_texture)
         sfTexture_destroy(game->enemy_texture);
     if (game->tex)
