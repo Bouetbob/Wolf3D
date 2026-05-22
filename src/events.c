@@ -67,7 +67,7 @@ static void handle_ui_events(game_t *game, sfEvent event)
             && game->player->inventory[i]->uses == 0) {
             sfRectangleShape_destroy(game->player->inventory[i]->background);
             sfSprite_destroy(game->player->inventory[i]->sprite);
-            free(game->player->inventory[i]->name);    
+            free(game->player->inventory[i]->name);
             free(game->player->inventory[i]);
             game->player->inventory[i] = NULL;
         }
