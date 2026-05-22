@@ -37,6 +37,8 @@ SRC :=	src/main.c \
 		src/items/item_utils.c \
 		src/items/bomb.c \
 		src/items/pie.c \
+		src/items/gum.c \
+		src/items/flash.c \
 		src/player/init_weapon.c \
 		src/player/use_weapon.c \
 
@@ -52,7 +54,7 @@ INCLUDE	=	./include
 
 CC	:=	epiclang
 CFLAGS	:=	-Wall -Wextra -I $(INCLUDE) -g
-CSFMLFLAGS	:=	-lcsfml-graphics -lcsfml-window -lcsfml-system
+CSFMLFLAGS	:=	-lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio
 LIBS_TO_LINK	:=	$(CSFMLFLAGS) -lm -L. -lmy
 
 LIB_NAME = libmy.a

@@ -7,17 +7,28 @@
 
 
 #include "engine.h"
+#include <SFML/Audio/Sound.h>
+#include <SFML/Audio/SoundBuffer.h>
+#include <SFML/Audio/Types.h>
 #include <SFML/Config.h>
 #include <SFML/Graphics/Rect.h>
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/Texture.h>
 #include <SFML/Graphics/Types.h>
 #include <SFML/System/Vector2.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
 static void setup_weapon_stats(weapon_t *weapon, int ammo, int damage, int rate)
 {
+    sfSoundBuffer *buffer = sfSoundBuffer_createFromFile("assets/Sounds/gun.mp3");
+
+    weapon->shoot = sfSound_create();
+    if (weapon->shoot && buffer) {
+        sfSound_setBuffer(weapon->shoot, buffer);
+        sfSound_setVolume(weapon->shoot, 80);
+    }
     weapon->ammo = ammo;
     weapon->max_ammo = ammo;
     weapon->damage = damage;

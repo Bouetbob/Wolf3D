@@ -7,6 +7,10 @@
 
 #include "engine.h"
 #include "event.h"
+#include <SFML/Audio/Sound.h>
+#include <SFML/Audio/Types.h>
+#include <stdint.h>
+#include <stdio.h>
 
 static void add_new_item(game_t *game)
 {
@@ -50,6 +54,7 @@ static bool check_enemy_hit(game_t *game, enemy_t *enemy)
 static void hurt_enemy(game_t *game, enemy_t *enemy)
 {
     enemy->health -= game->player->weapons[game->player->curr_weapon]->damage;
+    game->player->score += 5;
     if (enemy->health <= 0 && enemy->alive) {
         game->map[(int) enemy->position.x][(int) enemy->position.y] = '0';
         add_new_item(game);
@@ -66,6 +71,9 @@ void shoot_gun(game_t *game)
 
     if (curr_weapon->ammo <= 0 || curr_weapon->frame != 0)
         return;
+    if (curr_weapon->shoot) {
+        sfSound_play(curr_weapon->shoot);
+    }
     curr_weapon->ammo--;
     curr_weapon->frame = 1;
     game->player->score++;

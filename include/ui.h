@@ -27,8 +27,8 @@
 
     #define BOMB init_item(game->tex->item_tex[0], 1, "BOMB", (void *) bomb)
     #define PIE init_item(game->tex->item_tex[1], 1, "PIE", (void *) pie)
-    #define GUM init_item(game->tex->item_tex[2], 1, "GUM", NULL)
-    #define FLASH init_item(game->tex->item_tex[3], 1, "FLASH", NULL)
+    #define GUM init_item(game->tex->item_tex[2], 1, "GUM", (void *) gum)
+    #define FLASH init_item(game->tex->item_tex[3], 1, "FLASH", (void *) flash)
 
     #define NUM_BUTTONS 12
 
@@ -83,6 +83,10 @@ void init_weapons(game_t *game);
 
 void bomb(game_t *game);
 void pie(game_t *game);
+void gum(game_t *game);
+void flash(game_t *game);
+
+
 
 
 #endif /* !UI_H_ */

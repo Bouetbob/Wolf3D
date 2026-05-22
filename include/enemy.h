@@ -8,9 +8,11 @@
 #ifndef ENEMY_H_
     #define ENEMY_H_
 
+    #include <SFML/Audio/Types.h>
     #include <SFML/Graphics/Types.h>
     #include <SFML/System/Vector2.h>
     #include <stdbool.h>
+    #include <SFML/Audio.h>
 
     #define MAX_ENEMIES 64
 

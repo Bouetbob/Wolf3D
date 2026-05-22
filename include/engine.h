@@ -9,6 +9,7 @@
     #define ENGINE_H_
 
     #include "enemy.h"
+    #include <SFML/Audio/Types.h>
     #include <SFML/Graphics.h>
     #include <SFML/Graphics/Color.h>
     #include <SFML/Graphics/PrimitiveType.h>
@@ -18,6 +19,7 @@
     #include <SFML/Graphics/Types.h>
     #include <SFML/Graphics/VertexArray.h>
     #include <SFML/System.h>
+    #include <SFML/Audio.h>
     #include <SFML/System/Time.h>
     #include <SFML/System/Vector2.h>
     #include <SFML/Window.h>
@@ -113,6 +115,7 @@ typedef struct weapon_s {
     int damage;
     float rate;
     int ammo;
+    sfSound *shoot;
     int max_ammo;
     sfIntRect rect;
     float frame_time;
