@@ -8,6 +8,8 @@
 #ifndef ENGINE_H_
     #define ENGINE_H_
 
+    #include "enemy.h"
+    #include <SFML/Audio/Types.h>
     #include <SFML/Graphics.h>
     #include <SFML/Graphics/Color.h>
     #include <SFML/Graphics/PrimitiveType.h>
@@ -17,6 +19,7 @@
     #include <SFML/Graphics/Types.h>
     #include <SFML/Graphics/VertexArray.h>
     #include <SFML/System.h>
+    #include <SFML/Audio.h>
     #include <SFML/System/Time.h>
     #include <SFML/System/Vector2.h>
     #include <SFML/Window.h>
@@ -33,19 +36,25 @@
     #define SCREEN_W 1200
     #define SCREEN_H 800
     #define UNUSED [[maybe_unused]]
+
     #define MOVESPEED 2
     #define ROTATESPEED 90
+
     #define AUTHORIZED_CHARS "0123456789PBMT"
     #define INVENTORY_SIZE 25
     #define NUM_TEXTURES_ITEMS 4
     #define MAX_ENEMIES 64
     #define TEX_FLOOR 5
     #define TEX_CEIL 2
+
     #define MINI_TILE 5
     #define MINI_PADDING 1
-    #define MINI_TILE_BASE 10
+    #define MINI_TILE_BASE 6
 
-
+    #define SETTINGS 3
+    #define INVENTORY 2
+    #define MENU 1
+    #define GAME 0
 
 typedef struct buttons_s {
     sfRectangleShape *background;
@@ -106,6 +115,7 @@ typedef struct weapon_s {
     int damage;
     float rate;
     int ammo;
+    sfSound *shoot;
     int max_ammo;
     sfIntRect rect;
     float frame_time;
@@ -170,7 +180,6 @@ typedef struct game_s {
     background_t *background;
     player_t *player;
     minimap_t *minimap;
-    sfSprite *bomb_sprite;
     textures_t *tex;
     sfRenderWindow *window;
     sfVector2i win_s;
@@ -183,9 +192,9 @@ typedef struct game_s {
     char **map;
     char *file_name;
     int scene_number;
-    struct enemy_s **enemies;
+    enemy_t **enemies;
     int enemy_count;
-    float z_buffer[SCREEN_W];
+    float z_buffer[3000];
     sfTexture *enemy_texture;
     ray_data_t *ray_data;
     sfFont *font;
@@ -196,6 +205,13 @@ void render_floor_ceiling(game_t *game);
 void init_minimap(game_t *game);
 void render_minimap(game_t *game);
 void clean_mini_map(game_t *game);
+void resize_floor_ceiling(game_t *game);
+
+void update_enemies(game_t *game);
+bool has_line_of_sight(enemy_t *enemy, player_t *player, game_t *game);
+void shoot_player(player_t *player, enemy_t *enemy, game_t *game);
+void render_enemies(game_t *game);
+
 void free_buttons(game_t *game);
 void free_weapons(player_t *player);
 void clean_player(player_t *player);

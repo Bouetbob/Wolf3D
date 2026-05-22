@@ -27,11 +27,13 @@
 
     #define BOMB init_item(game->tex->item_tex[0], 1, "BOMB", (void *) bomb)
     #define PIE init_item(game->tex->item_tex[1], 1, "PIE", (void *) pie)
-    #define GUM init_item(game->tex->item_tex[2], 1, "GUM", NULL)
-    #define FLASH init_item(game->tex->item_tex[3], 1, "FLASH", NULL)
+    #define GUM init_item(game->tex->item_tex[2], 1, "GUM", (void *) gum)
+    #define FLASH init_item(game->tex->item_tex[3], 1, "FLASH", (void *) flash)
 
-    #define NUM_BUTTONS 5
+    #define NUM_BUTTONS 12
 
+button_t *init_button(char *string, sfVector2f *position, sfVector2f *size,
+    int is_menu);
 typedef struct button_params_s {
     char *string;
     sfVector2f *position;
@@ -46,6 +48,14 @@ void button_event(game_t *game, button_t *button, sfEvent *event);
 void change_menu_state(game_t *game);
 void print_game_info(game_t *game);
 void leave_game(game_t *game);
+void update_button_and_text_pos(game_t *game, int new_x, int new_y);
+void init_game_buttons(game_t *game);
+void init_menu_buttons(game_t *game);
+void init_inv_buttons(game_t *game);
+void init_settings_buttons(game_t *game);
+
+
+
 
 item_t *init_item(sfTexture *texture, int uses, char *name,
     void(function)(void *));
@@ -54,12 +64,22 @@ void draw_item(game_t *game, item_t *item);
 int amount_of_items(player_t *player);
 void item_event(game_t *game, item_t *item, sfEvent *event);
 int get_inv_free_spot(game_t *game);
+void change_inv_state(game_t *game);
+
+
 
 void draw_ui(game_t *game);
 void update_ui_scale(game_t *game);
 void init_ui_bar(player_t *player, game_t *game);
 
 void change_window_size(game_t *game, int x, int y);
+void window_fullscreen(game_t *game);
+void max_window_size(game_t *game);
+void mid_window_size(game_t *game);
+void min_window_size(game_t *game);
+void change_settings_state(game_t *game);
+
+
 
 void update_text(sfText *item, char *new_string);
 sfText *init_text_item(char *string, sfVector2f *position,
@@ -70,5 +90,9 @@ void init_weapons(game_t *game);
 
 void bomb(game_t *game);
 void pie(game_t *game);
+void gum(game_t *game);
+void flash(game_t *game);
+
+
 
 #endif /* !UI_H_ */

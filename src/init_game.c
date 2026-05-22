@@ -107,23 +107,10 @@ static void set_button_callbacks(game_t *game)
 
 static void init_buttons(game_t *game)
 {
-    sfVector2f sz = {110, 20};
-    sfVector2f p1 = {game->win_s.x - 100, 100};
-    sfVector2f p2 = {(float) game->win_s.x / 2, game->win_s.y - 300};
-    sfVector2f p3 = {game->win_s.x - 100, game->win_s.y - 100};
-    sfVector2f p4 = {(float) game->win_s.x / 2, game->win_s.y - 150};
-    button_params_t b0 = {"enter menu", &p1, &sz, false};
-    button_params_t b1 = {"leave menu", &p2, &sz, true};
-    button_params_t b2 = {"print info", &p3, &sz, false};
-    button_params_t b3 = {"print info", &p3, &sz, true};
-    button_params_t b4 = {"leave game", &p4, &sz, true};
-
-    game->buttons[0] = init_button(&b0, game);
-    game->buttons[1] = init_button(&b1, game);
-    game->buttons[2] = init_button(&b2, game);
-    game->buttons[3] = init_button(&b3, game);
-    game->buttons[4] = init_button(&b4, game);
-    set_button_callbacks(game);
+    init_game_buttons(game);
+    init_menu_buttons(game);
+    init_inv_buttons(game);
+    init_settings_buttons(game);
 }
 
 static int alloc_essentials(game_t *game)
@@ -167,7 +154,7 @@ int init_all(game_t *game)
     init_player(game);
     game->scene_number = 0;
     game->key_clock = sfClock_create();
-    for (int i = 0; i < SCREEN_W; i++)
+    for (int i = 0; i < 3000; i++)
         game->z_buffer[i] = 1e30f;
     init_buttons(game);
     return (0);

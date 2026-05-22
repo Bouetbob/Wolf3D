@@ -131,6 +131,8 @@ void render_enemies(game_t *game)
         }
     }
     sort_enemies(sorted, count, game);
-    for (int e = 0; e < count; e++)
-        render_one_enemy(game, sorted[e], tex, frame_w);
+    for (int e = 0; e < count; e++) {
+        if (sorted[e])
+            render_one_enemy(game, sorted[e], tex, frame_w);
+    }
 }

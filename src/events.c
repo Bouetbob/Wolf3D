@@ -6,6 +6,7 @@
 */
 
 #include "engine.h"
+#include "event.h"
 #include "map.h"
 #include "my.h"
 #include "ui.h"
@@ -17,69 +18,42 @@
 #include <SFML/System/Vector2.h>
 #include <SFML/Window/Event.h>
 #include <SFML/Window/Keyboard.h>
+#include <SFML/Window/VideoMode.h>
+#include <SFML/Window/WindowBase.h>
+#include <stdbool.h>
 #include <stdio.h>
-
-static void add_new_item(game_t *game)
-{
-    item_t **inv = game->player->inventory;
-    int pos = get_inv_free_spot(game);
-    int to_add = rand() % NUM_TEXTURES_ITEMS;
-
-    if (pos == -1)
-        return;
-    if (to_add == 0)
-        inv[pos] = BOMB;
-    if (to_add == 1)
-        inv[pos] = PIE;
-    if (to_add == 2)
-        inv[pos] = GUM;
-    if (to_add == 3)
-        inv[pos] = FLASH;
-}
-
-static void update_button_and_text_pos(game_t *game, int new_x, int new_y)
-{
-    sfVector2f current_size = {game->win_s.x, game->win_s.y};
-    sfVector2f new_pos = {game->win_s.x, game->win_s.y};
-    sfVector2f size_factor = {new_x / current_size.x, new_y / current_size.y};
-
-    for (int i = 0; i < NUM_BUTTONS; i++) {
-        new_pos = sfRectangleShape_getPosition(game->buttons[i]->background);
-        new_pos.x *= size_factor.x;
-        new_pos.y *= size_factor.y;
-        sfRectangleShape_setPosition(game->buttons[i]->background, new_pos);
-        sfText_setPosition(game->buttons[i]->text, new_pos);
-    }
-    for (int i = 0; game->player->ui_texts[i]; i++) {
-        new_pos = sfText_getPosition(game->player->ui_texts[i]);
-        new_pos.x *= size_factor.x;
-        new_pos.y *= size_factor.y;
-        sfText_setPosition(game->player->ui_texts[i], new_pos);
-        sfText_setScale(game->player->ui_texts[i], size_factor);
-    }
-}
+#include "weapons.h"
 
 void change_window_size(game_t *game, int x, int y)
 {
     if (x <= 0 || y <= 0 || x >= 2000 || y >= 4000)
         return;
+    temp_destroy_bg(game);
     update_button_and_text_pos(game, x, y);
     sfRenderWindow_close(game->window);
     game->window = create_window(x, y, "wolf3d");
     game->win_s.x = x;
     game->win_s.y = y;
     clean_mini_map(game);
-    init_minimap(game);
+    init_background_and_minimap(game);
     resize_floor_ceiling(game);
     update_ui_scale(game);
 }
 
-static void change_inv_state(game_t *game)
+void change_settings_state(game_t *game)
 {
-    if (game->scene_number != 2)
-        game->scene_number = 2;
+    if (game->scene_number != SETTINGS)
+        game->scene_number = SETTINGS;
     else
-        game->scene_number = 1;
+        game->scene_number = MENU;
+}
+
+void change_inv_state(game_t *game)
+{
+    if (game->scene_number != INVENTORY)
+        game->scene_number = INVENTORY;
+    else
+        game->scene_number = MENU;
 }
 
 static void handle_ui_events(game_t *game, sfEvent event)
@@ -96,23 +70,19 @@ static void handle_ui_events(game_t *game, sfEvent event)
     }
 }
 
-static void shoot_gun(game_t *game)
+bool is_enemy(sfVector2f *pos, game_t *game)
 {
-    player_t *p = game->player;
-    weapon_t *curr_weapon = p->weapons[p->curr_weapon];
+    int map_x = (int) pos->x;
+    int map_y = (int) pos->y;
+    char to_see;
 
-    if (curr_weapon->ammo <= 0)
-        return;
-    curr_weapon->ammo--;
-    curr_weapon->frame = 1;
-    game->player->score++;
-    return;
-}
-
-static void reload_gun(game_t *game)
-{
-    game->player->weapons[game->player->curr_weapon]->ammo =
-        game->player->weapons[game->player->curr_weapon]->max_ammo;
+    if (map_x < 0 || map_y < 0 || map_x >= game->map_size.x
+        || map_y >= game->map_size.y)
+        return false;
+    to_see = game->map[map_x][map_y];
+    if (to_see == 'T' || to_see == 'M')
+        return true;
+    return false;
 }
 
 void analyse_events(sfRenderWindow *window, sfEvent event, game_t *game)
@@ -134,6 +104,6 @@ void analyse_events(sfRenderWindow *window, sfEvent event, game_t *game)
         change_window_size(game, game->win_s.x - 200, game->win_s.y - 100);
     if (event.type == sfEvtKeyReleased && event.key.code == sfKeyR)
         reload_gun(game);
-    if (event.type == sfEvtKeyReleased && event.key.code == sfKeyB)
+    if (event.type == sfEvtKeyReleased && event.key.code == sfKeyTab)
         change_inv_state(game);
 }

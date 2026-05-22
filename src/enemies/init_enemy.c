@@ -7,6 +7,9 @@
 
 #include "enemy.h"
 #include "weapons.h"
+#include <SFML/Audio/Sound.h>
+#include <SFML/Audio/SoundBuffer.h>
+#include <SFML/Audio/Types.h>
 #include <SFML/System/Vector2.h>
 #include <stdlib.h>
 
