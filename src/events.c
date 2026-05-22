@@ -61,7 +61,7 @@ static void update_button_and_text_pos(game_t *game, int new_x, int new_y)
 
 void change_window_size(game_t *game, int x, int y)
 {
-    if (x <= 0 || y <= 0 || x > SCREEN_W || y >= 4000)
+    if (x <= 0 || y <= 0 || x >= 2000 || y >= 4000)
         return;
     update_button_and_text_pos(game, x, y);
     sfRenderWindow_close(game->window);

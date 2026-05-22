@@ -8,6 +8,7 @@
 #include "enemy.h"
 #include "engine.h"
 #include "event.h"
+#include <SFML/Graphics/Font.h>
 #include <SFML/Graphics/RectangleShape.h>
 #include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/Text.h>
@@ -36,25 +37,6 @@ static void free_enemies(game_t *game)
         }
     }
     free(game->enemies);
-}
-
-void clean_player(player_t *player)
-{
-    free(player->stats);
-    sfRectangleShape_destroy(player->ui_bar);
-    for (int i = 0; player->ui_texts[i]; i++)
-        sfText_destroy(player->ui_texts[i]);
-    free(player->ui_texts);
-    free_weapons(player);
-    for (int i = 0; i < INVENTORY_SIZE; i++) {
-        if (player->inventory[i]) {
-            sfRectangleShape_destroy(player->inventory[i]->background);
-            free(player->inventory[i]->name);
-            free(player->inventory[i]);
-        }
-    }
-    free(player->inventory);
-    free(player);
 }
 
 static void clean_floor_and_ceilling(game_t *game)
@@ -106,6 +88,10 @@ void cleanup_game(game_t *game)
         sfTexture_destroy(game->enemy_texture);
     if (game->tex)
         free(game->tex);
+    if (game->font)
+        sfFont_destroy(game->font);
+    if (game->background)
+        free(game->background);
 }
 
 void free_ressource(game_t *game, ray_t *ray,

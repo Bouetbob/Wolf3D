@@ -60,3 +60,4 @@ compile_commands.json
 .cache
 callgrind*
 test_maps/
+vgcore*
