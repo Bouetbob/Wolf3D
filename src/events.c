@@ -70,6 +70,7 @@ void change_window_size(game_t *game, int x, int y)
     game->win_s.y = y;
     clean_mini_map(game);
     init_minimap(game);
+    resize_floor_ceiling(game);
     update_ui_scale(game);
 }
 

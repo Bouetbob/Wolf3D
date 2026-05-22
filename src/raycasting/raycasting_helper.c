@@ -20,13 +20,6 @@ int is_wall(float x, float y, game_t *game)
     return (game->map[map_y][map_x] > '0' && game->map[map_y][map_x] <= '9');
 }
 
-static void apply_intensity(sfColor *c, float intensity)
-{
-    c->r = (sfUint8)(c->r * intensity);
-    c->g = (sfUint8)(c->g * intensity);
-    c->b = (sfUint8)(c->b * intensity);
-}
-
 static void get_ray_dirs(game_t *game, ray_data_t *rd)
 {
     float fov = tanf(game->player->FOV / 2.0f);
@@ -44,54 +37,93 @@ static void get_ray_dirs(game_t *game, ray_data_t *rd)
         tanf(game->player->FOV / 2.0f) / 2.0f;
 }
 
-static void render_pixel(game_t *game, sfVector2i *coord,
+static void render_pixel_floor(floor_context_t *context, sfVector2i *coord,
     float *floor_pos, float intensity)
 {
-    sfVector2u ftex_s = sfImage_getSize(game->background->floor_tex_img);
-    sfVector2u ctex_s = sfImage_getSize(game->background->ceil_tex_img);
-    sfColor fc = sfImage_getPixel(game->background->floor_tex_img,
-        (int)((floor_pos[0] - floorf(floor_pos[0])) * ftex_s.x) &
-        (ftex_s.x - 1), (int)((floor_pos[1] - floorf(floor_pos[1]))
-            * ftex_s.y) & (ftex_s.y - 1));
-    sfColor cc = sfImage_getPixel(game->background->ceil_tex_img,
-        (int)((floor_pos[0] - floorf(floor_pos[0])) * ctex_s.x) &
-        (ctex_s.x - 1), (int)((floor_pos[1] - floorf(floor_pos[1]))
-            * ctex_s.y) & (ctex_s.y - 1));
+    int fx = (int)((floor_pos[0] - floorf(floor_pos[0])) * context->ftex_s.x)
+        & (context->ftex_s.x - 1);
+    int fy = (int)((floor_pos[1] - floorf(floor_pos[1])) * context->ftex_s.y)
+        & (context->ftex_s.y - 1);
+    int f_src = (fy * context->ftex_s.x + fx) * 4;
+    int f_dst = (coord->y * context->win_w + coord->x) * 4;
 
-    apply_intensity(&fc, intensity);
-    apply_intensity(&cc, intensity);
-    sfImage_setPixel(game->background->floor_image, coord->x, coord->y, fc);
-    sfImage_setPixel(game->background->floor_image, coord->x,
-        game->win_s.y - coord->y - 1, cc);
+    context->out[f_dst + 0] = (sfUint8)(context->ftex[f_src + 0] * intensity);
+    context->out[f_dst + 1] = (sfUint8)(context->ftex[f_src + 1] * intensity);
+    context->out[f_dst + 2] = (sfUint8)(context->ftex[f_src + 2] * intensity);
+    context->out[f_dst + 3] = 255;
 }
 
-static void render_row(game_t *game, int y, ray_data_t *rd)
+static void render_pixel_ceiling(floor_context_t *context, sfVector2i *coord,
+    float *floor_pos, float intensity)
 {
-    float row_dist = rd->half_proj / (float)(y - game->win_s.y / 2);
-    float step_x = row_dist * (rd->rdx1 - rd->rdx0) / (float)game->win_s.x;
-    float step_y = row_dist * (rd->rdy1 - rd->rdy0) / (float)game->win_s.x;
+    int cx = (int)((floor_pos[0] - floorf(floor_pos[0])) * context->ctex_s.x)
+        & (context->ctex_s.x - 1);
+    int cy = (int)((floor_pos[1] - floorf(floor_pos[1])) * context->ctex_s.y)
+        & (context->ctex_s.y - 1);
+    int c_src = (cy * context->ctex_s.x + cx) * 4;
+    int c_dst = ((context->win_h - coord->y - 1)
+        * context->win_w + coord->x) * 4;
+
+    context->out[c_dst + 0] = (sfUint8)(context->ctex[c_src + 0] * intensity);
+    context->out[c_dst + 1] = (sfUint8)(context->ctex[c_src + 1] * intensity);
+    context->out[c_dst + 2] = (sfUint8)(context->ctex[c_src + 2] * intensity);
+    context->out[c_dst + 3] = 255;
+}
+
+static void render_row(floor_context_t *context, int y, ray_data_t *rd,
+    game_t *game)
+{
+    float row_dist = rd->half_proj / (float)(y - context->win_h / 2);
+    float step_x = row_dist * (rd->rdx1 - rd->rdx0) / (float)context->win_w;
+    float step_y = row_dist * (rd->rdy1 - rd->rdy0) / (float)context->win_w;
     float floor_pos[2] = {game->player->pos.x + row_dist * rd->rdx0,
         game->player->pos.y + row_dist * rd->rdy0};
     float intensity = fmaxf(0.0f, 1.0f -
         (row_dist / (float)SHADOW_EFFECT_DIST));
-    sfVector2i coord;
 
-    for (int x = 0; x < game->win_s.x; x++){
+    for (int x = 0; x < context->win_w; x++) {
         floor_pos[0] += step_x;
         floor_pos[1] += step_y;
-        coord.x = x;
-        coord.y = y;
-        render_pixel(game, &coord, floor_pos, intensity);
+        render_pixel_floor(context, &(sfVector2i){x, y}, floor_pos, intensity);
+        render_pixel_ceiling(context,
+            &(sfVector2i){x, y}, floor_pos, intensity);
     }
+}
+
+void resize_floor_ceiling(game_t *game)
+{
+    if (game->background->floor_image)
+        sfImage_destroy(game->background->floor_image);
+    if (game->background->floor_render_tex)
+        sfTexture_destroy(game->background->floor_render_tex);
+    if (game->background->floor_sprite)
+        sfSprite_destroy(game->background->floor_sprite);
+    game->background->floor_image =
+        sfImage_create(game->win_s.x, game->win_s.y);
+    game->background->floor_render_tex =
+        sfTexture_create(game->win_s.x, game->win_s.y);
+    game->background->floor_sprite = sfSprite_create();
+    sfSprite_setTexture(game->background->floor_sprite,
+        game->background->floor_render_tex, sfTrue);
 }
 
 void render_floor_ceiling(game_t *game)
 {
+    floor_context_t context;
+
     if (!game->background->floor_tex_img || !game->background->ceil_tex_img)
         return;
+    context.ftex_s = sfImage_getSize(game->background->floor_tex_img);
+    context.ctex_s = sfImage_getSize(game->background->ceil_tex_img);
+    context.ftex = sfImage_getPixelsPtr(game->background->floor_tex_img);
+    context.ctex = sfImage_getPixelsPtr(game->background->ceil_tex_img);
+    context.out =
+        (sfUint8 *)sfImage_getPixelsPtr(game->background->floor_image);
+    context.win_w = game->win_s.x;
+    context.win_h = game->win_s.y;
     get_ray_dirs(game, game->ray_data);
     for (int y = game->win_s.y / 2 + 1; y < game->win_s.y; y++)
-        render_row(game, y, game->ray_data);
+        render_row(&context, y, game->ray_data, game);
     sfTexture_updateFromImage(game->background->floor_render_tex,
         game->background->floor_image, 0, 0);
     sfRenderWindow_drawSprite(game->window,

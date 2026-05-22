@@ -39,7 +39,7 @@
     #define INVENTORY_SIZE 25
     #define NUM_TEXTURES_ITEMS 4
     #define MAX_ENEMIES 64
-    #define TEX_FLOOR 2
+    #define TEX_FLOOR 5
     #define TEX_CEIL 2
     #define MINI_TILE 5
     #define MINI_PADDING 1
@@ -156,6 +156,15 @@ typedef struct minimap_s {
     bool need_map_render;
 } minimap_t;
 
+typedef struct floor_context_s {
+    sfUint8 *out;
+    const sfUint8 *ftex;
+    const sfUint8 *ctex;
+    sfVector2u ftex_s;
+    sfVector2u ctex_s;
+    int win_w;
+    int win_h;
+} floor_context_t;
 
 typedef struct game_s {
     background_t *background;
