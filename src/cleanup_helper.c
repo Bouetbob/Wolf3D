@@ -55,6 +55,7 @@ void free_weapons(player_t *player)
         if (player->weapons[i]->sprite)
             free_weapon_sprite(player->weapons[i]);
         if (player->weapons[i]->shoot) {
+            sfSound_destroy(player->weapons[i]->shoot);
             sfSoundBuffer_destroy(player->weapons[i]->buff);
         }
         free(player->weapons[i]);

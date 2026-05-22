@@ -40,12 +40,11 @@ void min_window_size(game_t *game)
 
     temp_destroy_bg(game);
     update_button_and_text_pos(game, x, y);
-    sfRenderWindow_close(game->window);
+    sfRenderWindow_destroy(game->window);
     game->window = create_window(x, y, "wolf3d");
     game->win_s.x = x;
     game->win_s.y = y;
-    sfRenderTexture_destroy(game->minimap->minimap_tex);
-    sfSprite_destroy(game->minimap->minimap_sprite);
+    clean_mini_map(game);
     init_background_and_minimap(game);
     update_ui_scale(game);
 }
@@ -57,12 +56,11 @@ void mid_window_size(game_t *game)
 
     temp_destroy_bg(game);
     update_button_and_text_pos(game, x, y);
-    sfRenderWindow_close(game->window);
+    sfRenderWindow_destroy(game->window);
     game->window = create_window(x, y, "wolf3d");
     game->win_s.x = x;
     game->win_s.y = y;
-    sfRenderTexture_destroy(game->minimap->minimap_tex);
-    sfSprite_destroy(game->minimap->minimap_sprite);
+    clean_mini_map(game);
     init_background_and_minimap(game);
     update_ui_scale(game);
 }
@@ -74,12 +72,11 @@ void max_window_size(game_t *game)
 
     temp_destroy_bg(game);
     update_button_and_text_pos(game, x, y);
-    sfRenderWindow_close(game->window);
+    sfRenderWindow_destroy(game->window);
     game->window = create_window(x, y, "wolf3d");
     game->win_s.x = x;
     game->win_s.y = y;
-    sfRenderTexture_destroy(game->minimap->minimap_tex);
-    sfSprite_destroy(game->minimap->minimap_sprite);
+    clean_mini_map(game);
     init_background_and_minimap(game);
     update_ui_scale(game);
 }
@@ -91,14 +88,13 @@ void window_fullscreen(game_t *game)
 
     temp_destroy_bg(game);
     update_button_and_text_pos(game, x, y);
-    sfRenderWindow_close(game->window);
+    sfRenderWindow_destroy(game->window);
     game->window = sfRenderWindow_create((sfVideoMode)
         {x, y, 16}, "wolf3d", sfFullscreen, NULL);
     sfRenderWindow_setFramerateLimit(game->window, 60);
     game->win_s.x = x;
     game->win_s.y = y;
-    sfRenderTexture_destroy(game->minimap->minimap_tex);
-    sfSprite_destroy(game->minimap->minimap_sprite);
+    clean_mini_map(game);
     init_background_and_minimap(game);
     update_ui_scale(game);
 }

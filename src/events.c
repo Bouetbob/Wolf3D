@@ -30,7 +30,7 @@ void change_window_size(game_t *game, int x, int y)
         return;
     temp_destroy_bg(game);
     update_button_and_text_pos(game, x, y);
-    sfRenderWindow_close(game->window);
+    sfRenderWindow_destroy(game->window);
     game->window = create_window(x, y, "wolf3d");
     game->win_s.x = x;
     game->win_s.y = y;
