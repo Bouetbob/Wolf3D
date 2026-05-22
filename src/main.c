@@ -116,20 +116,6 @@ static void render_weapon(game_t *game)
     sfRenderWindow_drawSprite(game->window, weapon->sprite, NULL);
 }
 
-bool is_player_alive(player_t *p)
-{
-    if (p->stats->health <= 0) {
-        if (p->score <= 150)
-            printf("big loss right here..\n");
-        if (p->score <= 500 && p->score > 150)
-            printf("now we're getting somewhere\n");
-        if (p->score <= 1000 && p->score > 500)
-            printf("good job!\n");
-        return false;
-    }
-    return true;
-}
-
 static void render_game(game_t *game, ray_t *ray,
     sfVertexArray *vertexarr[NUM_TEXTURES_RAY])
 {
@@ -167,6 +153,7 @@ void main_game_loop(game_t *game, ray_t *ray)
         sfVertexArray_setPrimitiveType(vertexarr[i], sfTriangles);
     }
     init_background_and_minimap(game);
+    mid_window_size(game);
     while (sfRenderWindow_isOpen(game->window)) {
         setup_time(game);
         while (sfRenderWindow_pollEvent(game->window, &game->event))

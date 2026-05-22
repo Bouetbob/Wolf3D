@@ -63,7 +63,6 @@ int is_wall(float x, float y, game_t *game);
 bool has_display(char **env);
 void exit_with_message(char *exit_message, int message_channel,
     int exit_value);
-void dir_giver(player_t *player);
 void rad_giver(player_t *player);
 void update_player(player_t *player);
 

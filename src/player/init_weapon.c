@@ -5,7 +5,6 @@
 ** it inits one weapon
 */
 
-
 #include "engine.h"
 #include <SFML/Audio/Sound.h>
 #include <SFML/Audio/SoundBuffer.h>
@@ -20,9 +19,11 @@
 #include <stdlib.h>
 #include <time.h>
 
-static void setup_weapon_stats(weapon_t *weapon, int ammo, int damage, int rate)
+static void setup_weapon_stats(weapon_t *weapon, int ammo, int damage,
+    int rate)
 {
-    sfSoundBuffer *buffer = sfSoundBuffer_createFromFile("assets/Sounds/gun.mp3");
+    sfSoundBuffer *buffer =
+        sfSoundBuffer_createFromFile("assets/Sounds/gun.mp3");
 
     weapon->shoot = sfSound_create();
     if (weapon->shoot && buffer) {
@@ -71,8 +72,7 @@ void init_weapons(game_t *game)
 
     p->curr_weapon = 0;
     p->score = 0;
-    p->weapons[0] =
-        init_single_weapon(30, 10, 0.15, "./assets/UI/gun.png");
+    p->weapons[0] = init_single_weapon(30, 10, 0.15, "./assets/UI/gun.png");
     p->weapons[1] = NULL;
     p->weapons[2] = NULL;
 }
