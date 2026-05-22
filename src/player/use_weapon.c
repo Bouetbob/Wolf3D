@@ -10,7 +10,6 @@
 #include <SFML/Audio/Sound.h>
 #include <SFML/Audio/Types.h>
 #include <stdint.h>
-#include <stdio.h>
 
 static void add_new_item(game_t *game)
 {

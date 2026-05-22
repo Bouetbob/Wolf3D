@@ -13,6 +13,7 @@
 #include "wolf3d.h"
 #include <SFML/Graphics/RectangleShape.h>
 #include <SFML/Graphics/RenderWindow.h>
+#include <SFML/Graphics/Sprite.h>
 #include <SFML/Graphics/Text.h>
 #include <SFML/Graphics/Types.h>
 #include <SFML/System/Vector2.h>
@@ -64,6 +65,9 @@ static void handle_ui_events(game_t *game, sfEvent event)
         item_event(game, game->player->inventory[i], &event);
         if (game->player->inventory[i]
             && game->player->inventory[i]->uses == 0) {
+            sfRectangleShape_destroy(game->player->inventory[i]->background);
+            sfSprite_destroy(game->player->inventory[i]->sprite);
+            free(game->player->inventory[i]->name);    
             free(game->player->inventory[i]);
             game->player->inventory[i] = NULL;
         }

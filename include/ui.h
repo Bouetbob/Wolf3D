@@ -30,7 +30,7 @@
     #define GUM init_item(game->tex->item_tex[2], 1, "GUM", (void *) gum)
     #define FLASH init_item(game->tex->item_tex[3], 1, "FLASH", (void *) flash)
 
-    #define NUM_BUTTONS 12
+    #define NUM_BUTTONS 17
 
 typedef struct button_params_s {
     char *string;
@@ -77,6 +77,11 @@ void mid_window_size(game_t *game);
 void min_window_size(game_t *game);
 void change_settings_state(game_t *game);
 
+void lowest_volume(game_t *game);
+void lower_volume(game_t *game);
+void mid_volume(game_t *game);
+void higher_volume(game_t *game);
+void highest_volume(game_t *game);
 
 
 void update_text(sfText *item, char *new_string);
