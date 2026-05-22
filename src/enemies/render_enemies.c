@@ -108,31 +108,42 @@ static void bubble_pass(enemy_t **sorted, int limit, game_t *game)
     }
 }
 
-static void sort_enemies(enemy_t **sorted, int count, game_t *game)
+static sfTexture *get_enemy_texture(game_t *game, enemy_t *enemy)
 {
-    for (int i = 0; i < count - 1; i++)
-        bubble_pass(sorted, count - i - 1, game);
+    if (enemy->type == 2)
+        return game->enemy_textures[1];
+    return game->enemy_textures[0];
 }
 
-void render_enemies(game_t *game)
+static int render_enemies_helper(game_t *game, enemy_t *sorted[MAX_ENEMIES],
+    int count)
 {
-    sfTexture *tex = game->enemy_texture;
-    enemy_t *sorted[MAX_ENEMIES];
-    int count = 0;
-    int frame_w;
-
-    if (!tex)
-        return;
-    frame_w = sfTexture_getSize(tex).x / 2;
     for (int e = 0; e < game->enemy_count; e++) {
         if (game->enemies[e] && game->enemies[e]->alive) {
             sorted[count] = game->enemies[e];
             count++;
         }
     }
-    sort_enemies(sorted, count, game);
+    return count;
+}
+
+void render_enemies(game_t *game)
+{
+    enemy_t *sorted[MAX_ENEMIES];
+    int count = 0;
+    int frame_w;
+    sfTexture *tex;
+
+    count = render_enemies_helper(game, sorted, count);
+    for (int i = 0; i < count - 1; i++)
+        bubble_pass(sorted, count - i - 1, game);
     for (int e = 0; e < count; e++) {
-        if (sorted[e])
-            render_one_enemy(game, sorted[e], tex, frame_w);
+        if (!sorted[e])
+            continue;
+        tex = get_enemy_texture(game, sorted[e]);
+        if (!tex)
+            continue;
+        frame_w = sfTexture_getSize(tex).x / 2;
+        render_one_enemy(game, sorted[e], tex, frame_w);
     }
 }
