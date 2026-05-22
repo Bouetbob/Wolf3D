@@ -61,21 +61,17 @@ static void update_button_and_text_pos(game_t *game, int new_x, int new_y)
 
 void change_window_size(game_t *game, int x, int y)
 {
-    sfVector2f new_pos;
-
-    if (x <= 0 || y <= 0 || x > SCREEN_W || y >= 4000)
+    if (x <= 0 || y <= 0 || x >= 2000 || y >= 4000)
         return;
     update_button_and_text_pos(game, x, y);
     sfRenderWindow_close(game->window);
     game->window = create_window(x, y, "wolf3d");
     game->win_s.x = x;
     game->win_s.y = y;
-    new_pos = (sfVector2f) {game->win_s.x, game->win_s.y};
     clean_mini_map(game);
     init_minimap(game);
     resize_floor_ceiling(game);
     update_ui_scale(game);
-    new_pos = (sfVector2f) {game->win_s.x, (float) game->win_s.y / 2};
 }
 
 static void change_inv_state(game_t *game)

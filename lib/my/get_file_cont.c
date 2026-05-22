@@ -14,16 +14,22 @@
 char *get_file_cont(char *file)
 {
     FILE *fd = fopen(file, "r");
-    struct stat *s = malloc((sizeof(struct stat)));
+    struct stat s;
     char *temp = NULL;
 
-    if (!fd || !s)
+    if (!fd)
         return (NULL);
-    stat(file, s);
-    temp = malloc(sizeof(char) * s->st_size + 1);
-    if (!temp)
+    if (stat(file, &s) == -1) {
+        fclose(fd);
         return (NULL);
-    fread(temp, 1, s->st_size, fd);
-    temp[s->st_size] = '\0';
+    }
+    temp = malloc(sizeof(char) * s.st_size + 1);
+    if (!temp) {
+        fclose(fd);
+        return (NULL);
+    }
+    fread(temp, 1, s.st_size, fd);
+    temp[s.st_size] = '\0';
+    fclose(fd);
     return (temp);
 }

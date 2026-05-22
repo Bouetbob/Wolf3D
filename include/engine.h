@@ -188,6 +188,7 @@ typedef struct game_s {
     float z_buffer[SCREEN_W];
     sfTexture *enemy_texture;
     ray_data_t *ray_data;
+    sfFont *font;
 } game_t;
 
 void init_background_and_minimap(game_t *game);
@@ -195,5 +196,10 @@ void render_floor_ceiling(game_t *game);
 void init_minimap(game_t *game);
 void render_minimap(game_t *game);
 void clean_mini_map(game_t *game);
-void resize_floor_ceiling(game_t *game);
+void free_buttons(game_t *game);
+void free_weapons(player_t *player);
+void clean_player(player_t *player);
+void init_ui_texts(game_t *game);
+void init_player(game_t *game);
+
 #endif /* !ENGINE_H_ */

@@ -34,40 +34,39 @@ static sfRectangleShape *init_button_background(sfVector2f *pos,
     return rect;
 }
 
-static sfText *init_button_text(char *text, int charsize,
-    sfVector2f *pos, sfVector2f *rectsize)
+static sfText *init_button_text(char *text, button_t *button, game_t *game)
 {
     sfText *textbox = sfText_create();
-    sfFont *font = sfFont_createFromFile("assets/Fonts/Bear_Days.otf");
+    sfVector2f pos = sfRectangleShape_getPosition(button->background);
+    sfVector2f sz = sfRectangleShape_getSize(button->background);
 
-    if (!textbox || !font)
+    if (!textbox || !game->font)
         return (NULL);
-    sfText_setOrigin(textbox,
-        (sfVector2f) {rectsize->x / 3, rectsize->y / 3});
-    sfText_setCharacterSize(textbox, charsize);
+    sfText_setOrigin(textbox, (sfVector2f) {sz.x / 3, sz.y / 3});
+    sfText_setCharacterSize(textbox, button->char_size);
     sfText_setString(textbox, text);
-    sfText_setFont(textbox, font);
-    sfText_setPosition(textbox, *pos);
+    sfText_setFont(textbox, game->font);
+    sfText_setPosition(textbox, pos);
     sfText_setColor(textbox, sfBlack);
     return textbox;
 }
 
-button_t *init_button(char *string, sfVector2f *position,
-    sfVector2f *size, bool is_menu)
+button_t *init_button(button_params_t *params, game_t *game)
 {
     button_t *button = malloc(sizeof(button_t));
 
     if (!button)
         return NULL;
-    button->background = init_button_background(position, size);
+    button->background =
+        init_button_background(params->position, params->size);
     if (!button->background)
         return (NULL);
     button->char_size = 10;
     button->hovered = false;
-    button->text = init_button_text(string, button->char_size, position, size);
+    button->text = init_button_text(params->string, button, game);
     if (!button->text)
         return (NULL);
     button->on_click = (NULL);
-    button->is_menu_button = is_menu;
+    button->is_menu_button = params->is_menu;
     return button;
 }

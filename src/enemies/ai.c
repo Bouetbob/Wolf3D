@@ -45,13 +45,13 @@ static void set_dda_steps(float *data, int *grid)
     grid[0] = (int) data[0];
     grid[1] = (int) data[1];
     grid[2] = 1;
-    grid[7] = (grid[0] + 1.0f - data[0]) * data[5];
+    data[7] = (grid[0] + 1.0f - data[0]) * data[5];
     if (data[2] < 0.0f) {
         grid[2] = -1;
         data[7] = (data[0] - grid[0]) * data[5];
     }
     grid[3] = 1;
-    grid[8] = (grid[1] + 1.0f - data[1]) * data[6];
+    data[8] = (grid[1] + 1.0f - data[1]) * data[6];
     if (data[3] < 0.0f) {
         grid[3] = -1;
         data[8] = (data[1] - grid[1]) * data[6];
