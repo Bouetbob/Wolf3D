@@ -74,9 +74,11 @@ static int init_textures(game_t *game)
 
     memset(game->tex->ray_tex, 0, r_s);
     memset(game->tex->item_tex, 0, i_s);
-    game->enemy_texture = sfTexture_createFromFile(
+    game->enemy_textures[0] = sfTexture_createFromFile(
         "assets/World_Textures/enemy_magnum.png", NULL);
-    if (!game->enemy_texture)
+    game->enemy_textures[1] = sfTexture_createFromFile(
+        "assets/World_Textures/enemy_thompson.png", NULL);
+    if (!game->enemy_textures[0] || !game->enemy_textures[1])
         return (84);
     return (0);
 }

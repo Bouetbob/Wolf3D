@@ -196,7 +196,7 @@ typedef struct game_s {
     enemy_t **enemies;
     int enemy_count;
     float z_buffer[3000];
-    sfTexture *enemy_texture;
+    sfTexture *enemy_textures[2];
     ray_data_t *ray_data;
     sfFont *font;
     sfSprite *menu_bg;

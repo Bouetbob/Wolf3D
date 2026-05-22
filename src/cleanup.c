@@ -97,8 +97,10 @@ void cleanup_game(game_t *game)
             sfTexture_destroy((sfTexture *)tex);
     }
     cleanup_game_utils(game);
-    if (game->enemy_texture)
-        sfTexture_destroy(game->enemy_texture);
+    for (int i = 0; i < 2; i++) {
+        if (game->enemy_textures[i])
+            sfTexture_destroy(game->enemy_textures[i]);
+    }
     if (game->tex)
         free(game->tex);
     if (game->font)
