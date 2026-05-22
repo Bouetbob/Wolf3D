@@ -10,6 +10,8 @@
 #include <SFML/Audio/Sound.h>
 #include <SFML/Audio/SoundBuffer.h>
 #include <SFML/Audio/Types.h>
+#include <SFML/Graphics/Sprite.h>
+#include <SFML/Graphics/Types.h>
 
 static void free_buttons_content(game_t *game, int i)
 {
@@ -77,6 +79,7 @@ static void clean_inventory(player_t *player)
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         if (player->inventory[i]) {
+            sfSprite_destroy(player->inventory[i]->sprite);
             sfRectangleShape_destroy(player->inventory[i]->background);
             free(player->inventory[i]->name);
             free(player->inventory[i]);
